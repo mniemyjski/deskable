@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "382262940329",
+    "project_id": "deskable-424bd",
+    "storage_bucket": "deskable-424bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382262940329:android:623d9adacebc672b020fb8",
+        "android_client_info": {
+          "package_name": "pl.deskable.deskable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382262940329-onpdi1ui4kqh4o4es3ltuvupkhiktd9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.deskable.deskable",
+            "certificate_hash": "04fbd52b90c44a2498e9b31b0a029169d91ce8d3"
+          }
+        },
+        {
+          "client_id": "382262940329-i3k106u2q2il71vsqpgaktsfvf6cv9kk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV_P789XNmUmbiqSr520clug6Nozo_59Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382262940329-i3k106u2q2il71vsqpgaktsfvf6cv9kk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,64 @@
+name: deskable
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  easy_localization: ^3.0.0
+  easy_localization_loader: ^1.0.0
+  url_strategy: ^0.2.0
+
+  flutter_bloc: ^7.2.0
+  hydrated_bloc: ^7.0.1
+  rxdart: ^0.27.1
+
+  equatable: ^2.0.3
+  shared_preferences: ^2.0.7
+
+  firebase_core: ^1.6.0
+  firebase_auth: ^3.1.0
+  cloud_firestore: ^2.5.1
+  firebase_storage: ^10.0.3
+  firebase_analytics: ^8.3.1
+  google_sign_in: ^5.0.7
+
+  connectivity_plus: ^1.1.0
+  flash: ^2.0.1
+
+  font_awesome_flutter: ^9.1.0
+  google_fonts: ^2.1.0
+  cupertino_icons: ^1.0.3
+
+  cached_network_image: ^3.1.0
+  crop_your_image: ^0.6.0+1
+  image_picker: ^0.8.3+3
+
+  introduction_screen: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  build_runner: ^2.1.1
+  logger: ^1.0.0
+  bloc_test: ^8.1.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - resources/
+    - resources/images/
+    - resources/images/social/
+    - resources/images/furnitures/
+
+
+

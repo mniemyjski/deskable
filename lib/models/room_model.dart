@@ -1,0 +1,99 @@
+import 'package:equatable/equatable.dart';
+import 'models.dart';
+
+class Room extends Equatable {
+  final String? id;
+  final String? companyId;
+
+  final int x;
+  final int y;
+
+  final int open;
+  final int close;
+
+  final List<Field> fields;
+
+  final String name;
+  final String description;
+
+  Room({
+    this.id,
+    required this.companyId,
+    required this.x,
+    required this.y,
+    required this.open,
+    required this.close,
+    required this.fields,
+    required this.name,
+    this.description = '',
+  });
+
+  @override
+  bool get stringify => true;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+  Map<String, dynamic> toMap() {
+    List _fields = [];
+    this.fields.forEach((element) {
+      _fields.add(element.toMap());
+    });
+
+    return {
+      'id': this.id,
+      'companyId': this.companyId,
+      'x': this.x,
+      'y': this.y,
+      'open': this.open,
+      'close': this.close,
+      'fields': _fields,
+      'name': this.name,
+      'description': this.description,
+    };
+  }
+
+  factory Room.fromMap(Map<String, dynamic> map) {
+    List<Field> _fields = [];
+    map['fields'].forEach((element) {
+      _fields.add(element.fromMap());
+    });
+
+    return Room(
+      id: map['id'] as String,
+      companyId: map['companyId'] as String,
+      x: map['x'] as int,
+      y: map['y'] as int,
+      open: map['open'] as int,
+      close: map['close'] as int,
+      fields: _fields,
+      name: map['name'] as String,
+      description: map['description'] as String,
+    );
+  }
+
+  Room copyWith({
+    String? id,
+    String? companyId,
+    int? x,
+    int? y,
+    int? open,
+    int? close,
+    List<Field>? fields,
+    String? name,
+    String? description,
+  }) {
+    return Room(
+      id: id ?? this.id,
+      companyId: companyId ?? this.companyId,
+      x: x ?? this.x,
+      y: y ?? this.y,
+      open: open ?? this.open,
+      close: close ?? this.close,
+      fields: fields ?? this.fields,
+      name: name ?? this.name,
+      description: description ?? this.description,
+    );
+  }
+}
