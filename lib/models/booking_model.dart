@@ -3,21 +3,23 @@ import 'package:equatable/equatable.dart';
 class Booking extends Equatable {
   final String? id;
   final String? userId;
-  final DateTime dateCre;
-  final String companyId;
-  final String roomId;
-  final int deskId;
-  final DateTime dateBook;
+  final String? userName;
+  final DateTime? dateCre;
+  final String? companyId;
+  final String? roomId;
+  final int? deskId;
+  final DateTime? dateBook;
   final List<int> hoursBook;
 
   Booking({
     this.id,
     this.userId,
-    required this.dateCre,
-    required this.companyId,
-    required this.roomId,
-    required this.deskId,
-    required this.dateBook,
+    this.userName,
+    this.dateCre,
+    this.companyId,
+    this.roomId,
+    this.deskId,
+    this.dateBook,
     required this.hoursBook,
   });
 
@@ -25,8 +27,7 @@ class Booking extends Equatable {
   bool get stringify => true;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [id, userId, userName, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
 
   Map<String, dynamic> toMap() {
     return {
@@ -44,19 +45,20 @@ class Booking extends Equatable {
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
       id: map['id'] as String,
-      dateCre: map['dateCre'] as DateTime,
+      dateCre: map['dateCre'].toDate() as DateTime,
       companyId: map['companyId'] as String,
       roomId: map['roomId'] as String,
       deskId: map['deskId'] as int,
       userId: map['userId'] as String,
-      dateBook: map['dateBook'] as DateTime,
-      hoursBook: map['hoursBook'] as List<int>,
+      dateBook: map['dateBook'].toDate() as DateTime,
+      hoursBook: map['hoursBook'].cast<int>() as List<int>,
     );
   }
 
   Booking copyWith({
     String? id,
     String? userId,
+    String? userName,
     DateTime? dateCre,
     String? companyId,
     String? roomId,
@@ -67,6 +69,7 @@ class Booking extends Equatable {
     return Booking(
       id: id ?? this.id,
       userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
       dateCre: dateCre ?? this.dateCre,
       companyId: companyId ?? this.companyId,
       roomId: roomId ?? this.roomId,

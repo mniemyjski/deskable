@@ -26,31 +26,3 @@ class AccountState extends Equatable {
   @override
   List<Object?> get props => [account, status];
 }
-
-// abstract class AccountState extends Equatable {
-//   const AccountState();
-// }
-//
-// class AccountInitial extends AccountState {
-//   @override
-//   List<Object> get props => [];
-// }
-//
-// class AccountUnCreate extends AccountState {
-//   @override
-//   List<Object> get props => [];
-// }
-//
-// class AccountLoadSuccess extends AccountState {
-//   final Account account;
-//
-//   AccountLoadSuccess(this.account);
-//
-//   @override
-//   List<Object> get props => [account];
-// }
-//
-// class AccountLoadFailure extends AccountState {
-//   @override
-//   List<Object> get props => [];
-// }

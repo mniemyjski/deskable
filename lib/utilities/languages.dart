@@ -50,4 +50,8 @@ class Languages {
   static String free() => "free".tr();
   static String highlight() => "highlight".tr();
   static String show() => "show".tr();
+
+  static String companies() => "companies".tr();
+  static String rooms() => "rooms".tr();
+  static String management() => "management".tr();
 }

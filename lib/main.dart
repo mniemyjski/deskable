@@ -1,5 +1,9 @@
+import 'package:deskable/cubit/selected/selected_company_cubit.dart';
+import 'package:deskable/cubit/selected/selected_date_cubit.dart';
+import 'package:deskable/cubit/selected/selected_room_cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
 import 'package:deskable/repositories/preference_repository.dart';
+import 'package:deskable/screens/home/cubit/creator_booking_cubit.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,7 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  EquatableConfig.stringify = false;
+  EquatableConfig.stringify = true;
   setPathUrlStrategy();
   Bloc.observer = SimpleBlocObserver();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -72,6 +76,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<DarkModeCubit>(
             create: (context) => DarkModeCubit(),
           ),
+          BlocProvider<SelectedDateCubit>(
+            create: (context) => SelectedDateCubit(),
+          ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
@@ -94,6 +101,37 @@ class MyApp extends StatelessWidget {
               accountCubit: context.read<AccountCubit>(),
               accountRepository: context.read<AccountRepository>(),
               storageRepository: context.read<StorageRepository>(),
+            ),
+          ),
+          BlocProvider<CompanyCubit>(
+            create: (context) => CompanyCubit(
+              accountCubit: context.read<AccountCubit>(),
+              companyRepository: context.read<CompanyRepository>(),
+            ),
+          ),
+          BlocProvider<SelectedCompanyCubit>(
+            create: (context) => SelectedCompanyCubit(
+              companyCubit: context.read<CompanyCubit>(),
+            ),
+          ),
+          BlocProvider<RoomCubit>(
+            create: (context) => RoomCubit(
+              accountCubit: context.read<AccountCubit>(),
+              roomRepository: context.read<RoomRepository>(),
+              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+            ),
+          ),
+          BlocProvider<SelectedRoomCubit>(
+            create: (context) => SelectedRoomCubit(
+              roomCubit: context.read<RoomCubit>(),
+            ),
+          ),
+          BlocProvider<BookingCubit>(
+            create: (context) => BookingCubit(
+              accountCubit: context.read<AccountCubit>(),
+              bookingRepository: context.read<BookingRepository>(),
+              selectedRoomCubit: context.read<SelectedRoomCubit>(),
+              selectedDateCubit: context.read<SelectedDateCubit>(),
             ),
           ),
         ],

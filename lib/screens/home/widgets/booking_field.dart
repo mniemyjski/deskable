@@ -1,17 +1,20 @@
-import 'package:deskable/utilities/utilities.dart';
+import 'package:deskable/cubit/cubit.dart';
+import 'package:deskable/models/models.dart';
+import 'package:deskable/screens/home/cubit/creator_booking_cubit.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookingField extends StatefulWidget {
-  final int time;
-  final String user;
-  final bool isOff;
+  final int index;
+  final Room room;
+  final Field field;
 
   const BookingField({
     Key? key,
-    required this.time,
-    required this.user,
-    this.isOff = false,
+    required this.index,
+    required this.room,
+    required this.field,
   }) : super(key: key);
 
   @override
@@ -19,13 +22,17 @@ class BookingField extends StatefulWidget {
 }
 
 class _BookingFieldState extends State<BookingField> {
-  String _booking = '';
+  String name = '';
+  Booking? booking;
 
-  booking(String name) {
-    setState(() {
-      _booking = name;
-      print('test: $_booking');
-    });
+  @override
+  void initState() {
+    booking = context.read<BookingCubit>().getBooking(
+          deskId: widget.field.id,
+          hour: widget.room.open + widget.index,
+        );
+    name = booking?.userName ?? Languages.click_to_book();
+    super.initState();
   }
 
   @override
@@ -35,7 +42,7 @@ class _BookingFieldState extends State<BookingField> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(flex: 1, child: Text('${widget.time}:00')),
+          Expanded(flex: 1, child: Text('${widget.room.open + widget.index}:00')),
           Expanded(
               flex: 3,
               child: Padding(
@@ -44,31 +51,27 @@ class _BookingFieldState extends State<BookingField> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (!widget.isOff && widget.user == "" && _booking != '')
-                      InkWell(
-                        onTap: () {
-                          booking("");
-                        },
-                        child: Text(
-                          _booking,
-                        ),
-                      ),
-                    if (!widget.isOff && widget.user == "" && _booking == '')
-                      InkWell(
-                        onTap: () {
-
-                        },
-                        child: Text(
-                          Languages.click_to_book(),
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
-                        ),
-                      ),
-                    if (widget.isOff && widget.user == "")
-                      Text(
-                        Languages.excluded_from_the_booking(),
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.red),
-                      ),
-                    if (widget.user != "") Text(widget.user),
+                    if (booking != null && booking?.userId != context.read<AccountCubit>().state.account!.uid)
+                      Container(width: double.infinity, child: Text(name)),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (name == Languages.click_to_book()) {
+                            name = context.read<AccountCubit>().state.account!.name;
+                            context.read<CreatorBookingCubit>().add(widget.room.open + widget.index);
+                          } else if (name != Languages.click_to_book()) {
+                            name = Languages.click_to_book();
+                            context.read<CreatorBookingCubit>().remove(widget.room.open + widget.index);
+                          }
+                        });
+                      },
+                      child: Container(
+                          width: double.infinity,
+                          child: Text(
+                            name,
+                            style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
+                          )),
+                    ),
                   ],
                 ),
               )),

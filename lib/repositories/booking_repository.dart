@@ -1,12 +1,21 @@
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+extension WhereNotInExt<T> on Iterable<T> {
+  Iterable<T> whereNotIn(Iterable<T> reject) {
+    final rejectSet = reject.toSet();
+    return where((el) => !rejectSet.contains(el));
+  }
+}
 
 abstract class _BaseBookingRepository {
   Future<void> create(Booking booking);
   Future<void> delete(Booking booking);
   Future<void> update(Booking booking);
-  Stream<List<Booking>?> stream(String companyId, String roomId);
+  // Future<Booking?> alreadyCreated(Booking booking);
+  Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook});
 }
 
 class BookingRepository extends _BaseBookingRepository {
@@ -19,35 +28,39 @@ class BookingRepository extends _BaseBookingRepository {
           toFirestore: (room, _) => room.toMap(),
         );
 
-    DocumentReference doc = ref.doc();
-    return await doc.set(booking.copyWith(id: doc.id));
+    DocumentReference doc = ref.doc(booking.id);
+    return await doc.set(booking.copyWith(
+      id: doc.id,
+      dateCre: DateTime.now(),
+      dateBook: DateTime(booking.dateBook!.year, booking.dateBook!.month, booking.dateBook!.day),
+    ));
   }
 
   @override
   delete(Booking booking) async {
     String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
-    CollectionReference ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
+    CollectionReference _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
         );
 
-    return await ref.doc(booking.id).delete();
+    return await _ref.doc(booking.id).delete();
   }
 
   @override
   update(Booking booking) async {
     String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
-    CollectionReference ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
+    CollectionReference _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
         );
 
-    return await ref.doc(booking.id).set(booking);
+    return await _ref.doc(booking.id).set(booking);
   }
 
   @override
-  Stream<List<Booking>?> stream(String companyId, String roomId) {
-    String path = "${Path.companies()}/$companyId}/${Path.rooms()}/$roomId/${Path.bookings()}";
+  Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook}) {
+    String path = "${Path.companies()}/$companyId/${Path.rooms()}/$roomId/${Path.bookings()}";
 
     final ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
@@ -57,7 +70,28 @@ class BookingRepository extends _BaseBookingRepository {
     return ref
         .where('companyId', isEqualTo: companyId)
         .where('roomId', isEqualTo: roomId)
+        .where('dateBook', isEqualTo: dateBook)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
   }
+
+  // @override
+  // Future<Booking?> alreadyCreated(Booking booking) async {
+  //   String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
+  //
+  //   final _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
+  //         fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
+  //         toFirestore: (room, _) => room.toMap(),
+  //       );
+  //
+  //   return await _ref
+  //       .where('companyId', isEqualTo: booking.companyId)
+  //       .where('roomId', isEqualTo: booking.roomId)
+  //       .where('dateBook', isEqualTo: booking.dateBook)
+  //       .where('userId', isEqualTo: booking.userId)
+  //       .get()
+  //       .then((value) {
+  //     if (value.docs.isNotEmpty) return value.docs.first.data();
+  //   });
+  // }
 }

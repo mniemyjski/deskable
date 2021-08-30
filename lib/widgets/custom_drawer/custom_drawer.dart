@@ -26,6 +26,13 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           Item(
+            icon: FontAwesomeIcons.building,
+            text: Languages.management(),
+            onTap: () {
+              Navigator.of(context).pushNamed(ManagementScreen.routeName);
+            },
+          ),
+          Item(
             icon: Icons.settings,
             text: Languages.settings(),
             onTap: () {

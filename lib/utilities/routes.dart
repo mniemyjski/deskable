@@ -19,6 +19,8 @@ class CustomRouter {
         return AccountCreateScreen.route();
       case IntroScreen.routeName:
         return IntroScreen.route();
+      case ManagementScreen.routeName:
+        return ManagementScreen.route();
       case CropImageScreen.routeName:
         final args = settings.arguments as CropScreenArguments;
         return CropImageScreen.route(args);

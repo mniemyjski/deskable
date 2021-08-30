@@ -1,12 +1,13 @@
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
 abstract class _BaseRoomRepository {
   Future<void> create(Room room);
   Future<void> delete(Room room);
   Future<void> update(Room room);
-  Stream<List<Room>?> stream(String companyId);
+  Stream<List<Room?>> stream(String companyId);
 }
 
 class RoomRepository extends _BaseRoomRepository {
@@ -20,7 +21,7 @@ class RoomRepository extends _BaseRoomRepository {
         );
 
     DocumentReference doc = ref.doc();
-    return await ref.doc().set(room.copyWith(id: doc.id));
+    return await ref.doc(doc.id).set(room.copyWith(id: doc.id));
   }
 
   @override
@@ -45,8 +46,8 @@ class RoomRepository extends _BaseRoomRepository {
   }
 
   @override
-  Stream<List<Room>?> stream(String companyId) {
-    String path = "${Path.companies()}/$companyId}/${Path.rooms()}";
+  Stream<List<Room>> stream(String companyId) {
+    String path = "${Path.companies()}/$companyId/${Path.rooms()}";
 
     final ref = FirebaseFirestore.instance.collection(path).withConverter<Room>(
           fromFirestore: (snapshot, _) => Room.fromMap(snapshot.data()!),

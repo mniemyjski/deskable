@@ -32,8 +32,7 @@ class Room extends Equatable {
   bool get stringify => true;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
   Map<String, dynamic> toMap() {
     List _fields = [];
@@ -57,7 +56,7 @@ class Room extends Equatable {
   factory Room.fromMap(Map<String, dynamic> map) {
     List<Field> _fields = [];
     map['fields'].forEach((element) {
-      _fields.add(element.fromMap());
+      _fields.add(Field.fromMap(element));
     });
 
     return Room(

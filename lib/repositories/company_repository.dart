@@ -6,7 +6,7 @@ abstract class _BaseCompanyRepository {
   Future<void> create(Company company);
   Future<void> delete(Company company);
   Future<void> update(Company company);
-  Stream<List<Company>?> stream(String uid);
+  Stream<List<Company?>> stream(String uid);
 }
 
 final _ref = FirebaseFirestore.instance.collection(Path.companies()).withConverter<Company>(
@@ -32,5 +32,5 @@ class CompanyRepository extends _BaseCompanyRepository {
   }
 
   @override
-  Stream<List<Company>?> stream(String uid) => _ref.where('owner', isEqualTo: uid).snapshots().map((snap) => snap.docs.map((e) => e.data()).toList());
+  Stream<List<Company>> stream(String uid) => _ref.where('owner', isEqualTo: uid).snapshots().map((snap) => snap.docs.map((e) => e.data()).toList());
 }

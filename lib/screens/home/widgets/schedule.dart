@@ -1,7 +1,10 @@
+import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/screens/home/widgets/avatar_booking.dart';
+import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Schedule extends StatelessWidget {
   const Schedule({Key? key}) : super(key: key);
@@ -22,30 +25,48 @@ class Schedule extends StatelessWidget {
         Divider(),
         Container(
           height: 400,
-          child: ListView(
-            children: [
-              buildBookingInTime(context: context, time: 6, count: 5, list: []),
-              buildBookingInTime(context: context, time: 7, count: 5, list: []),
-              buildBookingInTime(context: context, time: 8, count: 5, list: []),
-              buildBookingInTime(context: context, time: 9, count: 5, list: []),
-              buildBookingInTime(context: context, time: 10, count: 5, list: []),
-              buildBookingInTime(context: context, time: 11, count: 5, list: []),
-              buildBookingInTime(context: context, time: 12, count: 5, list: []),
-              buildBookingInTime(context: context, time: 13, count: 5, list: []),
-              buildBookingInTime(context: context, time: 14, count: 5, list: []),
-              buildBookingInTime(context: context, time: 15, count: 5, list: []),
-              buildBookingInTime(context: context, time: 16, count: 5, list: []),
-              buildBookingInTime(context: context, time: 17, count: 5, list: []),
-              buildBookingInTime(context: context, time: 18, count: 5, list: []),
-              buildBookingInTime(context: context, time: 19, count: 5, list: []),
-              buildBookingInTime(context: context, time: 20, count: 5, list: []),
-              buildBookingInTime(context: context, time: 21, count: 5, list: []),
-              buildBookingInTime(context: context, time: 22, count: 5, list: []),
-              buildBookingInTime(context: context, time: 23, count: 5, list: []),
-              buildBookingInTime(context: context, time: 24, count: 5, list: []),
-            ],
+          child: BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
+            builder: (context, state) {
+              if (state.status != EStatus.succeed)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: state.room!.close - state.room!.open,
+                  itemBuilder: (BuildContext context, int index) {
+                    return buildBookingInTime(context: context, time: state.room!.open + index, count: 5, list: []);
+                  });
+            },
           ),
         ),
+        // Container(
+        //   height: 400,
+        //   child: ListView(
+        //     children: [
+        //       buildBookingInTime(context: context, time: 6, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 7, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 8, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 9, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 10, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 11, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 12, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 13, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 14, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 15, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 16, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 17, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 18, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 19, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 20, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 21, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 22, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 23, count: 5, list: []),
+        //       buildBookingInTime(context: context, time: 24, count: 5, list: []),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }

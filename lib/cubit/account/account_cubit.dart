@@ -64,6 +64,11 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
+  Future<String> getName(String id) async {
+    Account? a = await _accountRepository.getAccount(id);
+    return a?.name ?? 'something wrong';
+  }
+
   @override
   Future<void> close() {
     _accountSubscription.cancel();

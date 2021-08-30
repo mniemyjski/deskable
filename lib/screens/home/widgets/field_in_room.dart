@@ -1,8 +1,11 @@
+import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
 import 'package:deskable/screens/home/widgets/printer_x.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 class FieldInRoom extends StatelessWidget {
   final Field field;

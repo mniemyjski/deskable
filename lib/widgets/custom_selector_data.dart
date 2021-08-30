@@ -7,17 +7,17 @@ class CustomSelectorData extends StatelessWidget {
   final VoidCallback? onPressed;
   final String? name;
 
-  const CustomSelectorData({Key? key, required this.onPressedBack, required this.onPressedForward, required this.onPressed, required this.name})
-      : super(key: key);
+  const CustomSelectorData({Key? key, this.onPressedBack, this.onPressedForward, required this.onPressed, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        InkWell(
-          child: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.grey),
-          onTap: onPressedBack,
-        ),
+        if (onPressedBack != null)
+          InkWell(
+            child: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.grey),
+            onTap: onPressedBack,
+          ),
         InkWell(
             onTap: onPressed,
             child: Card(
@@ -25,10 +25,11 @@ class CustomSelectorData extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(name!),
             ))),
-        InkWell(
-          child: FaIcon(FontAwesomeIcons.chevronRight, color: Colors.grey),
-          onTap: onPressedForward,
-        ),
+        if (onPressedForward != null)
+          InkWell(
+            child: FaIcon(FontAwesomeIcons.chevronRight, color: Colors.grey),
+            onTap: onPressedForward,
+          ),
       ],
     );
   }

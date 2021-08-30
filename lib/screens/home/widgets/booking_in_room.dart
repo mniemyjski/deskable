@@ -1,14 +1,15 @@
+import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/schedule.dart';
+import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/custom_selector_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class BookingInRoom extends StatelessWidget {
-  final Room room;
-
-  const BookingInRoom({Key? key, required this.room}) : super(key: key);
+  const BookingInRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +26,63 @@ class BookingInRoom extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomSelectorData(
-                onPressedBack: () => null,
-                onPressedForward: () => null,
-                onPressed: () => customDialog(context, Text('LIST_COMPANY')),
-                name: 'Canal+',
-              ),
-              CustomSelectorData(
-                onPressedBack: () => null,
-                onPressedForward: () => null,
-                onPressed: () => customDialog(context, Text('LIST_ROOMS')),
-                name: room.name,
-              ),
-              CustomSelectorData(
-                onPressedBack: () => null,
-                onPressedForward: () => null,
-                onPressed: () {
-                  showDatePicker(
-                          context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
-                      .then((date) {
-                    if (date != null) {}
-                  });
+              BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+                builder: (context, state) {
+                  return CustomSelectorData(
+                    onPressed: () => customDialog(
+                      context,
+                      BlocBuilder<CompanyCubit, CompanyState>(
+                        builder: (context, state) {
+                          return ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              itemCount: state.companies.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Text(state.companies[index]!.name);
+                              });
+                        },
+                      ),
+                    ),
+                    name: state.company?.name ?? '',
+                  );
                 },
-                name: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+              ),
+              BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
+                builder: (context, state) {
+                  return CustomSelectorData(
+                    onPressed: () => customDialog(
+                      context,
+                      BlocBuilder<RoomCubit, RoomState>(
+                        builder: (context, state) {
+                          return ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              itemCount: state.rooms.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Text(state.rooms[index]!.name);
+                              });
+                        },
+                      ),
+                    ),
+                    name: state.room?.name ?? '',
+                  );
+                },
+              ),
+              BlocBuilder<SelectedDateCubit, SelectedDateState>(
+                builder: (context, state) {
+                  return CustomSelectorData(
+                    onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
+                    onPressedForward: () => context.read<SelectedDateCubit>().increase(),
+                    onPressed: () {
+                      showDatePicker(
+                              context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
+                          .then((date) {
+                        if (date != null) {
+                          context.read<SelectedDateCubit>().change(date);
+                        }
+                      });
+                    },
+                    name: DateFormat('dd-MM-yyyy').format(state.dateTime),
+                  );
+                },
               ),
             ],
           ),

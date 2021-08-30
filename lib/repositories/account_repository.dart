@@ -2,10 +2,11 @@ import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:logger/logger.dart';
 
 abstract class _BaseAccountRepository {
   streamMyAccount(String uid);
-  getAccount(String id);
+  Future<Account?> getAccount(String id);
   Future<bool> nameAvailable(String name);
   Future<void> createAccount(Account account);
   Future<void> updateAccount(Account account);
@@ -28,7 +29,9 @@ class AccountRepository extends _BaseAccountRepository {
   Future<void> updateAccount(Account account) => _ref.doc(account.uid).set(account);
 
   @override
-  getAccount(String id) => _ref.doc(id).get();
+  Future<Account?> getAccount(String id) async {
+    return await _ref.doc(id).get().then((value) => value.data());
+  }
 
   @override
   Stream<Account?> streamMyAccount(String uid) => _ref.doc(uid).snapshots().map((account) => account.data());
