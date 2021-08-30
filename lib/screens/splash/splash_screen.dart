@@ -20,44 +20,33 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AccountCubit, AccountState>(
-        listenWhen: (prevState, state) => prevState.status != state.status,
-        listener: (context, state) {
-          if (state.status == EAccountStatus.created) {
-            Navigator.of(context).pushNamed(HomeScreen.routeName, arguments: true);
-          }
-          if (state.status == EAccountStatus.uncreated) {
-            Navigator.of(context).pushNamed(AccountCreateScreen.routeName);
-          }
-        },
-        child: MultiBlocListener(
-          listeners: [
-            // BlocListener<AccountCubit, AccountState>(
-            //     listenWhen: (prevState, state) => prevState.status != state.status,
-            //     listener: (context, state) {
-            //       if (state.status == EAccountStatus.created) {
-            //         Navigator.of(context).pushNamed(HomeScreen.routeName, arguments: true);
-            //       }
-            //       if (state.status == EAccountStatus.uncreated) {
-            //         Navigator.of(context).pushNamed(AccountCreateScreen.routeName);
-            //       }
-            //     }),
-            BlocListener<AuthBloc, AuthState>(
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<AccountCubit, AccountState>(
               listenWhen: (prevState, state) => prevState.status != state.status,
               listener: (context, state) {
-                if (state.status == EAuthStatus.unauthenticated) {
-                  Navigator.of(context).pushNamed(SignInScreen.routeName);
+                if (state.status == EAccountStatus.created) {
+                  Navigator.of(context).pushNamed(HomeScreen.routeName, arguments: true);
                 }
-              },
-            ),
-          ],
-          child: const Scaffold(
-              body: Center(
-            child: CircularProgressIndicator(
-              color: Colors.red,
-            ),
-          )),
-        ),
+                if (state.status == EAccountStatus.uncreated) {
+                  Navigator.of(context).pushNamed(AccountCreateScreen.routeName);
+                }
+              }),
+          BlocListener<AuthBloc, AuthState>(
+            listenWhen: (prevState, state) => prevState.status != state.status,
+            listener: (context, state) {
+              if (state.status == EAuthStatus.unauthenticated) {
+                Navigator.of(context).pushNamed(SignInScreen.routeName);
+              }
+            },
+          ),
+        ],
+        child: const Scaffold(
+            body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.red,
+          ),
+        )),
       ),
     );
   }

@@ -15,7 +15,7 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
   SelectedRoomCubit({required RoomCubit roomCubit})
       : _roomCubit = roomCubit,
         super(SelectedRoomState.unknown()) {
-    emit(SelectedRoomState.loading());
+    // emit(SelectedRoomState.loading());
     _roomSubscription = _roomCubit.stream.listen((room) {
       if (room.status == ERoomStatus.succeed) {
         emit(SelectedRoomState.succeed(room: room.rooms.first!));

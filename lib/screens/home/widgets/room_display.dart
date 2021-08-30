@@ -13,7 +13,6 @@ class RoomDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
       builder: (context, state) {
-        Logger().e(state.status);
         if (state.status != EStatus.succeed)
           return Center(
             child: CircularProgressIndicator(),

@@ -24,7 +24,7 @@ class RoomCubit extends Cubit<RoomState> {
         super(RoomState.unknown()) {
     _accountSubscription = _accountCubit.stream.listen((account) {
       if (account.status == EAccountStatus.created) {
-        emit(RoomState.loading());
+        // emit(RoomState.loading());
         _selectedCompanyCubit.stream.listen((select) {
           if (select.status == EStatus.succeed) {
             _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {

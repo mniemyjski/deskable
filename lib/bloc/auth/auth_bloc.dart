@@ -18,7 +18,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(AuthState.unknown()) {
-    Logger().e('auth start');
     _userSubscription = _authRepository.user.listen((user) => add(AuthUserChanged(user: user)));
   }
 

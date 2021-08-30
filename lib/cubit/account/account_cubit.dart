@@ -21,9 +21,7 @@ class AccountCubit extends Cubit<AccountState> {
   })  : _accountRepository = accountRepository,
         _authBloc = authBloc,
         super(AccountState.unknown()) {
-    Logger().e('account start');
     _authSubscription = _authBloc.stream.listen((event) {
-      Logger().e('account ${event.status}');
       if (event.status == EAuthStatus.authenticated) {
         _accountSubscription = _accountRepository.streamMyAccount(event.user!.uid).listen((account) {
           account != null ? emit(AccountState.created(account)) : emit(AccountState.unCreated());

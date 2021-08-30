@@ -23,7 +23,7 @@ class CompanyCubit extends Cubit<CompanyState> {
         super(CompanyState.unknown()) {
     _accountSubscription = _accountCubit.stream.listen((account) {
       if (account.status == EAccountStatus.created) {
-        emit(CompanyState.loading());
+        // emit(CompanyState.loading());
         _companiesSubscription = _companyRepository.stream(account.account!.uid).listen((companies) {
           emit(CompanyState.succeed(companies));
         });
