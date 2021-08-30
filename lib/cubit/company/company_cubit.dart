@@ -21,21 +21,18 @@ class CompanyCubit extends Cubit<CompanyState> {
   })  : _companyRepository = companyRepository,
         _accountCubit = accountCubit,
         super(CompanyState.unknown()) {
-    _accountSubscription = _accountCubit.stream.listen((account) {
-      if (account.status == EAccountStatus.created) {
-        // emit(CompanyState.loading());
-        _companiesSubscription = _companyRepository.stream(account.account!.uid).listen((companies) {
-          emit(CompanyState.succeed(companies));
-        });
-      } else {
-        try {
-          _companiesSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
-        }
-        emit(CompanyState.unknown());
+    if (_accountCubit.state.status == EAccountStatus.created) {
+      _companiesSubscription = _companyRepository.stream(_accountCubit.state.account!.companies).listen((companies) {
+        emit(CompanyState.succeed(companies));
+      });
+    } else {
+      try {
+        _companiesSubscription.cancel();
+      } catch (e) {
+        Failure(message: "Not Initialization");
       }
-    });
+      emit(CompanyState.unknown());
+    }
   }
 
   @override

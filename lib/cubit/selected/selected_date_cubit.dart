@@ -8,17 +8,14 @@ class SelectedDateCubit extends Cubit<SelectedDateState> {
   SelectedDateCubit() : super(SelectedDateState.unknown());
 
   change(DateTime dateTime) {
-    emit(SelectedDateState.loading(dateTime));
     emit(SelectedDateState.succeed(dateTime));
   }
 
   increase() {
-    emit(SelectedDateState.loading(state.dateTime));
     emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: 1))));
   }
 
   decrease() {
-    emit(SelectedDateState.loading(state.dateTime));
     emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: -1))));
   }
 }

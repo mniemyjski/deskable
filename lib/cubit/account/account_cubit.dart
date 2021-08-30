@@ -57,7 +57,7 @@ class AccountCubit extends Cubit<AccountState> {
     String url = _authBloc.state.user!.photoURL ?? '';
     bool available = await _accountRepository.nameAvailable(name);
     if (available) {
-      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url));
+      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, companies: ['a0oIGtXYDHGV2wyE7p1r']));
       return true;
     } else {
       return false;

@@ -18,7 +18,7 @@ class Schedule extends StatelessWidget {
           children: [
             Expanded(flex: 2, child: Text('${Languages.time()}:', style: TextStyle(fontWeight: FontWeight.bold))),
             Expanded(flex: 2, child: Text('${Languages.count()}:', style: TextStyle(fontWeight: FontWeight.bold))),
-            Expanded(flex: 5, child: Text('${Languages.free()}:', style: TextStyle(fontWeight: FontWeight.bold))),
+            // Expanded(flex: 5, child: Text('${Languages.free()}:', style: TextStyle(fontWeight: FontWeight.bold))),
             Expanded(flex: 5, child: Text('${Languages.bookings()}:', style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
@@ -43,13 +43,17 @@ class Schedule extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       itemCount: stateA.room!.close - stateA.room!.open,
                       itemBuilder: (BuildContext context, int index) {
-                        List<String> list = context.read<BookingCubit>().getListUserRoomBookingInTime(time: stateA.room!.open + index);
+                        List<String> photosUrl =
+                            context.read<BookingCubit>().getListUserRoomBookingInTime(time: stateA.room!.open + index, name: true);
+                        List<String> usersName =
+                            context.read<BookingCubit>().getListUserRoomBookingInTime(time: stateA.room!.open + index, name: false);
 
                         return buildBookingInTime(
                           context: context,
                           time: stateA.room!.open + index,
-                          count: list.length,
-                          list: list,
+                          count: usersName.length,
+                          usersName: usersName,
+                          photosUrl: photosUrl,
                         );
                       });
                 },
@@ -61,40 +65,41 @@ class Schedule extends StatelessWidget {
     );
   }
 
-  Row buildBookingInTime({required BuildContext context, required int time, required count, required List list}) {
+  Row buildBookingInTime(
+      {required BuildContext context, required int time, required count, required List<String> photosUrl, required List<String> usersName}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(flex: 2, child: Text('$time:00')),
         Expanded(flex: 2, child: Text(count.toString())),
-        Expanded(
-          flex: 5,
-          child: InkWell(
-            onTap: () => null,
-            child: Row(
-              children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text('1'),
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text('2'),
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text('3'),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
+        // Expanded(
+        //   flex: 5,
+        //   child: InkWell(
+        //     onTap: () => null,
+        //     child: Row(
+        //       children: [
+        //         Card(
+        //           child: Padding(
+        //             padding: const EdgeInsets.all(4.0),
+        //             child: Text('1'),
+        //           ),
+        //         ),
+        //         Card(
+        //           child: Padding(
+        //             padding: const EdgeInsets.all(4.0),
+        //             child: Text('2'),
+        //           ),
+        //         ),
+        //         Card(
+        //           child: Padding(
+        //             padding: const EdgeInsets.all(4.0),
+        //             child: Text('3'),
+        //           ),
+        //         )
+        //       ],
+        //     ),
+        //   ),
+        // ),
         Expanded(
           flex: 5,
           child: TextButton(
@@ -102,18 +107,26 @@ class Schedule extends StatelessWidget {
                 context,
                 ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: list.length,
+                    itemCount: usersName.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Text(list[index]);
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            AvatarBooking(url: photosUrl[index]),
+                            SizedBox(width: 8),
+                            Text(usersName[index]),
+                          ],
+                        ),
+                      );
                     })),
             child: Align(
               alignment: Alignment.centerLeft,
-              // child:
               child: Row(
                 children: List.generate(
-                    list.length > 5 ? 5 : list.length,
+                    photosUrl.length > 5 ? 5 : photosUrl.length,
                     (index) => AvatarBooking(
-                          url: list[index],
+                          url: photosUrl[index],
                         )),
               ),
             ),

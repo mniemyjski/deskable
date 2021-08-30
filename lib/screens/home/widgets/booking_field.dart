@@ -53,25 +53,26 @@ class _BookingFieldState extends State<BookingField> {
                   children: [
                     if (booking != null && booking?.userId != context.read<AccountCubit>().state.account!.uid)
                       Container(width: double.infinity, child: Text(name)),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (name == Languages.click_to_book()) {
-                            name = context.read<AccountCubit>().state.account!.name;
-                            context.read<CreatorBookingCubit>().add(widget.room.open + widget.index);
-                          } else if (name != Languages.click_to_book()) {
-                            name = Languages.click_to_book();
-                            context.read<CreatorBookingCubit>().remove(widget.room.open + widget.index);
-                          }
-                        });
-                      },
-                      child: Container(
-                          width: double.infinity,
-                          child: Text(
-                            name,
-                            style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
-                          )),
-                    ),
+                    if (booking == null || booking?.userId == context.read<AccountCubit>().state.account!.uid)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (name == Languages.click_to_book()) {
+                              name = context.read<AccountCubit>().state.account!.name;
+                              context.read<CreatorBookingCubit>().add(widget.room.open + widget.index);
+                            } else if (name != Languages.click_to_book()) {
+                              name = Languages.click_to_book();
+                              context.read<CreatorBookingCubit>().remove(widget.room.open + widget.index);
+                            }
+                          });
+                        },
+                        child: Container(
+                            width: double.infinity,
+                            child: Text(
+                              name,
+                              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
+                            )),
+                      ),
                   ],
                 ),
               )),

@@ -22,25 +22,22 @@ class RoomCubit extends Cubit<RoomState> {
         _selectedCompanyCubit = selectedCompanyCubit,
         _accountCubit = accountCubit,
         super(RoomState.unknown()) {
-    _accountSubscription = _accountCubit.stream.listen((account) {
-      if (account.status == EAccountStatus.created) {
-        // emit(RoomState.loading());
-        _selectedCompanyCubit.stream.listen((select) {
-          if (select.status == EStatus.succeed) {
-            _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {
-              emit(RoomState.succeed(rooms));
-            });
-          }
-        });
-      } else {
-        try {
-          _roomsSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
+    if (_accountCubit.state.status == EAccountStatus.created) {
+      _selectedCompanyCubit.stream.listen((select) {
+        if (select.status == EStatus.succeed) {
+          _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {
+            emit(RoomState.succeed(rooms));
+          });
         }
-        emit(RoomState.unknown());
+      });
+    } else {
+      try {
+        _roomsSubscription.cancel();
+      } catch (e) {
+        Failure(message: "Not Initialization");
       }
-    });
+      emit(RoomState.unknown());
+    }
   }
 
   Future<void> create(Room room) async {
