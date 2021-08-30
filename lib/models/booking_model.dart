@@ -4,6 +4,7 @@ class Booking extends Equatable {
   final String? id;
   final String? userId;
   final String? userName;
+  final String? photoUrl;
   final DateTime? dateCre;
   final String? companyId;
   final String? roomId;
@@ -15,6 +16,7 @@ class Booking extends Equatable {
     this.id,
     this.userId,
     this.userName,
+    this.photoUrl,
     this.dateCre,
     this.companyId,
     this.roomId,
@@ -27,7 +29,7 @@ class Booking extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, userId, userName, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
+  List<Object?> get props => [id, userId, userName, photoUrl, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
 
   Map<String, dynamic> toMap() {
     return {
@@ -59,6 +61,7 @@ class Booking extends Equatable {
     String? id,
     String? userId,
     String? userName,
+    String? photoUrl,
     DateTime? dateCre,
     String? companyId,
     String? roomId,
@@ -70,6 +73,7 @@ class Booking extends Equatable {
       id: id ?? this.id,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
+      photoUrl: photoUrl ?? this.photoUrl,
       dateCre: dateCre ?? this.dateCre,
       companyId: companyId ?? this.companyId,
       roomId: roomId ?? this.roomId,

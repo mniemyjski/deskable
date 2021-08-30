@@ -13,6 +13,7 @@ class CompanyCubit extends Cubit<CompanyState> {
   final CompanyRepository _companyRepository;
   final AccountCubit _accountCubit;
   late StreamSubscription<List<Company?>> _companiesSubscription;
+  late StreamSubscription<AccountState> _accountSubscription;
 
   CompanyCubit({
     required CompanyRepository companyRepository,
@@ -20,24 +21,27 @@ class CompanyCubit extends Cubit<CompanyState> {
   })  : _companyRepository = companyRepository,
         _accountCubit = accountCubit,
         super(CompanyState.unknown()) {
-    emit(CompanyState.loading());
-    if (_accountCubit.state.status == EAccountStatus.created) {
-      _companiesSubscription = _companyRepository.stream(_accountCubit.state.account!.uid).listen((companies) {
-        emit(CompanyState.succeed(companies));
-      });
-    } else {
-      try {
-        _companiesSubscription.cancel();
-      } catch (e) {
-        Failure(message: "Not Initialization");
+    _accountSubscription = _accountCubit.stream.listen((account) {
+      if (account.status == EAccountStatus.created) {
+        emit(CompanyState.loading());
+        _companiesSubscription = _companyRepository.stream(account.account!.uid).listen((companies) {
+          emit(CompanyState.succeed(companies));
+        });
+      } else {
+        try {
+          _companiesSubscription.cancel();
+        } catch (e) {
+          Failure(message: "Not Initialization");
+        }
+        emit(CompanyState.unknown());
       }
-      emit(CompanyState.unknown());
-    }
+    });
   }
 
   @override
   Future<void> close() {
     _companiesSubscription.cancel();
+    _accountSubscription.cancel();
     return super.close();
   }
 

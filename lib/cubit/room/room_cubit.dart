@@ -15,35 +15,44 @@ class RoomCubit extends Cubit<RoomState> {
   final AccountCubit _accountCubit;
 
   late StreamSubscription<List<Room>> _roomsSubscription;
+  late StreamSubscription<AccountState> _accountSubscription;
 
   RoomCubit({required AccountCubit accountCubit, required RoomRepository roomRepository, required SelectedCompanyCubit selectedCompanyCubit})
       : _roomRepository = roomRepository,
         _selectedCompanyCubit = selectedCompanyCubit,
         _accountCubit = accountCubit,
         super(RoomState.unknown()) {
-    emit(RoomState.loading());
-
-    if (_accountCubit.state.status == EAccountStatus.created) {
-      _selectedCompanyCubit.stream.listen((select) {
-        if (select.status == EStatus.succeed) {
-          _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {
-            emit(RoomState.succeed(rooms));
-          });
+    _accountSubscription = _accountCubit.stream.listen((account) {
+      if (account.status == EAccountStatus.created) {
+        emit(RoomState.loading());
+        _selectedCompanyCubit.stream.listen((select) {
+          if (select.status == EStatus.succeed) {
+            _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {
+              emit(RoomState.succeed(rooms));
+            });
+          }
+        });
+      } else {
+        try {
+          _roomsSubscription.cancel();
+        } catch (e) {
+          Failure(message: "Not Initialization");
         }
-      });
-    } else {
-      try {
-        _roomsSubscription.cancel();
-      } catch (e) {
-        Failure(message: "Not Initialization");
+        emit(RoomState.unknown());
       }
-      emit(RoomState.unknown());
-    }
+    });
   }
 
   Future<void> create(Room room) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
       return await _roomRepository.create(room);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _roomsSubscription.cancel();
+    _accountSubscription.cancel();
+    return super.close();
   }
 }

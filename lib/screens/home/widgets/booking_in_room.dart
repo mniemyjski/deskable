@@ -66,23 +66,19 @@ class BookingInRoom extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<SelectedDateCubit, SelectedDateState>(
-                builder: (context, state) {
-                  return CustomSelectorData(
-                    onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
-                    onPressedForward: () => context.read<SelectedDateCubit>().increase(),
-                    onPressed: () {
-                      showDatePicker(
-                              context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
-                          .then((date) {
-                        if (date != null) {
-                          context.read<SelectedDateCubit>().change(date);
-                        }
-                      });
-                    },
-                    name: DateFormat('dd-MM-yyyy').format(state.dateTime),
-                  );
+              CustomSelectorData(
+                onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
+                onPressedForward: () => context.read<SelectedDateCubit>().increase(),
+                onPressed: () {
+                  showDatePicker(
+                          context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
+                      .then((date) {
+                    if (date != null) {
+                      context.read<SelectedDateCubit>().change(date);
+                    }
+                  });
                 },
+                name: DateFormat('dd-MM-yyyy').format(context.watch<SelectedDateCubit>().state.dateTime),
               ),
             ],
           ),

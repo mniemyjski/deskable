@@ -26,47 +26,37 @@ class Schedule extends StatelessWidget {
         Container(
           height: 400,
           child: BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
-            builder: (context, state) {
-              if (state.status != EStatus.succeed)
+            builder: (context, stateA) {
+              if (stateA.status != EStatus.succeed)
                 return Center(
                   child: CircularProgressIndicator(),
                 );
 
-              return ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: state.room!.close - state.room!.open,
-                  itemBuilder: (BuildContext context, int index) {
-                    return buildBookingInTime(context: context, time: state.room!.open + index, count: 5, list: []);
-                  });
+              return BlocBuilder<BookingCubit, BookingState>(
+                builder: (context, stateB) {
+                  if (stateB.status != EStatus.succeed)
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+
+                  return ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: stateA.room!.close - stateA.room!.open,
+                      itemBuilder: (BuildContext context, int index) {
+                        List<String> list = context.read<BookingCubit>().getListUserRoomBookingInTime(time: stateA.room!.open + index);
+
+                        return buildBookingInTime(
+                          context: context,
+                          time: stateA.room!.open + index,
+                          count: list.length,
+                          list: list,
+                        );
+                      });
+                },
+              );
             },
           ),
         ),
-        // Container(
-        //   height: 400,
-        //   child: ListView(
-        //     children: [
-        //       buildBookingInTime(context: context, time: 6, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 7, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 8, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 9, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 10, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 11, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 12, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 13, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 14, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 15, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 16, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 17, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 18, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 19, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 20, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 21, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 22, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 23, count: 5, list: []),
-        //       buildBookingInTime(context: context, time: 24, count: 5, list: []),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -108,17 +98,23 @@ class Schedule extends StatelessWidget {
         Expanded(
           flex: 5,
           child: TextButton(
-            onPressed: () => customDialog(context, Text("List_USER")),
+            onPressed: () => customDialog(
+                context,
+                ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Text(list[index]);
+                    })),
             child: Align(
               alignment: Alignment.centerLeft,
+              // child:
               child: Row(
-                children: [
-                  AvatarBooking(),
-                  AvatarBooking(),
-                  AvatarBooking(),
-                  AvatarBooking(),
-                  AvatarBooking(),
-                ],
+                children: List.generate(
+                    list.length > 5 ? 5 : list.length,
+                    (index) => AvatarBooking(
+                          url: list[index],
+                        )),
               ),
             ),
           ),

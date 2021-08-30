@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
@@ -15,6 +17,10 @@ class BookingCubit extends Cubit<BookingState> {
   final SelectedRoomCubit _selectedRoomCubit;
   final SelectedDateCubit _selectedDateCubit;
 
+  late StreamSubscription<List<Booking>?> _bookingSubscription;
+  late StreamSubscription<SelectedRoomState?> _selectedRoomSubscription;
+  late StreamSubscription<SelectedDateState?> _selectedDateSubscription;
+
   BookingCubit({
     required BookingRepository bookingRepository,
     required AccountCubit accountCubit,
@@ -25,26 +31,28 @@ class BookingCubit extends Cubit<BookingState> {
         _selectedRoomCubit = selectedRoomCubit,
         _selectedDateCubit = selectedDateCubit,
         super(BookingState.unknown()) {
-    if (_selectedRoomCubit.state.status == EStatus.succeed) {
-      emit(BookingState.loading());
-      _bookingRepository
-          .stream(
-        roomId: _selectedRoomCubit.state.room!.id!,
-        companyId: _selectedRoomCubit.state.room!.companyId!,
-        dateBook: _selectedDateCubit.state.dateTime,
-      )
-          .listen((bookings) async {
-        List<Booking> list = [];
-        for (var element in bookings!) {
-          String name = await accountCubit.getName(element.userId!);
-          list.add(element.copyWith(userName: name));
-        }
+    emit(BookingState.loading());
+    _selectedDateSubscription = _selectedDateCubit.stream.listen((sDate) {
+      Logger().e('test $sDate');
 
-        emit(BookingState.succeed(list));
+      _selectedRoomSubscription = _selectedRoomCubit.stream.listen((sRoom) {
+        if (sRoom.status == EStatus.succeed) {
+          Logger().e(sRoom.status);
+
+          _bookingRepository.stream(roomId: sRoom.room!.id!, companyId: sRoom.room!.companyId!, dateBook: sDate.dateTime).listen((bookings) async {
+            List<Booking> list = [];
+            for (var element in bookings!) {
+              Account? account = await accountCubit.getAccount(element.userId!);
+              list.add(element.copyWith(userName: account?.name ?? '', photoUrl: account?.photoUrl ?? ''));
+            }
+
+            emit(BookingState.succeed(list));
+          });
+        } else {
+          emit(BookingState.unknown());
+        }
       });
-    } else {
-      BookingState.unknown();
-    }
+    });
   }
 
   Future<void> create(Booking booking) async {
@@ -59,5 +67,21 @@ class BookingCubit extends Cubit<BookingState> {
   Booking? getMyBooking({required int deskId}) {
     return state.bookings!.firstWhereOrNull((element) =>
         element.userId == _accountCubit.state.account!.uid && element.dateBook == _selectedDateCubit.state.dateTime && element.deskId == deskId);
+  }
+
+  List<String> getListUserRoomBookingInTime({required int time}) {
+    List<String> list = [];
+    for (var e in state.bookings!) {
+      if (e.hoursBook.contains(time)) list.add(e.photoUrl!);
+    }
+    return list;
+  }
+
+  @override
+  Future<void> close() {
+    _bookingSubscription.cancel();
+    _selectedDateSubscription.cancel();
+    _selectedRoomSubscription.cancel();
+    return super.close();
   }
 }
