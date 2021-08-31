@@ -31,22 +31,59 @@ class BookingCubit extends Cubit<BookingState> {
         _selectedRoomCubit = selectedRoomCubit,
         _selectedDateCubit = selectedDateCubit,
         super(BookingState.unknown()) {
+    try {
+      _selectedDateSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     _selectedDateSubscription = _selectedDateCubit.stream.listen((sDate) {
       emit(state.copyWith(dataTime: sDate.dateTime));
-      test(accountCubit);
+      if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
     });
+    try {
+      _selectedRoomSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     _selectedRoomSubscription = _selectedRoomCubit.stream.listen((sRoom) {
-      emit(state.copyWith(selectedRoom: sRoom.room));
-      test(accountCubit);
+      if (state.dateTime == null) {
+        emit(state.copyWith(dataTime: _selectedDateCubit.state.dateTime));
+      }
+      if (sRoom.status == EStatus.succeed) {
+        emit(state.copyWith(selectedRoom: sRoom.room));
+        if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
+      } else {
+        // try {
+        //   _selectedRoomSubscription.cancel();
+        // } catch (e) {
+        //   Failure(message: "Not Initialization");
+        // }
+        try {
+          _bookingSubscription.cancel();
+        } catch (e) {
+          Failure(message: "Not Initialization");
+        }
+        emit(BookingState.unknown());
+      }
     });
 
-    if (state.dateTime == null) emit(state.copyWith(dataTime: _selectedDateCubit.state.dateTime));
-    if (state.selectedRoom == null) emit(state.copyWith(selectedRoom: selectedRoomCubit.state.room));
+    if (state.dateTime == null) {
+      emit(state.copyWith(dataTime: _selectedDateCubit.state.dateTime));
+    }
+    if (state.selectedRoom == null) {
+      emit(state.copyWith(selectedRoom: selectedRoomCubit.state.room));
+    }
 
-    test(accountCubit);
+    if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
   }
 
   Future<void> test(AccountCubit accountCubit) async {
+    try {
+      _bookingSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+    Logger().wtf('${state.selectedRoom!.id!} ${state.selectedRoom!.companyId!} ${state.dateTime}');
     _bookingSubscription = _bookingRepository
         .stream(roomId: state.selectedRoom!.id!, companyId: state.selectedRoom!.companyId!, dateBook: state.dateTime!)
         .listen((bookings) async {
@@ -56,7 +93,6 @@ class BookingCubit extends Cubit<BookingState> {
         Account? account = await accountCubit.getAccount(element.userId!);
         list.add(element.copyWith(userName: account?.name ?? '', photoUrl: account?.photoUrl ?? ''));
       }
-
       emit(state.copyWith(bookings: list, status: EStatus.succeed));
     });
   }

@@ -21,6 +21,17 @@ class AccountCubit extends Cubit<AccountState> {
   })  : _accountRepository = accountRepository,
         _authBloc = authBloc,
         super(AccountState.unknown()) {
+    try {
+      _authSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+
     _authSubscription = _authBloc.stream.listen((event) {
       if (event.status == EAuthStatus.authenticated) {
         _accountSubscription = _accountRepository.streamMyAccount(event.user!.uid).listen((account) {
@@ -70,8 +81,16 @@ class AccountCubit extends Cubit<AccountState> {
 
   @override
   Future<void> close() {
-    _accountSubscription.cancel();
-    _authSubscription.cancel();
+    try {
+      _authSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     return super.close();
   }
 }

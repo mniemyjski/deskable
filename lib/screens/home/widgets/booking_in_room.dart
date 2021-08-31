@@ -15,7 +15,7 @@ class BookingInRoom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(8),
-      width: 500,
+      width: 520,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
         border: Border.all(color: Colors.grey.withOpacity(0.5)),
@@ -35,9 +35,9 @@ class BookingInRoom extends StatelessWidget {
                         builder: (context, state) {
                           return ListView.builder(
                               padding: const EdgeInsets.all(8),
-                              itemCount: state.companies.length,
+                              itemCount: state.companies!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Text(state.companies[index]!.name);
+                                return Text(state.companies![index].name);
                               });
                         },
                       ),
@@ -55,9 +55,9 @@ class BookingInRoom extends StatelessWidget {
                         builder: (context, state) {
                           return ListView.builder(
                               padding: const EdgeInsets.all(8),
-                              itemCount: state.rooms.length,
+                              itemCount: state.rooms!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Text(state.rooms[index]!.name);
+                                return Text(state.rooms![index].name);
                               });
                         },
                       ),

@@ -26,6 +26,8 @@ class Account extends Equatable {
   }
 
   factory Account.fromMap(Map<String, dynamic> map) {
+    //TODO .cast<String>() WHEN IS NULL?
+
     return Account(
       uid: map['uid'] as String,
       name: map['name'] as String,

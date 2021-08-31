@@ -12,6 +12,7 @@ class RoomDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
+      // buildWhen: (prev, state) => prev != state,
       builder: (context, state) {
         if (state.status != EStatus.succeed)
           return Center(
@@ -24,6 +25,8 @@ class RoomDisplay extends StatelessWidget {
           width: room.x * 65,
           height: room.y * 65,
           child: GridView.count(
+            shrinkWrap: true,
+            physics: new NeverScrollableScrollPhysics(),
             mainAxisSpacing: 3,
             crossAxisSpacing: 3,
             crossAxisCount: room.x,

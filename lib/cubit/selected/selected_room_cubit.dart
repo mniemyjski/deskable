@@ -5,7 +5,7 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:logger/logger.dart';
 part 'selected_room_state.dart';
 
 class SelectedRoomCubit extends Cubit<SelectedRoomState> {
@@ -15,22 +15,27 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
   SelectedRoomCubit({required RoomCubit roomCubit})
       : _roomCubit = roomCubit,
         super(SelectedRoomState.unknown()) {
+    try {
+      _roomSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     _roomSubscription = _roomCubit.stream.listen((room) {
       if (room.status == ERoomStatus.succeed) {
-        emit(SelectedRoomState.succeed(room: room.rooms.first!));
+        emit(SelectedRoomState.succeed(room: room.rooms!.first));
       } else {
         emit(SelectedRoomState.unknown());
       }
     });
   }
 
-  void change() {
-    emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms.first!));
-  }
-
   @override
   Future<void> close() {
-    _roomSubscription.cancel();
+    try {
+      _roomSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     return super.close();
   }
 }

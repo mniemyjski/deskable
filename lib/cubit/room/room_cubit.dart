@@ -22,22 +22,38 @@ class RoomCubit extends Cubit<RoomState> {
         _selectedCompanyCubit = selectedCompanyCubit,
         _accountCubit = accountCubit,
         super(RoomState.unknown()) {
-    if (_accountCubit.state.status == EAccountStatus.created) {
-      _selectedCompanyCubit.stream.listen((select) {
-        if (select.status == EStatus.succeed) {
-          _roomsSubscription = _roomRepository.stream(select.company?.id ?? '').listen((rooms) {
-            emit(RoomState.succeed(rooms));
-          });
-        }
-      });
-    } else {
-      try {
-        _roomsSubscription.cancel();
-      } catch (e) {
-        Failure(message: "Not Initialization");
-      }
-      emit(RoomState.unknown());
+    try {
+      _roomsSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
     }
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+
+    _selectedCompanyCubit.stream.listen((selectedRoom) {
+      if (selectedRoom.company != null) test(selectedRoom.company!.id!);
+      if (selectedRoom.company == null) {
+        try {
+          _roomsSubscription.cancel();
+        } catch (e) {
+          Failure(message: "Not Initialization");
+        }
+        emit(RoomState.unknown());
+      }
+    });
+
+    if (state.company == null) emit(state.copyWith(company: _selectedCompanyCubit.state.company));
+
+    if (state.company != null) test(state.company!.id!);
+  }
+
+  void test(String id) {
+    _roomsSubscription = _roomRepository.stream(id).listen((rooms) {
+      emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
+    });
   }
 
   Future<void> create(Room room) async {
@@ -48,8 +64,17 @@ class RoomCubit extends Cubit<RoomState> {
 
   @override
   Future<void> close() {
-    _roomsSubscription.cancel();
-    _accountSubscription.cancel();
+    try {
+      _roomsSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
+
     return super.close();
   }
 }

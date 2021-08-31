@@ -5,7 +5,7 @@ import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:logger/logger.dart';
 part 'preference_state.dart';
 
 class PreferenceCubit extends Cubit<PreferenceState> {
@@ -32,6 +32,12 @@ class PreferenceCubit extends Cubit<PreferenceState> {
       }
       emit(PreferenceState.unknown());
     }
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print('$error, $stackTrace');
+    super.onError(error, stackTrace);
   }
 
   createPreference() async {

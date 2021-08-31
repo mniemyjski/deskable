@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         drawer: CustomDrawer(),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.all(8.0),
             child: Builder(
               builder: (context) {
                 return Responsive(
@@ -52,16 +52,14 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   mobile: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RoomDisplay(),
-                      SizedBox(height: 25),
+                      SizedBox(height: 4),
                       BookingInRoom(),
                     ],
                   ),
-                );
-
-                return Center(
-                  child: CircularProgressIndicator(),
                 );
               },
             ),

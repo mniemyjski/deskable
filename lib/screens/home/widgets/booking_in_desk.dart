@@ -77,7 +77,7 @@ class BookingsInDesk extends StatelessWidget {
                   ),
                   Divider(),
                   Container(
-                    height: 350,
+                    height: 330,
                     child: ListView.builder(
                       itemCount: openClose,
                       itemBuilder: (context, i) {

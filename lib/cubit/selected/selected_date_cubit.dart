@@ -18,4 +18,10 @@ class SelectedDateCubit extends Cubit<SelectedDateState> {
   decrease() {
     emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: -1))));
   }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print('$error, $stackTrace');
+    super.onError(error, stackTrace);
+  }
 }

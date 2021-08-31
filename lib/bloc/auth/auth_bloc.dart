@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -18,12 +19,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(AuthState.unknown()) {
+    try {
+      _userSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     _userSubscription = _authRepository.user.listen((user) => add(AuthUserChanged(user: user)));
   }
 
   @override
   Future<void> close() {
-    _userSubscription.cancel();
+    try {
+      _userSubscription.cancel();
+    } catch (e) {
+      Failure(message: "Not Initialization");
+    }
     return super.close();
   }
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:logger/logger.dart';
 
 part 'connectivity_state.dart';
 
@@ -18,6 +19,12 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
         emit(ConnectivityState.disconnected());
       }
     });
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print('$error, $stackTrace');
+    super.onError(error, stackTrace);
   }
 
   @override
