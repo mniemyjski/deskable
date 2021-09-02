@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 part 'selected_date_state.dart';
 
 class SelectedDateCubit extends Cubit<SelectedDateState> {
-  SelectedDateCubit() : super(SelectedDateState.unknown());
+  SelectedDateCubit() : super(SelectedDateState.init());
 
   change(DateTime dateTime) {
     emit(SelectedDateState.succeed(dateTime));
@@ -17,11 +17,5 @@ class SelectedDateCubit extends Cubit<SelectedDateState> {
 
   decrease() {
     emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: -1))));
-  }
-
-  @override
-  void onError(Object error, StackTrace stackTrace) {
-    print('$error, $stackTrace');
-    super.onError(error, stackTrace);
   }
 }

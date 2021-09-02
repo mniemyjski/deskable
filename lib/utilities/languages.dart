@@ -54,4 +54,5 @@ class Languages {
   static String companies() => "companies".tr();
   static String rooms() => "rooms".tr();
   static String management() => "management".tr();
+  static String already_booked() => "already_booked".tr();
 }

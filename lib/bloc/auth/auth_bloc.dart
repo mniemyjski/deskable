@@ -19,12 +19,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(AuthState.unknown()) {
+    _init();
+  }
+
+  void _init() {
     try {
       _userSubscription.cancel();
     } catch (e) {
       Failure(message: "Not Initialization");
     }
-    _userSubscription = _authRepository.user.listen((user) => add(AuthUserChanged(user: user)));
+    _userSubscription = _authRepository.user.listen((user) {
+      add(AuthUserChanged(user: user));
+    });
   }
 
   @override

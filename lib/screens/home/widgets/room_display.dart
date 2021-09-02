@@ -12,7 +12,6 @@ class RoomDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
-      // buildWhen: (prev, state) => prev != state,
       builder: (context, state) {
         if (state.status != EStatus.succeed)
           return Center(

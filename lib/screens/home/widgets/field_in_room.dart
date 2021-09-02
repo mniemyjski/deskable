@@ -30,7 +30,7 @@ class FieldInRoom extends StatelessWidget {
     return InkWell(
         splashColor: Colors.grey,
         onTap: () {
-          customDialog(context, BookingsInDesk(field: field, room: room));
+          customDialog(context, BookingsInDesk(field: field, room: room, ctx: context));
         },
         child: Container(
           margin: EdgeInsets.all(1),

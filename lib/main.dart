@@ -76,9 +76,6 @@ class MyApp extends StatelessWidget {
           BlocProvider<DarkModeCubit>(
             create: (context) => DarkModeCubit(),
           ),
-          BlocProvider<SelectedDateCubit>(
-            create: (context) => SelectedDateCubit(),
-          ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
@@ -107,31 +104,6 @@ class MyApp extends StatelessWidget {
             create: (context) => CompanyCubit(
               accountCubit: context.read<AccountCubit>(),
               companyRepository: context.read<CompanyRepository>(),
-            ),
-          ),
-          BlocProvider<SelectedCompanyCubit>(
-            create: (context) => SelectedCompanyCubit(
-              companyCubit: context.read<CompanyCubit>(),
-            ),
-          ),
-          BlocProvider<RoomCubit>(
-            create: (context) => RoomCubit(
-              accountCubit: context.read<AccountCubit>(),
-              roomRepository: context.read<RoomRepository>(),
-              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
-            ),
-          ),
-          BlocProvider<SelectedRoomCubit>(
-            create: (context) => SelectedRoomCubit(
-              roomCubit: context.read<RoomCubit>(),
-            ),
-          ),
-          BlocProvider<BookingCubit>(
-            create: (context) => BookingCubit(
-              accountCubit: context.read<AccountCubit>(),
-              bookingRepository: context.read<BookingRepository>(),
-              selectedRoomCubit: context.read<SelectedRoomCubit>(),
-              selectedDateCubit: context.read<SelectedDateCubit>(),
             ),
           ),
         ],

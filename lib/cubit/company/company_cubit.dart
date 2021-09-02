@@ -21,38 +21,29 @@ class CompanyCubit extends Cubit<CompanyState> {
   })  : _companyRepository = companyRepository,
         _accountCubit = accountCubit,
         super(CompanyState.unknown()) {
-    try {
-      _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    try {
-      _companiesSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    _init();
+  }
+
+  void _init() {
+    if (_accountCubit.state.status == EAccountStatus.created) _companiesStream(_accountCubit.state);
 
     _accountSubscription = _accountCubit.stream.listen((event) {
-      if (event.account != null) test(event.account!.companies);
-      if (event.account == null) {
+      if (event.status == EAccountStatus.created) {
+        _companiesStream(event);
+      } else {
         try {
           _companiesSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
-        }
+        } catch (e) {}
         emit(CompanyState.unknown());
       }
     });
-
-    if (state.account == null) emit(state.copyWith(account: _accountCubit.state.account));
-
-    if (state.account != null) {
-      test(_accountCubit.state.account!.companies);
-    }
   }
 
-  void test(List<String> companies) {
-    _companiesSubscription = _companyRepository.stream(companies).listen((companies) {
+  void _companiesStream(AccountState authState) {
+    try {
+      _companiesSubscription.cancel();
+    } catch (e) {}
+    _companiesSubscription = _companyRepository.stream(authState.account!.companies).listen((companies) {
       emit(state.copyWith(companies: companies, status: ECompanyStatus.succeed));
     });
   }
@@ -60,15 +51,11 @@ class CompanyCubit extends Cubit<CompanyState> {
   @override
   Future<void> close() {
     try {
-      _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    try {
       _companiesSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {}
     return super.close();
   }
 

@@ -15,11 +15,18 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
   SelectedRoomCubit({required RoomCubit roomCubit})
       : _roomCubit = roomCubit,
         super(SelectedRoomState.unknown()) {
+    _init();
+  }
+
+  void _init() {
     try {
       _roomSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
+    } catch (e) {}
+
+    if (_roomCubit.state.status == ERoomStatus.succeed) {
+      emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms!.first));
     }
+
     _roomSubscription = _roomCubit.stream.listen((room) {
       if (room.status == ERoomStatus.succeed) {
         emit(SelectedRoomState.succeed(room: room.rooms!.first));
@@ -33,9 +40,7 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
   Future<void> close() {
     try {
       _roomSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     return super.close();
   }
 }

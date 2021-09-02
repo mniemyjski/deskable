@@ -46,23 +46,22 @@ class BookingInRoom extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
-                builder: (context, state) {
+              Builder(
+                builder: (context) {
+                  final stateA = context.watch<SelectedRoomCubit>().state;
+                  final stateB = context.watch<RoomCubit>().state;
+
                   return CustomSelectorData(
                     onPressed: () => customDialog(
                       context,
-                      BlocBuilder<RoomCubit, RoomState>(
-                        builder: (context, state) {
-                          return ListView.builder(
-                              padding: const EdgeInsets.all(8),
-                              itemCount: state.rooms!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Text(state.rooms![index].name);
-                              });
-                        },
-                      ),
+                      ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: stateB.rooms!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Text(stateB.rooms![index].name);
+                          }),
                     ),
-                    name: state.room?.name ?? '',
+                    name: stateA.room?.name ?? '',
                   );
                 },
               ),

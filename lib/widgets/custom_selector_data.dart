@@ -18,6 +18,7 @@ class CustomSelectorData extends StatelessWidget {
             child: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.grey),
             onTap: onPressedBack,
           ),
+        SizedBox(width: 8),
         InkWell(
             onTap: onPressed,
             child: Card(
@@ -25,6 +26,7 @@ class CustomSelectorData extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(name!),
             ))),
+        SizedBox(width: 8),
         if (onPressedForward != null)
           InkWell(
             child: FaIcon(FontAwesomeIcons.chevronRight, color: Colors.grey),

@@ -4,10 +4,9 @@ enum ERoomStatus { unknown, loading, succeed }
 
 class RoomState extends Equatable {
   final List<Room>? rooms;
-  final Company? company;
   final ERoomStatus status;
 
-  const RoomState({required this.rooms, this.company, required this.status});
+  const RoomState({required this.rooms, required this.status});
 
   factory RoomState.unknown() {
     return RoomState(rooms: [], status: ERoomStatus.unknown);
@@ -18,12 +17,10 @@ class RoomState extends Equatable {
 
   RoomState copyWith({
     List<Room>? rooms,
-    Company? company,
     ERoomStatus? status,
   }) {
     return RoomState(
       rooms: rooms ?? this.rooms,
-      company: company ?? this.company,
       status: status ?? this.status,
     );
   }

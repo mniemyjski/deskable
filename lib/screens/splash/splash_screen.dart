@@ -36,6 +36,7 @@ class SplashScreen extends StatelessWidget {
             listenWhen: (prevState, state) => prevState.status != state.status,
             listener: (context, state) {
               if (state.status == EAuthStatus.unauthenticated) {
+                Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.routeName, (_) => false);
                 Navigator.of(context).pushNamed(SignInScreen.routeName);
               }
             },

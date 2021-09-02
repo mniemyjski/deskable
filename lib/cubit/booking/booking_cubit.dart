@@ -21,6 +21,7 @@ class BookingCubit extends Cubit<BookingState> {
   late StreamSubscription<SelectedRoomState?> _selectedRoomSubscription;
   late StreamSubscription<SelectedDateState?> _selectedDateSubscription;
 
+  List<Account> accounts = [];
   BookingCubit({
     required BookingRepository bookingRepository,
     required AccountCubit accountCubit,
@@ -31,79 +32,102 @@ class BookingCubit extends Cubit<BookingState> {
         _selectedRoomCubit = selectedRoomCubit,
         _selectedDateCubit = selectedDateCubit,
         super(BookingState.unknown()) {
-    try {
-      _selectedDateSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    _selectedDateSubscription = _selectedDateCubit.stream.listen((sDate) {
-      emit(state.copyWith(dataTime: sDate.dateTime));
-      if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
-    });
-    try {
-      _selectedRoomSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    _selectedRoomSubscription = _selectedRoomCubit.stream.listen((sRoom) {
-      if (state.dateTime == null) {
-        emit(state.copyWith(dataTime: _selectedDateCubit.state.dateTime));
-      }
-      if (sRoom.status == EStatus.succeed) {
-        emit(state.copyWith(selectedRoom: sRoom.room));
-        if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
-      } else {
-        // try {
-        //   _selectedRoomSubscription.cancel();
-        // } catch (e) {
-        //   Failure(message: "Not Initialization");
-        // }
-        try {
-          _bookingSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
-        }
-        emit(BookingState.unknown());
-      }
-    });
-
-    if (state.dateTime == null) {
-      emit(state.copyWith(dataTime: _selectedDateCubit.state.dateTime));
-    }
-    if (state.selectedRoom == null) {
-      emit(state.copyWith(selectedRoom: selectedRoomCubit.state.room));
-    }
-
-    if (state.dateTime != null && state.selectedRoom != null) test(accountCubit);
+    _init();
   }
 
-  Future<void> test(AccountCubit accountCubit) async {
+  void _init() {
+    if (_selectedDateCubit.state.status == EStatus.succeed) {
+      emit(state.copyWith(dateTime: _selectedDateCubit.state.dateTime));
+    }
+
+    if (_selectedRoomCubit.state.status == EStatus.succeed) {
+      emit(state.copyWith(selectedRoomState: _selectedRoomCubit.state));
+    }
+
+    _bookingSub();
+
+    _selectedDateSubscription = _selectedDateCubit.stream.listen((event) {
+      if (event.status == EStatus.succeed) {
+        emit(state.copyWith(dateTime: event.dateTime));
+        _bookingSub();
+      } else {
+        try {
+          _bookingSubscription.cancel();
+        } catch (e) {}
+        emit(BookingState(status: EStatus.unknown, selectedRoomState: state.selectedRoomState));
+      }
+    });
+
+    _selectedRoomSubscription = _selectedRoomCubit.stream.listen((event) {
+      if (event.status == EStatus.succeed) {
+        emit(state.copyWith(selectedRoomState: event));
+        _bookingSub();
+      } else {
+        try {
+          _bookingSubscription.cancel();
+        } catch (e) {}
+
+        emit(BookingState(status: EStatus.unknown, dateTime: state.dateTime));
+      }
+    });
+  }
+
+  Future<void> _bookingSub() async {
     try {
       _bookingSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    Logger().wtf('${state.selectedRoom!.id!} ${state.selectedRoom!.companyId!} ${state.dateTime}');
-    _bookingSubscription = _bookingRepository
-        .stream(roomId: state.selectedRoom!.id!, companyId: state.selectedRoom!.companyId!, dateBook: state.dateTime!)
-        .listen((bookings) async {
-      List<Booking> list = [];
+    } catch (e) {}
+    if (state.dateTime != null && (state.selectedRoomState?.status ?? EStatus.unknown) == EStatus.succeed) {
+      emit(state.copyWith(status: EStatus.loading));
+      _bookingSubscription = _bookingRepository
+          .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.companyId!, dateBook: state.dateTime!)
+          .listen((bookings) async {
+        List<Booking> list = [];
+        for (var element in bookings!) {
+          if (accounts.contains(element.userId!)) {
+            Account account = accounts.firstWhere((e) => e.uid == element.userId);
+            list.add(element.copyWith(userName: account.name, photoUrl: account.photoUrl));
+          } else {
+            if (_accountCubit.state.status == EAccountStatus.created) {
+              Account? account = await _accountCubit.getAccount(element.userId!);
 
-      for (var element in bookings!) {
-        Account? account = await accountCubit.getAccount(element.userId!);
-        list.add(element.copyWith(userName: account?.name ?? '', photoUrl: account?.photoUrl ?? ''));
-      }
-      emit(state.copyWith(bookings: list, status: EStatus.succeed));
-    });
+              if (account != null) accounts.add(account);
+              list.add(element.copyWith(userName: account?.name ?? '', photoUrl: account?.photoUrl ?? ''));
+            }
+          }
+        }
+        emit(state.copyWith(bookings: List.from(list), status: EStatus.succeed));
+        list.clear();
+      });
+    } else {
+      try {
+        _bookingSubscription.cancel();
+      } catch (e) {}
+
+      emit(BookingState.unknown());
+    }
   }
 
   Future<void> create(Booking booking) async {
     return await _bookingRepository.create(booking.copyWith(userId: _accountCubit.state.account!.uid));
   }
 
+  Future<void> delete(Booking booking) async {
+    return await _bookingRepository.delete(booking);
+  }
+
   Booking? getBooking({required int deskId, required int hour}) {
-    return state.bookings!.firstWhereOrNull(
-        (element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == _selectedDateCubit.state.dateTime);
+    return state.bookings!
+        .firstWhereOrNull((element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == state.dateTime);
+  }
+
+  bool available({required int deskId, required int hour}) {
+    Booking? booking = state.bookings!
+        .firstWhereOrNull((element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == state.dateTime);
+
+    Logger().e(state.bookings);
+    bool available = booking == null ? true : false;
+
+    return available;
   }
 
   Booking? getMyBooking({required int deskId}) {
@@ -121,9 +145,16 @@ class BookingCubit extends Cubit<BookingState> {
 
   @override
   Future<void> close() {
-    _bookingSubscription.cancel();
-    _selectedDateSubscription.cancel();
-    _selectedRoomSubscription.cancel();
+    try {
+      _bookingSubscription.cancel();
+    } catch (e) {}
+    try {
+      _selectedDateSubscription.cancel();
+    } catch (e) {}
+    try {
+      _selectedRoomSubscription.cancel();
+    } catch (e) {}
+
     return super.close();
   }
 }

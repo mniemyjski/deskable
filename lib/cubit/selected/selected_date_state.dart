@@ -6,8 +6,8 @@ class SelectedDateState extends Equatable {
 
   SelectedDateState({required this.dateTime, required this.status});
 
-  factory SelectedDateState.unknown() {
-    return SelectedDateState(dateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day), status: EStatus.unknown);
+  factory SelectedDateState.init() {
+    return SelectedDateState(dateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day), status: EStatus.succeed);
   }
 
   factory SelectedDateState.loading(DateTime dateTime) {

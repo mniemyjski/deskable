@@ -16,11 +16,14 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
   SelectedCompanyCubit({required CompanyCubit companyCubit})
       : _companyCubit = companyCubit,
         super(SelectedCompanyState.unknown()) {
-    try {
-      _companySubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
+    _init();
+  }
+
+  void _init() {
+    if (_companyCubit.state.status == ECompanyStatus.succeed) {
+      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies!.first));
     }
+
     _companySubscription = _companyCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
         emit(SelectedCompanyState.succeed(company: company.companies!.first));
@@ -34,9 +37,7 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
   Future<void> close() {
     try {
       _companySubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     return super.close();
   }
 }

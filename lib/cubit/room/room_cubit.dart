@@ -22,36 +22,31 @@ class RoomCubit extends Cubit<RoomState> {
         _selectedCompanyCubit = selectedCompanyCubit,
         _accountCubit = accountCubit,
         super(RoomState.unknown()) {
-    try {
-      _roomsSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    try {
-      _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
+    _init();
+  }
+
+  void _init() {
+    if (_selectedCompanyCubit.state.status == EStatus.succeed) {
+      _roomsSub(_selectedCompanyCubit.state);
     }
 
-    _selectedCompanyCubit.stream.listen((selectedRoom) {
-      if (selectedRoom.company != null) test(selectedRoom.company!.id!);
-      if (selectedRoom.company == null) {
+    _selectedCompanyCubit.stream.listen((event) {
+      if (event.status == EStatus.succeed) {
+        _roomsSub(event);
+      } else {
         try {
           _roomsSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
-        }
+        } catch (e) {}
         emit(RoomState.unknown());
       }
     });
-
-    if (state.company == null) emit(state.copyWith(company: _selectedCompanyCubit.state.company));
-
-    if (state.company != null) test(state.company!.id!);
   }
 
-  void test(String id) {
-    _roomsSubscription = _roomRepository.stream(id).listen((rooms) {
+  void _roomsSub(SelectedCompanyState selectedCompanyState) {
+    try {
+      _roomsSubscription.cancel();
+    } catch (e) {}
+    _roomsSubscription = _roomRepository.stream(selectedCompanyState.company!.id!).listen((rooms) {
       emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
     });
   }
@@ -66,14 +61,10 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> close() {
     try {
       _roomsSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     try {
       _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
 
     return super.close();
   }

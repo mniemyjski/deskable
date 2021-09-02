@@ -21,30 +21,27 @@ class AccountCubit extends Cubit<AccountState> {
   })  : _accountRepository = accountRepository,
         _authBloc = authBloc,
         super(AccountState.unknown()) {
-    try {
-      _authSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
-    try {
-      _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    _init();
+  }
+
+  void _init() {
+    if (_authBloc.state.status == EAuthStatus.authenticated) _accountSub(_authBloc.state);
 
     _authSubscription = _authBloc.stream.listen((event) {
       if (event.status == EAuthStatus.authenticated) {
-        _accountSubscription = _accountRepository.streamMyAccount(event.user!.uid).listen((account) {
-          account != null ? emit(AccountState.created(account)) : emit(AccountState.unCreated());
-        });
+        _accountSub(event);
       } else {
         try {
           _accountSubscription.cancel();
-        } catch (e) {
-          Failure(message: "Not Initialization");
-        }
+        } catch (e) {}
         emit(AccountState.unknown());
       }
+    });
+  }
+
+  void _accountSub(AuthState authState) {
+    _accountSubscription = _accountRepository.streamMyAccount(authState.user!.uid).listen((account) {
+      account != null ? emit(AccountState.created(account)) : emit(AccountState.unCreated());
     });
   }
 
@@ -83,14 +80,10 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> close() {
     try {
       _authSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     try {
       _accountSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     return super.close();
   }
 }
