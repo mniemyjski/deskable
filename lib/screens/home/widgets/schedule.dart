@@ -40,7 +40,6 @@ class Schedule extends StatelessWidget {
                     );
 
                   return ListView.builder(
-                      padding: const EdgeInsets.all(8),
                       itemCount: stateA.room!.close - stateA.room!.open,
                       itemBuilder: (BuildContext context, int index) {
                         List<String> photosUrl =
@@ -72,65 +71,39 @@ class Schedule extends StatelessWidget {
       children: [
         Expanded(flex: 2, child: Text('$time:00')),
         Expanded(flex: 2, child: Text(count.toString())),
-        // Expanded(
-        //   flex: 5,
-        //   child: InkWell(
-        //     onTap: () => null,
-        //     child: Row(
-        //       children: [
-        //         Card(
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(4.0),
-        //             child: Text('1'),
-        //           ),
-        //         ),
-        //         Card(
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(4.0),
-        //             child: Text('2'),
-        //           ),
-        //         ),
-        //         Card(
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(4.0),
-        //             child: Text('3'),
-        //           ),
-        //         )
-        //       ],
-        //     ),
-        //   ),
-        // ),
         Expanded(
           flex: 5,
-          child: TextButton(
-            onPressed: () => customDialog(
-                context,
-                ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: usersName.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                          children: [
-                            AvatarBooking(url: photosUrl[index]),
-                            SizedBox(width: 8),
-                            Text(usersName[index]),
-                          ],
-                        ),
-                      );
-                    })),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: List.generate(
-                    photosUrl.length > 5 ? 5 : photosUrl.length,
-                    (index) => AvatarBooking(
-                          url: photosUrl[index],
-                        )),
-              ),
-            ),
-          ),
+          child: photosUrl.isNotEmpty
+              ? TextButton(
+                  onPressed: () => customDialog(
+                      context,
+                      ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: usersName.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                children: [
+                                  AvatarBooking(url: photosUrl[index]),
+                                  SizedBox(width: 8),
+                                  Text(usersName[index]),
+                                ],
+                              ),
+                            );
+                          })),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: List.generate(
+                          photosUrl.length > 5 ? 5 : photosUrl.length,
+                          (index) => AvatarBooking(
+                                url: photosUrl[index],
+                              )),
+                    ),
+                  ),
+                )
+              : Padding(padding: EdgeInsets.all(13)),
         ),
       ],
     );

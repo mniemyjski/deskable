@@ -81,7 +81,7 @@ class BookingInRoom extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 8),
           Schedule(),
         ],
       ),

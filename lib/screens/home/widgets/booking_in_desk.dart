@@ -51,8 +51,8 @@ class BookingsInDesk extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Row(
                       children: [
-                        Text('Id: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black54)),
-                        Text('${field.id}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14, color: Colors.black54)),
+                        Text('Id: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                        Text('${field.id}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                       ],
                     ),
                   ),
