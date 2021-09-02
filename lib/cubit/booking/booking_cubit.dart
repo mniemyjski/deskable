@@ -130,8 +130,6 @@ class BookingCubit extends Cubit<BookingState> {
       }
     });
 
-    // bool available = already == null ? true : false;
-
     return available;
   }
 
