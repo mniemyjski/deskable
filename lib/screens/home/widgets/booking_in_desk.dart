@@ -95,14 +95,22 @@ class BookingsInDesk extends StatelessWidget {
                 builder: (context, state) {
                   return TextButton(
                       onPressed: () {
-                        for (var element in state.booking.hoursBook) {
-                          bool available = ctx.read<BookingCubit>().available(deskId: state.booking.deskId!, hour: element);
-                          if (!available) {
-                            customFlashBar(context, Languages.already_booked());
-                            Navigator.pop(context);
-                            return;
-                          }
+                        // for (var element in state.booking.hoursBook) {
+                        //   bool available = ctx.read<BookingCubit>().available(deskId: state.booking.deskId!, hour: element);
+                        //   if (!available) {
+                        //     customFlashBar(context, Languages.already_booked());
+                        //     Navigator.pop(context);
+                        //     return;
+                        //   }
+                        // }
+                        bool available = ctx.read<BookingCubit>().available(state.booking);
+
+                        if (!available) {
+                          customFlashBar(context, Languages.already_booked());
+                          Navigator.pop(context);
                         }
+
+                        Logger().e('dalej');
                         if (state.booking.hoursBook.isNotEmpty) {
                           ctx.read<BookingCubit>().create(state.booking);
                         } else {
