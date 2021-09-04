@@ -41,4 +41,6 @@ show,Pokaż,Show
 companies,Firmy,companies
 rooms,Pokoje,rooms
 management,Zarządzanie,management
-already_booked,Ups... Ktoś Cie uprzedził,already_booked
+already_booked_other_user,Ups... Ktoś Cie uprzedził,already_booked_other_user
+already_booked_in_other_desk,Zarezerwowałeś już dana godzinne na innym biurku,already_booked_in_other_desk
+dismiss,Wyłącz,Dismiss

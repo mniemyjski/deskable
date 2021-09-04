@@ -120,7 +120,7 @@ class BookingCubit extends Cubit<BookingState> {
         .firstWhereOrNull((element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == state.dateTime);
   }
 
-  bool available(Booking booking) {
+  bool alreadyBookedOtherUser(Booking booking) {
     bool available = true;
 
     booking.hoursBook.forEach((hour) {
@@ -128,6 +128,26 @@ class BookingCubit extends Cubit<BookingState> {
       if (already != null) {
         if (booking.id != already.id) available = false;
       }
+    });
+
+    return available;
+  }
+
+  bool alreadyBookedInOtherDesk(Booking booking) {
+    bool available = true;
+
+    List<Booking> bookings = [];
+    bookings = state.bookings!
+        .where((element) =>
+            element.userId == _accountCubit.state.account!.uid &&
+            element.dateBook == _selectedDateCubit.state.dateTime &&
+            element.deskId != booking.deskId)
+        .toList();
+
+    booking.hoursBook.forEach((hour) {
+      bookings.forEach((element) {
+        if (element.hoursBook.contains(hour)) available = false;
+      });
     });
 
     return available;

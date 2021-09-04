@@ -95,10 +95,18 @@ class BookingsInDesk extends StatelessWidget {
                 builder: (context, state) {
                   return TextButton(
                       onPressed: () {
-                        bool available = ctx.read<BookingCubit>().available(state.booking);
+                        bool available = ctx.read<BookingCubit>().alreadyBookedOtherUser(state.booking);
 
                         if (!available) {
-                          customFlashBar(context, Languages.already_booked());
+                          customFlashBar(context, Languages.already_booked_other_user());
+                          Navigator.pop(context);
+                          return;
+                        }
+
+                        available = ctx.read<BookingCubit>().alreadyBookedInOtherDesk(state.booking);
+
+                        if (!available) {
+                          customFlashBar(context, Languages.already_booked_in_other_desk());
                           Navigator.pop(context);
                           return;
                         }
