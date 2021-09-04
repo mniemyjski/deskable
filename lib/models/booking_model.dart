@@ -8,7 +8,7 @@ class Booking extends Equatable {
   final DateTime? dateCre;
   final String? companyId;
   final String? roomId;
-  final int? deskId;
+  final String? deskId;
   final DateTime? dateBook;
   final List<int> hoursBook;
 
@@ -50,7 +50,7 @@ class Booking extends Equatable {
       dateCre: map['dateCre'].toDate() as DateTime,
       companyId: map['companyId'] as String,
       roomId: map['roomId'] as String,
-      deskId: map['deskId'] as int,
+      deskId: map['deskId'] as String,
       userId: map['userId'] as String,
       dateBook: map['dateBook'].toDate() as DateTime,
       hoursBook: map['hoursBook'].cast<int>() as List<int>,
@@ -65,7 +65,7 @@ class Booking extends Equatable {
     DateTime? dateCre,
     String? companyId,
     String? roomId,
-    int? deskId,
+    String? deskId,
     DateTime? dateBook,
     List<int>? hoursBook,
   }) {

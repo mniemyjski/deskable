@@ -115,7 +115,7 @@ class BookingCubit extends Cubit<BookingState> {
     return await _bookingRepository.delete(booking);
   }
 
-  Booking? getBooking({required int deskId, required int hour}) {
+  Booking? getBooking({required String deskId, required int hour}) {
     return state.bookings!
         .firstWhereOrNull((element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == state.dateTime);
   }
@@ -153,7 +153,7 @@ class BookingCubit extends Cubit<BookingState> {
     return available;
   }
 
-  Booking? getMyBooking({required int deskId}) {
+  Booking? getMyBooking({required String deskId}) {
     return state.bookings!.firstWhereOrNull((element) =>
         element.userId == _accountCubit.state.account!.uid && element.dateBook == _selectedDateCubit.state.dateTime && element.deskId == deskId);
   }

@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BookingField extends StatefulWidget {
   final int index;
   final Room room;
-  final Field field;
+  final Furniture field;
   final BuildContext ctx;
 
   const BookingField({

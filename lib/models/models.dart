@@ -3,6 +3,6 @@ export 'failure_model.dart';
 export 'preference.dart';
 export 'booking_model.dart';
 export 'company_model.dart';
-export 'field_model.dart';
+export 'furniture_model.dart';
 export 'room_exception_model.dart';
 export 'room_model.dart';

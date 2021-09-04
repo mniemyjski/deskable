@@ -8,16 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 class FieldInRoom extends StatelessWidget {
-  final Field field;
+  final Furniture? furniture;
   final Room room;
 
-  const FieldInRoom({Key? key, required this.field, required this.room}) : super(key: key);
+  const FieldInRoom({Key? key, required this.furniture, required this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (field.isEmpty) return Container();
-
-    if (field.path == '')
+    if (furniture == null)
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -27,26 +25,28 @@ class FieldInRoom extends StatelessWidget {
         ),
       );
 
+    if (furniture!.isEmpty) return Container();
+
     return InkWell(
         splashColor: Colors.grey,
         onTap: () {
-          customDialog(context, BookingsInDesk(field: field, room: room, ctx: context));
+          customDialog(context, BookingsInDesk(furniture: furniture!, room: room, ctx: context));
         },
         child: Container(
           margin: EdgeInsets.all(1),
           child: Stack(
             children: [
               RotationTransition(
-                turns: AlwaysStoppedAnimation(field.rotation / 360),
+                turns: AlwaysStoppedAnimation(furniture!.rotation / 360),
                 child: Image.asset(
-                  field.path,
+                  furniture!.path,
                   fit: BoxFit.fill,
                 ),
               ),
               Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    field.name,
+                    furniture!.name,
                     style: TextStyle(color: Colors.grey),
                   )),
               if (false) ...[

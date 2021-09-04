@@ -12,11 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 class BookingsInDesk extends StatelessWidget {
-  final Field field;
+  final Furniture furniture;
   final Room room;
   final BuildContext ctx;
 
-  const BookingsInDesk({Key? key, required this.field, required this.room, required this.ctx}) : super(key: key);
+  const BookingsInDesk({Key? key, required this.furniture, required this.room, required this.ctx}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class BookingsInDesk extends StatelessWidget {
             selectedDateCubit: ctx.read<SelectedDateCubit>(),
             bookingCubit: ctx.read<BookingCubit>(),
             selectedRoomCubit: ctx.read<SelectedRoomCubit>(),
-          )..init(field.id),
+          )..init(furniture.id),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -51,24 +51,15 @@ class BookingsInDesk extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Row(
                       children: [
-                        Text('Id: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        Text('${field.id}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
-                      children: [
                         Text('Name: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                        Text('${field.name}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+                        Text('${furniture.name}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                       ],
                     ),
                   ),
                   Row(
                     children: [
                       Text('${Languages.description()}: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                      Text('${field.description}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+                      Text('${furniture.description}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                     ],
                   ),
                   Divider(),
@@ -85,7 +76,7 @@ class BookingsInDesk extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: openClose,
                       itemBuilder: (context, i) {
-                        return BookingField(room: room, field: field, index: i, ctx: ctx);
+                        return BookingField(room: room, field: furniture, index: i, ctx: ctx);
                       },
                     ),
                   ),

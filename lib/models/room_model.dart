@@ -11,7 +11,7 @@ class Room extends Equatable {
   final int open;
   final int close;
 
-  final List<Field> fields;
+  final List<Furniture> furniture;
 
   final String name;
   final String description;
@@ -23,7 +23,7 @@ class Room extends Equatable {
     required this.y,
     required this.open,
     required this.close,
-    required this.fields,
+    required this.furniture,
     required this.name,
     this.description = '',
   });
@@ -35,9 +35,9 @@ class Room extends Equatable {
   List<Object?> get props => [];
 
   Map<String, dynamic> toMap() {
-    List _fields = [];
-    this.fields.forEach((element) {
-      _fields.add(element.toMap());
+    List _furniture = [];
+    this.furniture.forEach((element) {
+      _furniture.add(element.toMap());
     });
 
     return {
@@ -47,16 +47,16 @@ class Room extends Equatable {
       'y': this.y,
       'open': this.open,
       'close': this.close,
-      'fields': _fields,
+      'furniture': _furniture,
       'name': this.name,
       'description': this.description,
     };
   }
 
   factory Room.fromMap(Map<String, dynamic> map) {
-    List<Field> _fields = [];
-    map['fields'].forEach((element) {
-      _fields.add(Field.fromMap(element));
+    List<Furniture> _furniture = [];
+    map['furniture'].forEach((element) {
+      _furniture.add(Furniture.fromMap(element));
     });
 
     return Room(
@@ -66,7 +66,7 @@ class Room extends Equatable {
       y: map['y'] as int,
       open: map['open'] as int,
       close: map['close'] as int,
-      fields: _fields,
+      furniture: _furniture,
       name: map['name'] as String,
       description: map['description'] as String,
     );
@@ -79,7 +79,7 @@ class Room extends Equatable {
     int? y,
     int? open,
     int? close,
-    List<Field>? fields,
+    List<Furniture>? fields,
     String? name,
     String? description,
   }) {
@@ -90,7 +90,7 @@ class Room extends Equatable {
       y: y ?? this.y,
       open: open ?? this.open,
       close: close ?? this.close,
-      fields: fields ?? this.fields,
+      furniture: fields ?? this.furniture,
       name: name ?? this.name,
       description: description ?? this.description,
     );

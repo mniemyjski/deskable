@@ -4,6 +4,7 @@ import 'package:deskable/screens/home/widgets/field_in_room.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:logger/logger.dart';
 
 class RoomDisplay extends StatelessWidget {
@@ -30,8 +31,8 @@ class RoomDisplay extends StatelessWidget {
             crossAxisSpacing: 3,
             crossAxisCount: room.x,
             children: List.generate(room.x * room.y, (index) {
-              Field a = room.fields.firstWhere((element) => element.id == index, orElse: () => Field(id: index));
-              return FieldInRoom(field: a, room: room);
+              Furniture? a = room.furniture.firstWhereOrNull((element) => element.position == index);
+              return FieldInRoom(furniture: a, room: room);
             }),
           ),
         );

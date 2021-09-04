@@ -21,7 +21,7 @@ class CreatorBookingCubit extends Cubit<CreatorBookingState> {
         _bookingCubit = bookingCubit,
         super(CreatorBookingState.unknown());
 
-  void init(int deskId) {
+  void init(String deskId) {
     Booking? already = _bookingCubit.getMyBooking(deskId: deskId);
     Booking booking;
     if (already == null) {
