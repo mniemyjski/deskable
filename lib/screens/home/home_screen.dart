@@ -15,13 +15,13 @@ class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
 
   static Route route(bool fromSplashScreen) {
-    if (fromSplashScreen) {
-      return PageRouteBuilder(
-        settings: const RouteSettings(name: routeName),
-        transitionDuration: const Duration(seconds: 0),
-        pageBuilder: (context, _, __) => HomeScreen(),
-      );
-    }
+    // if (fromSplashScreen) {
+    //   return PageRouteBuilder(
+    //     settings: const RouteSettings(name: routeName),
+    //     transitionDuration: const Duration(seconds: 0),
+    //     pageBuilder: (context, _, __) => HomeScreen(),
+    //   );
+    // }
 
     return MaterialPageRoute(
       settings: const RouteSettings(name: routeName),
@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider<SelectedCompanyCubit>(
           create: (context) => SelectedCompanyCubit(
             companyCubit: context.read<CompanyCubit>(),
+            companyRepository: context.read<CompanyRepository>(),
           ),
         ),
         BlocProvider<RoomCubit>(
@@ -67,6 +68,9 @@ class HomeScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(Languages.home()),
+            actions: [
+              IconButton(onPressed: () => null, icon: Icon(Icons.notifications_none)),
+            ],
           ),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
@@ -78,9 +82,9 @@ class HomeScreen extends StatelessWidget {
                     desktop: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RoomDisplay(),
-                        SizedBox(width: 15),
                         BookingInRoom(),
+                        SizedBox(width: 8),
+                        RoomDisplay(),
                       ],
                     ),
                     mobile: Column(

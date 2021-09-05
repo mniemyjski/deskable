@@ -26,23 +26,31 @@ class BookingInRoom extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
-                builder: (context, state) {
+              Builder(
+                builder: (context) {
+                  final stateA = context.watch<CompanyCubit>().state;
+                  final stateB = context.watch<SelectedCompanyCubit>().state;
+
                   return CustomSelectorData(
                     onPressed: () => customDialog(
                       context,
-                      BlocBuilder<CompanyCubit, CompanyState>(
-                        builder: (context, state) {
-                          return ListView.builder(
-                              padding: const EdgeInsets.all(8),
-                              itemCount: state.companies!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Text(state.companies![index].name);
-                              });
-                        },
-                      ),
+                      ListView.builder(
+                          padding: const EdgeInsets.all(8),
+                          itemCount: stateA.companies!.length,
+                          itemBuilder: (BuildContext _, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
+                                  Navigator.pop(context);
+                                },
+                                child: Text(stateA.companies![index].name),
+                              ),
+                            );
+                          }),
                     ),
-                    name: state.company?.name ?? '',
+                    name: stateB.company?.name ?? '',
                   );
                 },
               ),

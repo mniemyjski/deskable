@@ -110,6 +110,7 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<DarkModeCubit, bool>(
           builder: (context, state) {
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,

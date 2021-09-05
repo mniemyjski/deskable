@@ -6,7 +6,6 @@ import 'package:deskable/models/company_model.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
-import 'package:logger/logger.dart';
 part 'company_state.dart';
 
 class CompanyCubit extends Cubit<CompanyState> {
@@ -61,7 +60,8 @@ class CompanyCubit extends Cubit<CompanyState> {
 
   Future<void> create(Company company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      return await _companyRepository.create(company.copyWith(owner: _accountCubit.state.account!.uid));
+      String id = await _companyRepository.create(company.copyWith(owners: [_accountCubit.state.account!.uid]));
+      _accountCubit.addCompanies(idAccount: _accountCubit.state.account!.uid, idCompany: id);
     }
   }
 

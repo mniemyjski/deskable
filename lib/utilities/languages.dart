@@ -52,9 +52,13 @@ class Languages {
   static String show() => "show".tr();
 
   static String companies() => "companies".tr();
+  static String company_name() => "company_name".tr();
   static String rooms() => "rooms".tr();
   static String management() => "management".tr();
   static String already_booked_other_user() => "already_booked_other_user".tr();
   static String already_booked_in_other_desk() => "already_booked_in_other_desk".tr();
   static String dismiss() => "dismiss".tr();
+  static String create() => "create".tr();
+  static String create_room() => "create_room".tr();
+  static String empty() => "empty".tr();
 }

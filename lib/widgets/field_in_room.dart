@@ -1,17 +1,12 @@
-import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
-import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
 import 'package:deskable/screens/home/widgets/printer_x.dart';
-import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class FieldInRoom extends StatelessWidget {
   final Furniture? furniture;
-  final Room room;
+  final GestureTapCallback? onTap;
 
-  const FieldInRoom({Key? key, required this.furniture, required this.room}) : super(key: key);
+  const FieldInRoom({Key? key, required this.furniture, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +24,7 @@ class FieldInRoom extends StatelessWidget {
 
     return InkWell(
         splashColor: Colors.grey,
-        onTap: () {
-          customDialog(context, BookingsInDesk(furniture: furniture!, room: room, ctx: context));
-        },
+        onTap: onTap,
         child: Container(
           margin: EdgeInsets.all(1),
           child: Stack(
@@ -46,7 +39,7 @@ class FieldInRoom extends StatelessWidget {
               Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    furniture!.name,
+                    furniture?.name ?? '',
                     style: TextStyle(color: Colors.grey),
                   )),
               if (false) ...[

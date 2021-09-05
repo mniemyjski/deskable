@@ -1,7 +1,9 @@
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
-import 'package:deskable/screens/home/widgets/field_in_room.dart';
+import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
 import 'package:deskable/utilities/enums.dart';
+import 'package:deskable/widgets/custom_dialog.dart';
+import 'package:deskable/widgets/field_in_room.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -32,7 +34,10 @@ class RoomDisplay extends StatelessWidget {
             crossAxisCount: room.x,
             children: List.generate(room.x * room.y, (index) {
               Furniture? a = room.furniture.firstWhereOrNull((element) => element.position == index);
-              return FieldInRoom(furniture: a, room: room);
+              return FieldInRoom(
+                furniture: a,
+                onTap: a != null ? () => customDialog(context, BookingsInDesk(furniture: a, room: room, ctx: context)) : null,
+              );
             }),
           ),
         );

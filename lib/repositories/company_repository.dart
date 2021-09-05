@@ -3,7 +3,7 @@ import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class _BaseCompanyRepository {
-  Future<void> create(Company company);
+  Future<String> create(Company company);
   Future<void> delete(Company company);
   Future<void> update(Company company);
   Stream<List<Company?>> stream(List<String> companies);
@@ -16,9 +16,10 @@ final _ref = FirebaseFirestore.instance.collection(Path.companies()).withConvert
 
 class CompanyRepository extends _BaseCompanyRepository {
   @override
-  create(Company company) async {
+  Future<String> create(Company company) async {
     DocumentReference doc = _ref.doc();
-    return await doc.set(company.copyWith(id: doc.id));
+    await doc.set(company.copyWith(id: doc.id));
+    return doc.id;
   }
 
   @override

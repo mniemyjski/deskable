@@ -44,3 +44,6 @@ management,Zarządzanie,management
 already_booked_other_user,Ups... Ktoś Cie uprzedził,already_booked_other_user
 already_booked_in_other_desk,Zarezerwowałeś już dana godzinne na innym biurku,already_booked_in_other_desk
 dismiss,Wyłącz,Dismiss
+create,Utwórz,Create
+company_name,Nazwa firmy,Company name
+create_room,Kreator,create_room
