@@ -1,6 +1,6 @@
 part of 'room_cubit.dart';
 
-enum ERoomStatus { unknown, loading, succeed }
+enum ERoomStatus { unknown, loading, succeed, empty }
 
 class RoomState extends Equatable {
   final List<Room>? rooms;

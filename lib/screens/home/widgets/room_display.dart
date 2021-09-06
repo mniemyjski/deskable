@@ -1,13 +1,12 @@
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
-import 'package:deskable/utilities/enums.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/field_in_room.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:logger/logger.dart';
 
 class RoomDisplay extends StatelessWidget {
   const RoomDisplay({Key? key}) : super(key: key);
@@ -16,9 +15,14 @@ class RoomDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
       builder: (context, state) {
-        if (state.status != EStatus.succeed)
+        if (state.status == ESelectedRoomStatus.unknown || state.status == ESelectedRoomStatus.loading)
           return Center(
             child: CircularProgressIndicator(),
+          );
+
+        if (state.status == ESelectedRoomStatus.empty)
+          return Center(
+            child: Text(Languages.need_create_first_room()),
           );
 
         Room room = state.room!;

@@ -1,6 +1,6 @@
 part of 'company_cubit.dart';
 
-enum ECompanyStatus { unknown, loading, succeed }
+enum ECompanyStatus { unknown, loading, succeed, empty }
 
 class CompanyState extends Equatable {
   final List<Company>? companies;

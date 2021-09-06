@@ -27,9 +27,14 @@ class Schedule extends StatelessWidget {
           height: 400,
           child: BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
             builder: (context, stateA) {
-              if (stateA.status != EStatus.succeed)
+              if (stateA.status == ESelectedRoomStatus.unknown || stateA.status == ESelectedRoomStatus.loading)
                 return Center(
                   child: CircularProgressIndicator(),
+                );
+
+              if (stateA.status == ESelectedRoomStatus.empty)
+                return Center(
+                  child: Text(Languages.need_create_first_room()),
                 );
 
               return BlocBuilder<BookingCubit, BookingState>(

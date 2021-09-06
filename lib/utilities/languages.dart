@@ -61,4 +61,5 @@ class Languages {
   static String create() => "create".tr();
   static String create_room() => "create_room".tr();
   static String empty() => "empty".tr();
+  static String need_create_first_room() => "need_create_first_room".tr();
 }

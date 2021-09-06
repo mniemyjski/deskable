@@ -83,9 +83,10 @@ class AccountCubit extends Cubit<AccountState> {
   Future<bool> createAccount(String name) async {
     String uid = _authBloc.state.user!.uid;
     String url = _authBloc.state.user!.photoURL ?? '';
+    String email = _authBloc.state.user!.email ?? '';
     bool available = await _accountRepository.nameAvailable(name);
     if (available) {
-      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, companies: ['a0oIGtXYDHGV2wyE7p1r']));
+      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, companies: ['a0oIGtXYDHGV2wyE7p1r'], email: email));
       return true;
     } else {
       return false;

@@ -1,5 +1,7 @@
 part of 'selected_company_cubit.dart';
 
+enum ESelectedCompanyStatus { unknown, loading, succeed, empty }
+
 class SelectedCompanyState extends Equatable {
   final Company? company;
   final EStatus status;

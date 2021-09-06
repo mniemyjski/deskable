@@ -43,7 +43,11 @@ class CompanyCubit extends Cubit<CompanyState> {
       _companiesSubscription.cancel();
     } catch (e) {}
     _companiesSubscription = _companyRepository.stream(authState.account!.companies).listen((companies) {
-      emit(state.copyWith(companies: companies, status: ECompanyStatus.succeed));
+      if (companies.isNotEmpty) {
+        emit(state.copyWith(companies: companies, status: ECompanyStatus.succeed));
+      } else {
+        emit(state.copyWith(companies: companies, status: ECompanyStatus.empty));
+      }
     });
   }
 

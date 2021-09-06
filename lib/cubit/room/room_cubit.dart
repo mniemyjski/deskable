@@ -47,7 +47,11 @@ class RoomCubit extends Cubit<RoomState> {
       _roomsSubscription.cancel();
     } catch (e) {}
     _roomsSubscription = _roomRepository.stream(selectedCompanyState.company!.id!).listen((rooms) {
-      emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
+      if (rooms.isNotEmpty) {
+        emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
+      } else {
+        emit(state.copyWith(rooms: rooms, status: ERoomStatus.empty));
+      }
     });
   }
 

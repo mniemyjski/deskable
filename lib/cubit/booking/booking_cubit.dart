@@ -40,7 +40,7 @@ class BookingCubit extends Cubit<BookingState> {
       emit(state.copyWith(dateTime: _selectedDateCubit.state.dateTime));
     }
 
-    if (_selectedRoomCubit.state.status == EStatus.succeed) {
+    if (_selectedRoomCubit.state.status == ESelectedRoomStatus.succeed) {
       emit(state.copyWith(selectedRoomState: _selectedRoomCubit.state));
     }
 
@@ -59,7 +59,7 @@ class BookingCubit extends Cubit<BookingState> {
     });
 
     _selectedRoomSubscription = _selectedRoomCubit.stream.listen((event) {
-      if (event.status == EStatus.succeed) {
+      if (event.status == ESelectedRoomStatus.succeed) {
         emit(state.copyWith(selectedRoomState: event));
         _bookingSub();
       } else {
@@ -76,7 +76,7 @@ class BookingCubit extends Cubit<BookingState> {
     try {
       _bookingSubscription.cancel();
     } catch (e) {}
-    if (state.dateTime != null && (state.selectedRoomState?.status ?? EStatus.unknown) == EStatus.succeed) {
+    if (state.dateTime != null && (state.selectedRoomState?.status ?? ESelectedRoomStatus.unknown) == ESelectedRoomStatus.succeed) {
       emit(state.copyWith(status: EStatus.loading));
       _bookingSubscription = _bookingRepository
           .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.companyId!, dateBook: state.dateTime!)
