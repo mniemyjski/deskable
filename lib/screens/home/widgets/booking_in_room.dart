@@ -65,8 +65,17 @@ class BookingInRoom extends StatelessWidget {
                       ListView.builder(
                           padding: const EdgeInsets.all(8),
                           itemCount: stateB.rooms!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Text(stateB.rooms![index].name);
+                          itemBuilder: (BuildContext _, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  context.read<SelectedRoomCubit>().change(stateB.rooms![index]);
+                                  Navigator.pop(context);
+                                },
+                                child: Text(stateB.rooms![index].name),
+                              ),
+                            );
                           }),
                     ),
                     name: stateA.room?.name ?? '',

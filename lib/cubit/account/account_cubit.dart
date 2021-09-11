@@ -56,26 +56,6 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  Future<void> addCompanies({required String idAccount, required String idCompany}) async {
-    Account? account = await getAccount(idAccount);
-    if (account != null) {
-      List<String> c = List.from(account.companies);
-      c.add(idCompany);
-
-      _accountRepository.updateAccount(account.copyWith(companies: c));
-    }
-  }
-
-  Future<void> removeCompanies({required String idAccount, required String idCompany}) async {
-    Account? account = await getAccount(idAccount);
-    if (account != null) {
-      List<String> c = List.from(account.companies);
-      c.remove(idCompany);
-
-      _accountRepository.updateAccount(account.copyWith(companies: c));
-    }
-  }
-
   Future<void> updateAvatarUrl(String url) async {
     await _accountRepository.updateAccount(state.account!.copyWith(photoUrl: url));
   }
@@ -93,8 +73,8 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  Future<Account?> getAccount(String id) async {
-    return await _accountRepository.getAccount(id);
+  Future<void> updateCompanies(List<String> companies) async {
+    await _accountRepository.updateAccount(state.account!.copyWith(companies: companies));
   }
 
   @override

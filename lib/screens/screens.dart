@@ -8,5 +8,4 @@ export 'settings/settings_screen.dart';
 export 'crop/crop_screen.dart';
 export 'introduction/introduction_screen.dart';
 export 'management/management_screen.dart';
-export 'management/create_company_screen.dart';
 export 'management/create_room_screen.dart';

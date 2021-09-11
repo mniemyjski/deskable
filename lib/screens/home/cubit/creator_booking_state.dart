@@ -1,21 +1,23 @@
 part of 'creator_booking_cubit.dart';
 
+enum ECreatorBookingStatus { unknown, loading, succeed }
+
 class CreatorBookingState extends Equatable {
   final Booking booking;
-  final EStatus status;
+  final ECreatorBookingStatus status;
 
   CreatorBookingState({required this.booking, required this.status});
 
   factory CreatorBookingState.unknown() {
-    return CreatorBookingState(booking: Booking(hoursBook: []), status: EStatus.unknown);
+    return CreatorBookingState(booking: Booking(hoursBook: []), status: ECreatorBookingStatus.unknown);
   }
 
   factory CreatorBookingState.loading() {
-    return CreatorBookingState(booking: Booking(hoursBook: []), status: EStatus.loading);
+    return CreatorBookingState(booking: Booking(hoursBook: []), status: ECreatorBookingStatus.loading);
   }
 
   factory CreatorBookingState.succeed(Booking booking) {
-    return CreatorBookingState(booking: booking, status: EStatus.succeed);
+    return CreatorBookingState(booking: booking, status: ECreatorBookingStatus.succeed);
   }
 
   @override

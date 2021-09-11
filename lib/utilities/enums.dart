@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 
-enum EStatus { unknown, loading, succeed }
+// enum EStatus { unknown, loading, succeed }
 
 class Enums {
   static String toText(dynamic element) => element.toString().split('.').last;

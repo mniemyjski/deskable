@@ -1,5 +1,8 @@
+import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
+import 'package:deskable/repositories/repositories.dart';
 import 'package:deskable/screens/management/cubit/create_room_cubit.dart';
+import 'package:deskable/screens/management/widget/create_room_set_details.dart';
 import 'package:deskable/screens/management/widget/dialog_edit_furniture.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
@@ -11,27 +14,43 @@ import 'package:collection/collection.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateRoomScreen extends StatelessWidget {
-  const CreateRoomScreen({Key? key}) : super(key: key);
+  final SelectedCompanyCubit selectedCompanyCubit;
+
+  const CreateRoomScreen({Key? key, required this.selectedCompanyCubit}) : super(key: key);
 
   static const String routeName = '/create-room';
 
-  static Route route() {
+  static Route route(SelectedCompanyCubit selectedCompanyCubit) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: routeName),
-      builder: (context) => CreateRoomScreen(),
+      builder: (context) => CreateRoomScreen(selectedCompanyCubit: selectedCompanyCubit),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CreateRoomCubit(),
+      create: (context) => CreateRoomCubit(
+        accountCubit: context.read<AccountCubit>(),
+        selectedCompanyCubit: selectedCompanyCubit,
+        roomRepository: context.read<RoomRepository>(),
+      ),
       child: BlocBuilder<CreateRoomCubit, CreateRoomState>(
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               actions: [
-                IconButton(onPressed: () => null, icon: Icon(Icons.save)),
+                IconButton(
+                    onPressed: () {
+                      return customDialog(
+                        context,
+                        BlocProvider.value(
+                          value: BlocProvider.of<CreateRoomCubit>(context),
+                          child: CreateRoomSetDetails(),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.save)),
               ],
             ),
             bottomNavigationBar: Card(

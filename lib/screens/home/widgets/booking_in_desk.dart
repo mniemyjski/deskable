@@ -26,7 +26,7 @@ class BookingsInDesk extends StatelessWidget {
       builder: (context) {
         final state = ctx.watch<BookingCubit>().state;
 
-        if (state.status != EStatus.succeed)
+        if (state.status != EBookingStatus.succeed)
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(

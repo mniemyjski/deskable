@@ -18,7 +18,7 @@ class Room extends Equatable {
 
   Room({
     this.id,
-    required this.companyId,
+    this.companyId,
     required this.x,
     required this.y,
     required this.open,

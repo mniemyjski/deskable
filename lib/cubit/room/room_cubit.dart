@@ -26,12 +26,12 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void _init() {
-    if (_selectedCompanyCubit.state.status == EStatus.succeed) {
+    if (_selectedCompanyCubit.state.status == ESelectedCompanyStatus.succeed) {
       _roomsSub(_selectedCompanyCubit.state);
     }
 
     _selectedCompanyCubit.stream.listen((event) {
-      if (event.status == EStatus.succeed) {
+      if (event.status == ESelectedCompanyStatus.succeed) {
         _roomsSub(event);
       } else {
         try {
@@ -55,9 +55,9 @@ class RoomCubit extends Cubit<RoomState> {
     });
   }
 
-  Future<void> create(Room room) async {
+  Future<void> delete(Room room) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      return await _roomRepository.create(room);
+      return await _roomRepository.delete(room);
     }
   }
 

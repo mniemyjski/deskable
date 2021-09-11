@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 
+import 'models.dart';
+
 class Booking extends Equatable {
   final String? id;
   final String? userId;
-  final String? userName;
-  final String? photoUrl;
+  // final String? userName;
+  // final String? photoUrl;
+  final Account? account;
   final DateTime? dateCre;
   final String? companyId;
   final String? roomId;
@@ -14,9 +17,10 @@ class Booking extends Equatable {
 
   Booking({
     this.id,
+    this.account,
     this.userId,
-    this.userName,
-    this.photoUrl,
+    // this.userName,
+    // this.photoUrl,
     this.dateCre,
     this.companyId,
     this.roomId,
@@ -29,7 +33,7 @@ class Booking extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, userId, userName, photoUrl, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
+  List<Object?> get props => [id, userId, account, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
 
   Map<String, dynamic> toMap() {
     return {
@@ -60,8 +64,7 @@ class Booking extends Equatable {
   Booking copyWith({
     String? id,
     String? userId,
-    String? userName,
-    String? photoUrl,
+    Account? account,
     DateTime? dateCre,
     String? companyId,
     String? roomId,
@@ -72,8 +75,7 @@ class Booking extends Equatable {
     return Booking(
       id: id ?? this.id,
       userId: userId ?? this.userId,
-      userName: userName ?? this.userName,
-      photoUrl: photoUrl ?? this.photoUrl,
+      account: account ?? this.account,
       dateCre: dateCre ?? this.dateCre,
       companyId: companyId ?? this.companyId,
       roomId: roomId ?? this.roomId,

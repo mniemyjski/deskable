@@ -62,4 +62,18 @@ class Languages {
   static String create_room() => "create_room".tr();
   static String empty() => "empty".tr();
   static String need_create_first_room() => "need_create_first_room".tr();
+
+  static String owners() => "owners".tr();
+  static String users() => "users".tr();
+
+  static String are_you_sure_you_want_to_do_this() => "are_you_sure_you_want_to_do_this".tr();
+
+  static String yes() => "yes".tr();
+  static String no() => "no".tr();
+
+  static String room_name() => "room_name".tr();
+  static String open() => "open".tr();
+  static String close() => "close".tr();
+  static String search() => "search".tr();
+  static String there_is_no_such_email_address() => "there_is_no_such_email_address".tr();
 }

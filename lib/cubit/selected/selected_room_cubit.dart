@@ -38,6 +38,11 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
     });
   }
 
+  change(Room room) {
+    emit(SelectedRoomState.loading());
+    emit(SelectedRoomState.succeed(room: room));
+  }
+
   @override
   Future<void> close() {
     try {

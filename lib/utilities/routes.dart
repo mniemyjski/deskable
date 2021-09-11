@@ -1,3 +1,4 @@
+import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/screens/management/create_room_screen.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,12 @@ class CustomRouter {
       case CropImageScreen.routeName:
         final args = settings.arguments as CropScreenArguments;
         return CropImageScreen.route(args);
-      case CreateCompanyScreen.routeName:
-        return CreateCompanyScreen.route();
       case CreateRoomScreen.routeName:
-        return CreateRoomScreen.route();
+        final args = settings.arguments as SelectedCompanyCubit?;
+
+        if (args != null) return CreateRoomScreen.route(args);
+        return ManagementScreen.route();
+
       default:
         return _errorRoute();
     }

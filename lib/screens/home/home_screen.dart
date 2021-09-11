@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider<SelectedCompanyCubit>(
           create: (context) => SelectedCompanyCubit(
             companyCubit: context.read<CompanyCubit>(),
+            accountRepository: context.read<AccountRepository>(),
             companyRepository: context.read<CompanyRepository>(),
           ),
         ),
@@ -57,6 +58,7 @@ class HomeScreen extends StatelessWidget {
         BlocProvider<BookingCubit>(
           create: (context) => BookingCubit(
             accountCubit: context.read<AccountCubit>(),
+            accountRepository: context.read<AccountRepository>(),
             bookingRepository: context.read<BookingRepository>(),
             selectedRoomCubit: context.read<SelectedRoomCubit>(),
             selectedDateCubit: context.read<SelectedDateCubit>(),

@@ -1,19 +1,21 @@
 part of 'booking_cubit.dart';
 
+enum EBookingStatus { unknown, loading, succeed, empty }
+
 class BookingState extends Equatable {
   final List<Booking>? bookings;
   final DateTime? dateTime;
   final SelectedRoomState? selectedRoomState;
-  final EStatus status;
+  final EBookingStatus status;
 
   BookingState({this.bookings, required this.status, this.dateTime, this.selectedRoomState});
 
   factory BookingState.unknown() {
-    return BookingState(status: EStatus.unknown);
+    return BookingState(status: EBookingStatus.unknown);
   }
 
   factory BookingState.succeed({required List<Booking> bookings, required DateTime dateTime, required SelectedRoomState selectedRoomState}) {
-    return BookingState(status: EStatus.succeed, bookings: bookings, dateTime: dateTime, selectedRoomState: selectedRoomState);
+    return BookingState(status: EBookingStatus.succeed, bookings: bookings, dateTime: dateTime, selectedRoomState: selectedRoomState);
   }
 
   @override
@@ -26,7 +28,7 @@ class BookingState extends Equatable {
     List<Booking>? bookings,
     DateTime? dateTime,
     SelectedRoomState? selectedRoomState,
-    EStatus? status,
+    EBookingStatus? status,
   }) {
     return BookingState(
       bookings: bookings ?? this.bookings,

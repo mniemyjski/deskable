@@ -13,6 +13,7 @@ part 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
   final BookingRepository _bookingRepository;
+  final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
   final SelectedRoomCubit _selectedRoomCubit;
   final SelectedDateCubit _selectedDateCubit;
@@ -22,21 +23,23 @@ class BookingCubit extends Cubit<BookingState> {
   late StreamSubscription<SelectedDateState?> _selectedDateSubscription;
 
   List<Account> accounts = [];
-  BookingCubit({
-    required BookingRepository bookingRepository,
-    required AccountCubit accountCubit,
-    required SelectedRoomCubit selectedRoomCubit,
-    required SelectedDateCubit selectedDateCubit,
-  })  : _accountCubit = accountCubit,
+  BookingCubit(
+      {required BookingRepository bookingRepository,
+      required AccountCubit accountCubit,
+      required SelectedRoomCubit selectedRoomCubit,
+      required SelectedDateCubit selectedDateCubit,
+      required AccountRepository accountRepository})
+      : _accountCubit = accountCubit,
         _bookingRepository = bookingRepository,
         _selectedRoomCubit = selectedRoomCubit,
         _selectedDateCubit = selectedDateCubit,
+        _accountRepository = accountRepository,
         super(BookingState.unknown()) {
     _init();
   }
 
   void _init() {
-    if (_selectedDateCubit.state.status == EStatus.succeed) {
+    if (_selectedDateCubit.state.status == ESelectedDateStatus.succeed) {
       emit(state.copyWith(dateTime: _selectedDateCubit.state.dateTime));
     }
 
@@ -47,14 +50,14 @@ class BookingCubit extends Cubit<BookingState> {
     _bookingSub();
 
     _selectedDateSubscription = _selectedDateCubit.stream.listen((event) {
-      if (event.status == EStatus.succeed) {
+      if (event.status == ESelectedDateStatus.succeed) {
         emit(state.copyWith(dateTime: event.dateTime));
         _bookingSub();
       } else {
         try {
           _bookingSubscription.cancel();
         } catch (e) {}
-        emit(BookingState(status: EStatus.unknown, selectedRoomState: state.selectedRoomState));
+        emit(BookingState(status: EBookingStatus.unknown, selectedRoomState: state.selectedRoomState));
       }
     });
 
@@ -67,7 +70,7 @@ class BookingCubit extends Cubit<BookingState> {
           _bookingSubscription.cancel();
         } catch (e) {}
 
-        emit(BookingState(status: EStatus.unknown, dateTime: state.dateTime));
+        emit(BookingState(status: EBookingStatus.unknown, dateTime: state.dateTime));
       }
     });
   }
@@ -77,7 +80,7 @@ class BookingCubit extends Cubit<BookingState> {
       _bookingSubscription.cancel();
     } catch (e) {}
     if (state.dateTime != null && (state.selectedRoomState?.status ?? ESelectedRoomStatus.unknown) == ESelectedRoomStatus.succeed) {
-      emit(state.copyWith(status: EStatus.loading));
+      emit(state.copyWith(status: EBookingStatus.loading));
       _bookingSubscription = _bookingRepository
           .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.companyId!, dateBook: state.dateTime!)
           .listen((bookings) async {
@@ -85,17 +88,17 @@ class BookingCubit extends Cubit<BookingState> {
         for (var element in bookings!) {
           if (accounts.contains(element.userId!)) {
             Account account = accounts.firstWhere((e) => e.uid == element.userId);
-            list.add(element.copyWith(userName: account.name, photoUrl: account.photoUrl));
+            list.add(element.copyWith(account: account));
           } else {
             if (_accountCubit.state.status == EAccountStatus.created) {
-              Account? account = await _accountCubit.getAccount(element.userId!);
+              Account? account = await _accountRepository.getAccountById(element.userId!);
 
               if (account != null) accounts.add(account);
-              list.add(element.copyWith(userName: account?.name ?? '', photoUrl: account?.photoUrl ?? ''));
+              list.add(element.copyWith(account: account));
             }
           }
         }
-        emit(state.copyWith(bookings: List.from(list), status: EStatus.succeed));
+        emit(state.copyWith(bookings: List.from(list), status: EBookingStatus.succeed));
         list.clear();
       });
     } else {
@@ -158,10 +161,10 @@ class BookingCubit extends Cubit<BookingState> {
         element.userId == _accountCubit.state.account!.uid && element.dateBook == _selectedDateCubit.state.dateTime && element.deskId == deskId);
   }
 
-  List<String> getListUserRoomBookingInTime({required int time, required bool name}) {
-    List<String> list = [];
+  List<Account> getListUserRoomBookingInTime(int time) {
+    List<Account> list = [];
     for (var e in state.bookings!) {
-      if (e.hoursBook.contains(time)) name ? list.add(e.photoUrl!) : list.add(e.userName!);
+      if (e.hoursBook.contains(time)) list.add(e.account!);
     }
     return list;
   }

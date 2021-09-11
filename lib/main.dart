@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CompanyCubit(
               accountCubit: context.read<AccountCubit>(),
               companyRepository: context.read<CompanyRepository>(),
+              accountRepository: context.read<AccountRepository>(),
             ),
           ),
         ],

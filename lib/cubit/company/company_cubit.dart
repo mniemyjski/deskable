@@ -10,15 +10,16 @@ part 'company_state.dart';
 
 class CompanyCubit extends Cubit<CompanyState> {
   final CompanyRepository _companyRepository;
+  final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
   late StreamSubscription<List<Company?>> _companiesSubscription;
   late StreamSubscription<AccountState> _accountSubscription;
+  List<Account> accounts = [];
 
-  CompanyCubit({
-    required CompanyRepository companyRepository,
-    required AccountCubit accountCubit,
-  })  : _companyRepository = companyRepository,
+  CompanyCubit({required CompanyRepository companyRepository, required AccountCubit accountCubit, required AccountRepository accountRepository})
+      : _companyRepository = companyRepository,
         _accountCubit = accountCubit,
+        _accountRepository = accountRepository,
         super(CompanyState.unknown()) {
     _init();
   }
@@ -42,9 +43,31 @@ class CompanyCubit extends Cubit<CompanyState> {
     try {
       _companiesSubscription.cancel();
     } catch (e) {}
-    _companiesSubscription = _companyRepository.stream(authState.account!.companies).listen((companies) {
+    _companiesSubscription = _companyRepository.stream(authState.account!.companies).listen((companies) async {
       if (companies.isNotEmpty) {
-        emit(state.copyWith(companies: companies, status: ECompanyStatus.succeed));
+        List<Company> _companies = [];
+
+        for (var company in companies) {
+          List<Account> owners = [];
+
+          for (var ownerId in company.ownersId) {
+            if (accounts.contains(ownerId)) {
+              Account account = accounts.firstWhere((e) => e.uid == ownerId);
+              owners.add(account);
+            } else {
+              if (_accountCubit.state.status == EAccountStatus.created) {
+                Account? account = await _accountRepository.getAccountById(ownerId);
+                if (account != null) {
+                  accounts.add(account);
+                  owners.add(account);
+                }
+              }
+            }
+          }
+          _companies.add(company.copyWith(owners: owners));
+        }
+
+        emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
       } else {
         emit(state.copyWith(companies: companies, status: ECompanyStatus.empty));
       }
@@ -64,8 +87,10 @@ class CompanyCubit extends Cubit<CompanyState> {
 
   Future<void> create(Company company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      String id = await _companyRepository.create(company.copyWith(owners: [_accountCubit.state.account!.uid]));
-      _accountCubit.addCompanies(idAccount: _accountCubit.state.account!.uid, idCompany: id);
+      String id = await _companyRepository.create(company.copyWith(ownersId: [_accountCubit.state.account!.uid]));
+      List<String> c = List.from(_accountCubit.state.account!.companies);
+      c.add(id);
+      _accountCubit.updateCompanies(c);
     }
   }
 

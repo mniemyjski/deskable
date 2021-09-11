@@ -33,7 +33,7 @@ class _BookingFieldState extends State<BookingField> {
           deskId: widget.field.id,
           hour: widget.room.open + widget.index,
         );
-    name = booking?.userName ?? Languages.click_to_book();
+    name = booking?.account!.name ?? Languages.click_to_book();
     super.initState();
   }
 

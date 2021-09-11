@@ -18,7 +18,7 @@ dependencies:
 
   flutter_bloc: ^7.2.0
   hydrated_bloc: ^7.0.1
-  rxdart: ^0.27.1
+  rxdart: ^0.27.2
 
   equatable: ^2.0.3
   shared_preferences: ^2.0.7
@@ -28,7 +28,7 @@ dependencies:
   cloud_firestore: ^2.5.1
   firebase_storage: ^10.0.3
   firebase_analytics: ^8.3.1
-  google_sign_in: ^5.0.7
+  google_sign_in: ^5.1.0
 
   connectivity_plus: ^1.1.0
   flash: ^2.0.1
@@ -39,17 +39,19 @@ dependencies:
 
   cached_network_image: ^3.1.0
   crop_your_image: ^0.6.0+1
-  image_picker: ^0.8.3+3
+  image_picker: ^0.8.4
 
   introduction_screen: ^2.1.0
   uuid: ^3.0.4
+
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.1.1
-  logger: ^1.0.0
+  build_runner: ^2.1.2
+  logger: ^1.1.0
   bloc_test: ^8.1.0
 
 flutter:
