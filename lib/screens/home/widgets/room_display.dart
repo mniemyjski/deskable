@@ -26,7 +26,6 @@ class RoomDisplay extends StatelessWidget {
 
         return Container(
           width: room.x * 65,
-          height: room.y * 65,
           child: GridView.count(
             shrinkWrap: true,
             physics: new NeverScrollableScrollPhysics(),
