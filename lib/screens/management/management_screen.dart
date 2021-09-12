@@ -54,12 +54,12 @@ class _ManagementScreenState extends State<ManagementScreen> {
             companyRepository: context.read<CompanyRepository>(),
           ),
         ),
-        BlocProvider<EmployeesCubit>(
-          create: (context) => EmployeesCubit(
-            accountRepository: context.read<AccountRepository>(),
-            selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
-          ),
-        ),
+        // BlocProvider<EmployeesCubit>(
+        //   create: (context) => EmployeesCubit(
+        //     accountRepository: context.read<AccountRepository>(),
+        //     selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+        //   ),
+        // ),
         BlocProvider<RoomCubit>(
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),

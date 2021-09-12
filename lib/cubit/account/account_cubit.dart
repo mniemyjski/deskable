@@ -66,15 +66,11 @@ class AccountCubit extends Cubit<AccountState> {
     String email = _authBloc.state.user!.email ?? '';
     bool available = await _accountRepository.nameAvailable(name);
     if (available) {
-      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, companies: ['a0oIGtXYDHGV2wyE7p1r'], email: email));
+      _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, email: email));
       return true;
     } else {
       return false;
     }
-  }
-
-  Future<void> updateCompanies(List<String> companies) async {
-    await _accountRepository.updateAccount(state.account!.copyWith(companies: companies));
   }
 
   @override

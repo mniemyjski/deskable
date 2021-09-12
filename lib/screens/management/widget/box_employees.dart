@@ -19,90 +19,128 @@ class _BoxEmployeesState extends State<BoxEmployees> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      width: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.5),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8),
-        child: Column(
-          children: [
-            search
-                ? SearchField(
-                    onTapBack: () => setState(() => search = !search),
-                    onTapAdd: () async {
-                      setState(() => search = !search);
-                      bool succeed = false;
-                      succeed = await context.read<EmployeesCubit>().addToCompanyByEmail(_email);
-                      if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
-                    },
-                    onTapRemove: () async {
-                      setState(() => search = !search);
-                      bool succeed = false;
-                      succeed = await context.read<EmployeesCubit>().removeFromCompanyByEmail(_email);
-                      if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
-                    },
-                    text: (String email) => _email = email,
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${Languages.users()}:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => setState(() => search = !search),
-                            icon: Icon(Icons.search),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-            Divider(),
-            Expanded(
-              child: BlocBuilder<EmployeesCubit, EmployeesState>(
-                builder: (context, state) {
-                  return ListView.separated(
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: state.accounts.length,
-                      itemBuilder: (BuildContext _, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: InkWell(
-                                    onTap: () {},
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(state.accounts[index].name),
-                                    )),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  bool areYouSure = false;
-                                  areYouSure = await areYouSureDialog(context);
+    return BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+      builder: (context, state) {
+        if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
-                                  if (areYouSure) context.read<EmployeesCubit>().removeFromCompanyById(state.accounts[index].uid);
-                                },
-                                child: Icon(Icons.remove_circle),
+        return Container(
+          height: 500,
+          width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.5),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Column(
+              children: [
+                search
+                    ? SearchField(
+                        onTapBack: () => setState(() => search = !search),
+                        onTapAdd: () async {
+                          setState(() => search = !search);
+                          bool succeed = false;
+                          succeed = await context.read<SelectedCompanyCubit>().addEmployeeByEmail(_email);
+                          if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
+                        },
+                        onTapRemove: () async {
+                          setState(() => search = !search);
+                          bool succeed = false;
+                          succeed = await context.read<SelectedCompanyCubit>().removeEmployeeByEmail(_email);
+                          if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
+                        },
+                        text: (String email) => _email = email,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('${Languages.users()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () => setState(() => search = !search),
+                                icon: Icon(Icons.search),
                               ),
                             ],
                           ),
-                        );
-                      });
-                },
-              ),
+                        ],
+                      ),
+                Divider(),
+                Expanded(
+                  child: BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+                    builder: (context, state) {
+                      if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
+
+                      return ListView.separated(
+                          separatorBuilder: (context, index) => Divider(),
+                          itemCount: state.company!.employees?.length ?? 0,
+                          itemBuilder: (BuildContext _, int index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(state.company!.employees![index].name),
+                                      )),
+                                ),
+                                InkWell(
+                                  onTap: () => context.read<SelectedCompanyCubit>().removeEmployeeById(state.company!.employees![index].uid),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(Icons.remove_circle),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                  ),
+
+                  // child: BlocBuilder<EmployeesCubit, EmployeesState>(
+                  //   builder: (context, state) {
+                  //     return ListView.separated(
+                  //         separatorBuilder: (context, index) => Divider(),
+                  //         itemCount: state.accounts.length,
+                  //         itemBuilder: (BuildContext _, int index) {
+                  //           return Padding(
+                  //             padding: const EdgeInsets.all(4.0),
+                  //             child: Row(
+                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //               children: [
+                  //                 Expanded(
+                  //                   child: InkWell(
+                  //                       onTap: () {},
+                  //                       child: Padding(
+                  //                         padding: const EdgeInsets.all(8.0),
+                  //                         child: Text(state.accounts[index].name),
+                  //                       )),
+                  //                 ),
+                  //                 InkWell(
+                  //                   onTap: () async {
+                  //                     bool areYouSure = false;
+                  //                     areYouSure = await areYouSureDialog(context);
+                  //
+                  //                     if (areYouSure) context.read<EmployeesCubit>().removeFromCompanyById(state.accounts[index].uid);
+                  //                   },
+                  //                   child: Icon(Icons.remove_circle),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           );
+                  //         });
+                  //   },
+                  // ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

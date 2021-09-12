@@ -59,7 +59,7 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
     emit(SelectedCompanyState.succeed(company: company));
   }
 
-  Future<bool> addOwner(String email) async {
+  Future<bool> addOwnerByEmail(String email) async {
     Account? account = await _accountRepository.getAccountByEmail(email);
     if (account == null) return false;
 
@@ -87,6 +87,36 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.remove(accountId);
     _companyRepository.update(state.company!.copyWith(ownersId: ownerId));
+
+    return true;
+  }
+
+  Future<bool> addEmployeeByEmail(String email) async {
+    Account? account = await _accountRepository.getAccountByEmail(email);
+    if (account == null) return false;
+
+    List<String> employeesId = List.from(state.company!.employeesId);
+    employeesId.add(account.uid);
+    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
+
+    return true;
+  }
+
+  Future<bool> removeEmployeeByEmail(String email) async {
+    Account? account = await _accountRepository.getAccountByEmail(email);
+    if (account == null) return false;
+
+    List<String> employeesId = List.from(state.company!.employeesId);
+    employeesId.remove(account.uid);
+    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
+
+    return true;
+  }
+
+  Future<bool> removeEmployeeById(String accountId) async {
+    List<String> employeesId = List.from(state.company!.employeesId);
+    employeesId.remove(accountId);
+    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
 
     return true;
   }
