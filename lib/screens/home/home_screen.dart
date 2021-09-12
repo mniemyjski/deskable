@@ -33,11 +33,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<CompanyCubit>(
+          create: (context) => CompanyCubit(
+            accountCubit: context.read<AccountCubit>(),
+            companyRepository: context.read<CompanyRepository>(),
+            accountRepository: context.read<AccountRepository>(),
+          ),
+        ),
         BlocProvider<SelectedCompanyCubit>(
           create: (context) => SelectedCompanyCubit(
             companyCubit: context.read<CompanyCubit>(),
             accountRepository: context.read<AccountRepository>(),
             companyRepository: context.read<CompanyRepository>(),
+            accountCubit: context.read<AccountCubit>(),
           ),
         ),
         BlocProvider<RoomCubit>(
@@ -80,24 +88,39 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Builder(
                 builder: (context) {
-                  return Responsive(
-                    desktop: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BookingInRoom(),
-                        SizedBox(width: 8),
-                        RoomDisplay(),
-                      ],
-                    ),
-                    mobile: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RoomDisplay(),
-                        SizedBox(height: 4),
-                        BookingInRoom(),
-                      ],
-                    ),
+                  return BlocBuilder<CompanyCubit, CompanyState>(
+                    builder: (context, state) {
+                      if (state.status == ECompanyStatus.empty)
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text(Languages.wait_for_the_invitation_or_create_your_own_company())),
+                        );
+
+                      if (state.status == ECompanyStatus.succeed)
+                        return Responsive(
+                          desktop: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BookingInRoom(),
+                              SizedBox(width: 8),
+                              RoomDisplay(),
+                            ],
+                          ),
+                          mobile: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RoomDisplay(),
+                              SizedBox(height: 4),
+                              BookingInRoom(),
+                            ],
+                          ),
+                        );
+
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
                   );
                 },
               ),

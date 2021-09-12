@@ -89,7 +89,7 @@ class _BoxOwnersState extends State<BoxOwners> {
                                   )),
                             ),
                             InkWell(
-                              onTap: () => context.read<SelectedCompanyCubit>().removeOwnerById(state.company!.owners![index]),
+                              onTap: () => context.read<SelectedCompanyCubit>().removeOwnerById(state.company!.owners![index].uid),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Icon(Icons.remove_circle),

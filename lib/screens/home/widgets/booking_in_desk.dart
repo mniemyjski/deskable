@@ -84,32 +84,35 @@ class BookingsInDesk extends StatelessWidget {
               ),
               BlocBuilder<CreatorBookingCubit, CreatorBookingState>(
                 builder: (context, state) {
-                  return TextButton(
-                      onPressed: () {
-                        bool available = ctx.read<BookingCubit>().alreadyBookedOtherUser(state.booking);
+                  return Container(
+                    width: double.infinity,
+                    child: CustomButton(
+                        onPressed: () {
+                          bool available = ctx.read<BookingCubit>().alreadyBookedOtherUser(state.booking);
 
-                        if (!available) {
-                          customFlashBar(context, Languages.already_booked_other_user());
+                          if (!available) {
+                            customFlashBar(context, Languages.already_booked_other_user());
+                            Navigator.pop(context);
+                            return;
+                          }
+
+                          available = ctx.read<BookingCubit>().alreadyBookedInOtherDesk(state.booking);
+
+                          if (!available) {
+                            customFlashBar(context, Languages.already_booked_in_other_desk());
+                            Navigator.pop(context);
+                            return;
+                          }
+
+                          if (state.booking.hoursBook.isNotEmpty) {
+                            ctx.read<BookingCubit>().create(state.booking);
+                          } else {
+                            ctx.read<BookingCubit>().delete(state.booking);
+                          }
                           Navigator.pop(context);
-                          return;
-                        }
-
-                        available = ctx.read<BookingCubit>().alreadyBookedInOtherDesk(state.booking);
-
-                        if (!available) {
-                          customFlashBar(context, Languages.already_booked_in_other_desk());
-                          Navigator.pop(context);
-                          return;
-                        }
-
-                        if (state.booking.hoursBook.isNotEmpty) {
-                          ctx.read<BookingCubit>().create(state.booking);
-                        } else {
-                          ctx.read<BookingCubit>().delete(state.booking);
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: Text(Languages.save()));
+                        },
+                        child: Text(Languages.save())),
+                  );
                 },
               ),
             ],

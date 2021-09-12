@@ -1,4 +1,4 @@
-import 'package:deskable/cubit/company/company_employees_cubit.dart';
+import 'package:deskable/cubit/company/employees_cubit.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
@@ -38,15 +38,24 @@ class _ManagementScreenState extends State<ManagementScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<CompanyCubit>(
+          create: (context) => CompanyCubit(
+            accountCubit: context.read<AccountCubit>(),
+            companyRepository: context.read<CompanyRepository>(),
+            accountRepository: context.read<AccountRepository>(),
+            owner: true,
+          ),
+        ),
         BlocProvider<SelectedCompanyCubit>(
           create: (context) => SelectedCompanyCubit(
+            accountCubit: context.read<AccountCubit>(),
             accountRepository: context.read<AccountRepository>(),
             companyCubit: context.read<CompanyCubit>(),
             companyRepository: context.read<CompanyRepository>(),
           ),
         ),
-        BlocProvider<CompanyEmployeesCubit>(
-          create: (context) => CompanyEmployeesCubit(
+        BlocProvider<EmployeesCubit>(
+          create: (context) => EmployeesCubit(
             accountRepository: context.read<AccountRepository>(),
             selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
           ),

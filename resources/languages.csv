@@ -47,7 +47,7 @@ dismiss,Wyłącz,Dismiss
 create,Utwórz,Create
 company_name,Nazwa firmy,Company name
 create_room,Kreator,create_room
-need_create_first_room,Najpierw musisz utworzyć pierwszy pokój,need_create_first_room
+need_create_first_room,Nie utworzona jeszcze pokoju dla tej firmy,need_create_first_room
 owners,Właściciele,Owners
 users,Użytkownicy,Users
 are_you_sure_you_want_to_do_this,Czy na pewno chcesz to zrobić?,Are you sure you want to do this?
@@ -58,3 +58,4 @@ open,Otwarte,Open
 close,Zamkniete,close
 search,Szukaj,Search
 there_is_no_such_email_address,Nie ma takiego adresu email,There is no such email address
+wait_for_the_invitation_or_create_your_own_company,Poczekaj na zaproszenie lub utwórz własną firme,Wait for the invitation or create your own company

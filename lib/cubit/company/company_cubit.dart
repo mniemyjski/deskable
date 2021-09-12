@@ -6,30 +6,37 @@ import 'package:deskable/models/company_model.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
+import 'package:deskable/utilities/utilities.dart';
 part 'company_state.dart';
 
 class CompanyCubit extends Cubit<CompanyState> {
   final CompanyRepository _companyRepository;
   final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
+  final bool _owner;
   late StreamSubscription<List<Company?>> _companiesSubscription;
   late StreamSubscription<AccountState> _accountSubscription;
   List<Account> accounts = [];
 
-  CompanyCubit({required CompanyRepository companyRepository, required AccountCubit accountCubit, required AccountRepository accountRepository})
+  CompanyCubit(
+      {required CompanyRepository companyRepository,
+      required AccountCubit accountCubit,
+      required AccountRepository accountRepository,
+      bool owner = false})
       : _companyRepository = companyRepository,
         _accountCubit = accountCubit,
         _accountRepository = accountRepository,
+        _owner = owner,
         super(CompanyState.unknown()) {
     _init();
   }
 
   void _init() {
-    if (_accountCubit.state.status == EAccountStatus.created) _companiesStream(_accountCubit.state);
+    if (_accountCubit.state.status == EAccountStatus.created) _sub(_accountCubit.state);
 
     _accountSubscription = _accountCubit.stream.listen((event) {
       if (event.status == EAccountStatus.created) {
-        _companiesStream(event);
+        _sub(event);
       } else {
         try {
           _companiesSubscription.cancel();
@@ -39,11 +46,13 @@ class CompanyCubit extends Cubit<CompanyState> {
     });
   }
 
-  void _companiesStream(AccountState authState) {
+  void _sub(AccountState authState) {
     try {
       _companiesSubscription.cancel();
     } catch (e) {}
-    _companiesSubscription = _companyRepository.stream(authState.account!.companies).listen((companies) async {
+    _companiesSubscription = _companyRepository
+        .stream(companies: authState.account!.companies, accountId: _accountCubit.state.account!.uid, owner: _owner)
+        .listen((companies) async {
       if (companies.isNotEmpty) {
         List<Company> _companies = [];
 
@@ -82,6 +91,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     try {
       _accountSubscription.cancel();
     } catch (e) {}
+
     return super.close();
   }
 

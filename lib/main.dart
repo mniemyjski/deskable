@@ -100,13 +100,6 @@ class MyApp extends StatelessWidget {
               storageRepository: context.read<StorageRepository>(),
             ),
           ),
-          BlocProvider<CompanyCubit>(
-            create: (context) => CompanyCubit(
-              accountCubit: context.read<AccountCubit>(),
-              companyRepository: context.read<CompanyRepository>(),
-              accountRepository: context.read<AccountRepository>(),
-            ),
-          ),
         ],
         child: BlocBuilder<DarkModeCubit, bool>(
           builder: (context, state) {

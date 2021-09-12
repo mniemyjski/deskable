@@ -637,13 +637,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
-  infinite_listview:
-    dependency: transitive
-    description:
-      name: infinite_listview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   intl:
     dependency: transitive
     description:
@@ -679,6 +672,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  loader_overlay:
+    dependency: "direct main"
+    description:
+      name: loader_overlay
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2+1"
   logger:
     dependency: "direct dev"
     description:
@@ -742,13 +742,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  numberpicker:
-    dependency: "direct main"
-    description:
-      name: numberpicker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   octo_image:
     dependency: transitive
     description:

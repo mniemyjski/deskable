@@ -20,10 +20,7 @@ class RoomDisplay extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
 
-        if (state.status == ESelectedRoomStatus.empty)
-          return Center(
-            child: Text(Languages.need_create_first_room()),
-          );
+        if (state.status == ESelectedRoomStatus.empty) return Container();
 
         Room room = state.room!;
 

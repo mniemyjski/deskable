@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/printer_x.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,9 @@ import 'package:flutter/material.dart';
 class FieldInRoom extends StatelessWidget {
   final Furniture? furniture;
   final GestureTapCallback? onTap;
+  final bool edit;
 
-  const FieldInRoom({Key? key, required this.furniture, required this.onTap}) : super(key: key);
+  const FieldInRoom({Key? key, required this.furniture, required this.onTap, this.edit = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,9 @@ class FieldInRoom extends StatelessWidget {
         ),
       );
 
-    if (furniture!.isEmpty) return Container();
+    if (furniture!.isEmpty && !edit) return Container();
+
+    if (furniture!.isEmpty && edit) return InkWell(splashColor: Colors.grey, onTap: onTap, child: Container());
 
     return InkWell(
         splashColor: Colors.grey,

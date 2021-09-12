@@ -9,9 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DialogEditFurniture extends StatefulWidget {
   final Furniture furniture;
-  final BuildContext context;
 
-  const DialogEditFurniture({Key? key, required this.furniture, required this.context}) : super(key: key);
+  const DialogEditFurniture({Key? key, required this.furniture}) : super(key: key);
 
   @override
   _DialogEditFurnitureState createState() => _DialogEditFurnitureState(furniture);
@@ -44,8 +43,6 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
 
   @override
   Widget build(BuildContext context) {
-    context = widget.context;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,

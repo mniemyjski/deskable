@@ -44,7 +44,7 @@ dependencies:
   introduction_screen: ^2.1.0
   uuid: ^3.0.4
 
-  numberpicker: ^2.1.1
+  loader_overlay: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:

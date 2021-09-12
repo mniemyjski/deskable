@@ -11,13 +11,18 @@ part 'selected_company_state.dart';
 
 class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
   final CompanyCubit _companyCubit;
+  final AccountCubit _accountCubit;
   final AccountRepository _accountRepository;
   final CompanyRepository _companyRepository;
   late StreamSubscription<CompanyState> _companySubscription;
 
   SelectedCompanyCubit(
-      {required CompanyCubit companyCubit, required CompanyRepository companyRepository, required AccountRepository accountRepository})
+      {required CompanyCubit companyCubit,
+      required CompanyRepository companyRepository,
+      required AccountRepository accountRepository,
+      required AccountCubit accountCubit})
       : _companyCubit = companyCubit,
+        _accountCubit = accountCubit,
         _companyRepository = companyRepository,
         _accountRepository = accountRepository,
         super(SelectedCompanyState.unknown()) {
@@ -29,6 +34,7 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
     try {
       _companySubscription.cancel();
     } catch (e) {}
+
     return super.close();
   }
 
@@ -67,6 +73,7 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
   Future<bool> removeOwnerByEmail(String email) async {
     Account? account = await _accountRepository.getAccountByEmail(email);
     if (account == null) return false;
+    if (_accountCubit.state.account!.uid == account.uid) return false;
 
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.remove(account.uid);
@@ -75,9 +82,10 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
     return true;
   }
 
-  Future<bool> removeOwnerById(Account account) async {
+  Future<bool> removeOwnerById(String accountId) async {
+    if (_accountCubit.state.account!.uid == accountId) return false;
     List<String> ownerId = List.from(state.company!.ownersId);
-    ownerId.remove(account.uid);
+    ownerId.remove(accountId);
     _companyRepository.update(state.company!.copyWith(ownersId: ownerId));
 
     return true;

@@ -42,7 +42,7 @@ class CreateRoomScreen extends StatelessWidget {
               actions: [
                 IconButton(
                     onPressed: () {
-                      return customDialog(
+                      customDialog(
                         context,
                         BlocProvider.value(
                           value: BlocProvider.of<CreateRoomCubit>(context),
@@ -128,7 +128,6 @@ class CreateRoomScreen extends StatelessWidget {
                               ),
                               width: 50,
                               height: 50,
-                              child: Center(child: Text(Languages.empty())),
                             ),
                           ),
                         ],
@@ -166,14 +165,22 @@ class CreateRoomScreen extends StatelessWidget {
 
                                 if (f != null)
                                   return FieldInRoom(
+                                    edit: true,
                                     furniture: f,
                                     onTap: () {
+                                      if (f.isEmpty) {
+                                        context.read<CreateRoomCubit>().removeFurniture(f);
+                                        return;
+                                      }
+
                                       customDialog(
-                                          context,
-                                          DialogEditFurniture(
-                                            furniture: f,
-                                            context: context,
-                                          ));
+                                        context,
+                                        BlocProvider.value(
+                                            value: BlocProvider.of<CreateRoomCubit>(context),
+                                            child: DialogEditFurniture(
+                                              furniture: f,
+                                            )),
+                                      );
                                     },
                                   );
 

@@ -1,4 +1,4 @@
-import 'package:deskable/cubit/company/company_employees_cubit.dart';
+import 'package:deskable/cubit/company/employees_cubit.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/screens/management/widget/search_field.dart';
 import 'package:deskable/utilities/utilities.dart';
@@ -38,13 +38,13 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                     onTapAdd: () async {
                       setState(() => search = !search);
                       bool succeed = false;
-                      succeed = await context.read<CompanyEmployeesCubit>().addToCompanyByEmail(_email);
+                      succeed = await context.read<EmployeesCubit>().addToCompanyByEmail(_email);
                       if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
                     },
                     onTapRemove: () async {
                       setState(() => search = !search);
                       bool succeed = false;
-                      succeed = await context.read<CompanyEmployeesCubit>().removeFromCompanyByEmail(_email);
+                      succeed = await context.read<EmployeesCubit>().removeFromCompanyByEmail(_email);
                       if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
                     },
                     text: (String email) => _email = email,
@@ -65,7 +65,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                   ),
             Divider(),
             Expanded(
-              child: BlocBuilder<CompanyEmployeesCubit, CompanyEmployeesState>(
+              child: BlocBuilder<EmployeesCubit, EmployeesState>(
                 builder: (context, state) {
                   return ListView.separated(
                       separatorBuilder: (context, index) => Divider(),
@@ -89,7 +89,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                                   bool areYouSure = false;
                                   areYouSure = await areYouSureDialog(context);
 
-                                  if (areYouSure) context.read<CompanyEmployeesCubit>().removeFromCompanyById(state.accounts[index].uid);
+                                  if (areYouSure) context.read<EmployeesCubit>().removeFromCompanyById(state.accounts[index].uid);
                                 },
                                 child: Icon(Icons.remove_circle),
                               ),

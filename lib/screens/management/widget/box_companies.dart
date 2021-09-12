@@ -30,7 +30,13 @@ class BoxCompanies extends StatelessWidget {
                 Text('${Languages.companies()}:', style: TextStyle(fontWeight: FontWeight.bold)),
                 IconButton(
                   onPressed: () {
-                    customDialog(context, CreateCompany());
+                    customDialog(
+                      context,
+                      BlocProvider.value(
+                        value: BlocProvider.of<CompanyCubit>(context),
+                        child: CreateCompany(),
+                      ),
+                    );
                   },
                   icon: Icon(Icons.add_circle),
                 ),
