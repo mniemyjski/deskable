@@ -56,7 +56,7 @@ class CreateRoomScreen extends StatelessWidget {
             bottomNavigationBar: Card(
               elevation: 1.0,
               child: Container(
-                height: 120,
+                height: 125,
                 child: Column(
                   children: [
                     Row(
@@ -83,26 +83,32 @@ class CreateRoomScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: 0, path: 'resources/images/furnitures/computer.png'),
-                            child: Image.asset(
-                              'resources/images/furnitures/computer.png',
-                              fit: BoxFit.fill,
-                            ),
-                            feedback: Image.asset(
-                              'resources/images/furnitures/computer.png',
-                              fit: BoxFit.fill,
-                            ),
+                            data: Furniture(id: '', position: 0, path: Constants.computer()),
+                            child: Image.asset(Constants.computer(),
+                                fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
+                                color: Color.fromRGBO(255, 255, 255, 0.8),
+                                colorBlendMode: BlendMode.modulate),
+                            feedback: Image.asset(Constants.computer(),
+                                fit: BoxFit.fill,
+                                filterQuality: FilterQuality.high,
+                                color: Color.fromRGBO(255, 255, 255, 0.8),
+                                colorBlendMode: BlendMode.modulate),
                           ),
                           SizedBox(width: 8),
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: 0, path: 'resources/images/furnitures/laptop.png'),
+                            data: Furniture(id: '', position: 0, path: Constants.laptop()),
                             child: Image.asset(
-                              'resources/images/furnitures/laptop.png',
+                              Constants.laptop(),
                               fit: BoxFit.fill,
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
+                              colorBlendMode: BlendMode.modulate,
                             ),
                             feedback: Image.asset(
-                              'resources/images/furnitures/laptop.png',
+                              Constants.laptop(),
                               fit: BoxFit.fill,
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
+                              colorBlendMode: BlendMode.modulate,
                             ),
                           ),
                           SizedBox(width: 8),

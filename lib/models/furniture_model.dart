@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:uuid/uuid.dart';
+
+// enum EFurnitureType { computer, laptop }
 
 class Furniture extends Equatable {
   final String id;

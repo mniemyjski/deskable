@@ -4,4 +4,6 @@ class Constants {
   static app_name_first() => "Desk";
   static app_name_second() => "able";
   static work_in_progress() => "resources/images/work_in_progress.jpg";
+  static computer() => "resources/images/furniture/computer.png";
+  static laptop() => "resources/images/furniture/laptop.png";
 }

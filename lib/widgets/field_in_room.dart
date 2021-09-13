@@ -36,10 +36,11 @@ class FieldInRoom extends StatelessWidget {
             children: [
               RotationTransition(
                 turns: AlwaysStoppedAnimation(furniture!.rotation / 360),
-                child: Image.asset(
-                  furniture!.path,
-                  fit: BoxFit.fill,
-                ),
+                child: Image.asset(furniture!.path,
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.high,
+                    color: Color.fromRGBO(255, 255, 255, 0.8),
+                    colorBlendMode: BlendMode.modulate),
               ),
               Align(
                   alignment: Alignment.bottomRight,
