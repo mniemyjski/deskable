@@ -44,9 +44,7 @@ class SplashScreen extends StatelessWidget {
         ],
         child: const Scaffold(
             body: Center(
-          child: CircularProgressIndicator(
-            color: Colors.red,
-          ),
+          child: CircularProgressIndicator(),
         )),
       ),
     );

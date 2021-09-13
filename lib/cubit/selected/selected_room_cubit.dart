@@ -43,6 +43,12 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
     emit(SelectedRoomState.succeed(room: room));
   }
 
+  Furniture? getFurniture(String deskId) {
+    for (var element in state.room!.furniture) {
+      if (element.id == deskId) return element;
+    }
+  }
+
   @override
   Future<void> close() {
     try {

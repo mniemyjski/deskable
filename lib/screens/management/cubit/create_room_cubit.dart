@@ -42,7 +42,7 @@ class CreateRoomCubit extends Cubit<CreateRoomState> {
   }
 
   increaseClose() {
-    if (state.close < 23) emit(state.copyWith(close: state.close + 1));
+    if (state.close < 24) emit(state.copyWith(close: state.close + 1));
   }
 
   decreaseOpen() {

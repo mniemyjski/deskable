@@ -79,6 +79,7 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text(Languages.home()),
             actions: [
+              IconButton(onPressed: () => null, icon: Icon(Icons.messenger_outline)),
               IconButton(onPressed: () => null, icon: Icon(Icons.notifications_none)),
             ],
           ),

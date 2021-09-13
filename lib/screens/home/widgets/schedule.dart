@@ -4,6 +4,7 @@ import 'package:deskable/screens/home/widgets/avatar_booking.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,21 +78,44 @@ class Schedule extends StatelessWidget {
               ? TextButton(
                   onPressed: () => customDialog(
                       context,
-                      ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: accounts.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
-                                children: [
-                                  AvatarBooking(url: accounts[index].photoUrl),
-                                  SizedBox(width: 8),
-                                  Text(accounts[index].name),
-                                ],
-                              ),
-                            );
-                          })),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
+                              Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
+                            ],
+                          ),
+                          Divider(),
+                          Container(
+                            height: 300,
+                            child: ListView.builder(
+                                itemCount: accounts.length,
+                                itemBuilder: (BuildContext _, int index) {
+                                  String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
+                                  Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
+
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          children: [
+                                            AvatarBooking(url: accounts[index].photoUrl),
+                                            SizedBox(width: 8),
+                                            Text(accounts[index].name),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ],
+                      )),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(

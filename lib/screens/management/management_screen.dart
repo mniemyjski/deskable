@@ -54,12 +54,6 @@ class _ManagementScreenState extends State<ManagementScreen> {
             companyRepository: context.read<CompanyRepository>(),
           ),
         ),
-        // BlocProvider<EmployeesCubit>(
-        //   create: (context) => EmployeesCubit(
-        //     accountRepository: context.read<AccountRepository>(),
-        //     selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
-        //   ),
-        // ),
         BlocProvider<RoomCubit>(
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),
@@ -78,9 +72,14 @@ class _ManagementScreenState extends State<ManagementScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(Languages.management()),
+            actions: [
+              IconButton(onPressed: () => null, icon: Icon(Icons.messenger_outline)),
+              IconButton(onPressed: () => null, icon: Icon(Icons.notifications_none)),
+            ],
           ),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

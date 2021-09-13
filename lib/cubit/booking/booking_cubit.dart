@@ -169,6 +169,12 @@ class BookingCubit extends Cubit<BookingState> {
     return list;
   }
 
+  String? getDeskIdInTime({required int time, required Account account}) {
+    for (var e in state.bookings!) {
+      if (e.hoursBook.contains(time) && e.account!.uid == account.uid) return e.deskId!;
+    }
+  }
+
   @override
   Future<void> close() {
     try {
