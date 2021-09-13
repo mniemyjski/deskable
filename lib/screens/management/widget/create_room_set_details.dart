@@ -88,7 +88,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                           Text(Languages.open()),
                           CustomSelectorData(
                             onPressed: null,
-                            name: state.open.toString(),
+                            widget: Text(state.open.toString()),
                             onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
                             onPressedForward: () => context.read<CreateRoomCubit>().increaseOpen(),
                           ),
@@ -99,7 +99,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                           Text(Languages.close()),
                           CustomSelectorData(
                             onPressed: null,
-                            name: state.close.toString(),
+                            widget: Text(state.close.toString()),
                             onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
                             onPressedForward: () => context.read<CreateRoomCubit>().increaseClose(),
                           ),

@@ -5,9 +5,9 @@ class CustomSelectorData extends StatelessWidget {
   final VoidCallback? onPressedBack;
   final VoidCallback? onPressedForward;
   final VoidCallback? onPressed;
-  final String? name;
+  final Widget widget;
 
-  const CustomSelectorData({Key? key, this.onPressedBack, this.onPressedForward, required this.onPressed, required this.name}) : super(key: key);
+  const CustomSelectorData({Key? key, this.onPressedBack, this.onPressedForward, required this.onPressed, required this.widget}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CustomSelectorData extends StatelessWidget {
             child: Card(
                 child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(name!),
+              child: widget,
             ))),
         SizedBox(width: 8),
         if (onPressedForward != null)

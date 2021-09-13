@@ -50,7 +50,7 @@ class BookingInRoom extends StatelessWidget {
                             );
                           }),
                     ),
-                    name: stateB.company?.name ?? '',
+                    widget: Text(stateB.company?.name ?? ''),
                   );
                 },
               ),
@@ -80,7 +80,7 @@ class BookingInRoom extends StatelessWidget {
                             );
                           }),
                     ),
-                    name: stateA.room?.name ?? '',
+                    widget: Text(stateA.room?.name ?? ''),
                   );
                 },
               ),
@@ -96,7 +96,16 @@ class BookingInRoom extends StatelessWidget {
                     }
                   });
                 },
-                name: DateFormat('dd-MM-yyyy').format(context.watch<SelectedDateCubit>().state.dateTime),
+                widget: BlocBuilder<SelectedDateCubit, SelectedDateState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        Text(DateFormat('dd-MM-yyyy').format(state.dateTime)),
+                        Text(state.name),
+                      ],
+                    );
+                  },
+                ),
               ),
             ],
           ),

@@ -4,25 +4,27 @@ enum ESelectedDateStatus { loading, succeed }
 
 class SelectedDateState extends Equatable {
   final DateTime dateTime;
+  final String name;
   final ESelectedDateStatus status;
 
-  SelectedDateState({required this.dateTime, required this.status});
+  SelectedDateState({required this.dateTime, required this.status, required this.name});
 
   factory SelectedDateState.init() {
     return SelectedDateState(
       dateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      name: Languages.today(),
       status: ESelectedDateStatus.succeed,
     );
   }
 
-  factory SelectedDateState.loading(DateTime dateTime) {
-    return SelectedDateState(dateTime: dateTime, status: ESelectedDateStatus.loading);
+  factory SelectedDateState.loading(DateTime dateTime, String name) {
+    return SelectedDateState(dateTime: dateTime, name: name, status: ESelectedDateStatus.loading);
   }
 
-  factory SelectedDateState.succeed(DateTime dateTime) {
-    return SelectedDateState(dateTime: dateTime, status: ESelectedDateStatus.succeed);
+  factory SelectedDateState.succeed(DateTime dateTime, String name) {
+    return SelectedDateState(dateTime: dateTime, name: name, status: ESelectedDateStatus.succeed);
   }
 
   @override
-  List<Object?> get props => [dateTime, status];
+  List<Object?> get props => [dateTime, name, status];
 }

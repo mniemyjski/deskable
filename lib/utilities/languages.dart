@@ -79,4 +79,15 @@ class Languages {
   static String there_is_no_such_email_address() => "there_is_no_such_email_address".tr();
 
   static String wait_for_the_invitation_or_create_your_own_company() => "wait_for_the_invitation_or_create_your_own_company".tr();
+
+  static String today() => "today".tr();
+  static String tomorrow() => "today".tr();
+  static String yesterday() => "today".tr();
+  static String monday() => "monday".tr();
+  static String tuesday() => "tuesday".tr();
+  static String wednesday() => "wednesday".tr();
+  static String thursday() => "thursday".tr();
+  static String friday() => "friday".tr();
+  static String saturday() => "saturday".tr();
+  static String sunday() => "sunday".tr();
 }

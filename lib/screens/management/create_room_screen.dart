@@ -64,14 +64,14 @@ class CreateRoomScreen extends StatelessWidget {
                       children: [
                         CustomSelectorData(
                           onPressed: null,
-                          name: state.x.toString(),
+                          widget: Text(state.x.toString()),
                           onPressedBack: () => context.read<CreateRoomCubit>().decreaseX(),
                           onPressedForward: () => context.read<CreateRoomCubit>().increaseX(),
                         ),
                         SizedBox(width: 16),
                         CustomSelectorData(
                           onPressed: null,
-                          name: state.y.toString(),
+                          widget: Text(state.y.toString()),
                           onPressedBack: () => context.read<CreateRoomCubit>().decreaseY(),
                           onPressedForward: () => context.read<CreateRoomCubit>().increaseY(),
                         ),

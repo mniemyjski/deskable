@@ -83,6 +83,8 @@ class _ManagementScreenState extends State<ManagementScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   BoxCompanies(),
                   SizedBox(width: 8),
