@@ -25,4 +25,28 @@ class CompanyState extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  Map<String, dynamic> toMap({bool hydrated = false}) {
+    List<Map<String, dynamic>> _companies = [];
+    this.companies!.forEach((company) {
+      _companies.add(company.toMap(hydrated: hydrated));
+    });
+
+    return {
+      'companies': _companies,
+      'status': Enums.toText(this.status),
+    };
+  }
+
+  factory CompanyState.fromMap(Map<String, dynamic> map, {bool hydrated = false}) {
+    List<Company> _companies = [];
+    map['companies'].forEach((company) {
+      _companies.add(Company.fromMap(company));
+    });
+
+    return CompanyState(
+      companies: _companies,
+      status: Enums.toEnum(map['status'] ?? 'unknown', ECompanyStatus.values),
+    );
+  }
 }

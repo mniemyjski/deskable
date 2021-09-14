@@ -4,12 +4,14 @@ import 'package:deskable/bloc/bloc.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:bloc/bloc.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 
 part 'account_state.dart';
 
-class AccountCubit extends Cubit<AccountState> {
+class AccountCubit extends HydratedCubit<AccountState> {
   final AccountRepository _accountRepository;
   final AuthBloc _authBloc;
   late StreamSubscription<Account?> _accountSubscription;
@@ -25,23 +27,27 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   void _init() {
-    if (_authBloc.state.status == EAuthStatus.authenticated) _accountSub(_authBloc.state);
+    if (_authBloc.state.status == EAuthStatus.authenticated) _sub(_authBloc.state);
 
     _authSubscription = _authBloc.stream.listen((event) {
       if (event.status == EAuthStatus.authenticated) {
-        _accountSub(event);
+        _sub(event);
       } else {
         try {
           _accountSubscription.cancel();
         } catch (e) {}
-        emit(AccountState.unknown());
+        if (state.status != EAccountStatus.unknown) emit(AccountState.unknown());
       }
     });
   }
 
-  void _accountSub(AuthState authState) {
-    _accountSubscription = _accountRepository.streamMyAccount(authState.user!.uid).listen((account) {
-      account != null ? emit(AccountState.created(account)) : emit(AccountState.unCreated());
+  void _sub(AuthState authState) {
+    _accountSubscription = _accountRepository.streamMyAccount(authState.uid!).listen((account) {
+      if (account != null) {
+        if (state.account != account || state.status != EAccountStatus.created) emit(AccountState.created(account));
+      } else {
+        emit(AccountState.unCreated());
+      }
     });
   }
 
@@ -61,9 +67,9 @@ class AccountCubit extends Cubit<AccountState> {
   }
 
   Future<bool> createAccount(String name) async {
-    String uid = _authBloc.state.user!.uid;
-    String url = _authBloc.state.user!.photoURL ?? '';
-    String email = _authBloc.state.user!.email ?? '';
+    String uid = _authBloc.state.uid!;
+    String url = _authBloc.state.photoURL ?? '';
+    String email = _authBloc.state.email ?? '';
     bool available = await _accountRepository.nameAvailable(name);
     if (available) {
       _accountRepository.createAccount(Account(uid: uid, name: name, photoUrl: url, email: email));
@@ -82,5 +88,15 @@ class AccountCubit extends Cubit<AccountState> {
       _accountSubscription.cancel();
     } catch (e) {}
     return super.close();
+  }
+
+  @override
+  AccountState? fromJson(Map<String, dynamic> json) {
+    return AccountState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AccountState state) {
+    return state.toMap();
   }
 }

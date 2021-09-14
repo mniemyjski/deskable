@@ -7,11 +7,12 @@ import 'package:deskable/repositories/repositories.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 
 part 'booking_state.dart';
 
-class BookingCubit extends Cubit<BookingState> {
+class BookingCubit extends HydratedCubit<BookingState> {
   final BookingRepository _bookingRepository;
   final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
@@ -40,19 +41,21 @@ class BookingCubit extends Cubit<BookingState> {
 
   void _init() {
     if (_selectedDateCubit.state.status == ESelectedDateStatus.succeed) {
-      emit(state.copyWith(dateTime: _selectedDateCubit.state.dateTime));
+      if (_selectedDateCubit.state.dateTime != state.dateTime) emit(state.copyWith(dateTime: _selectedDateCubit.state.dateTime));
     }
 
     if (_selectedRoomCubit.state.status == ESelectedRoomStatus.succeed) {
-      emit(state.copyWith(selectedRoomState: _selectedRoomCubit.state));
+      if (_selectedRoomCubit.state != state.selectedRoomState) emit(state.copyWith(selectedRoomState: _selectedRoomCubit.state));
     }
 
-    _bookingSub();
+    _sub();
 
     _selectedDateSubscription = _selectedDateCubit.stream.listen((event) {
       if (event.status == ESelectedDateStatus.succeed) {
-        emit(state.copyWith(dateTime: event.dateTime));
-        _bookingSub();
+        if (event.dateTime != state.dateTime) {
+          emit(state.copyWith(dateTime: event.dateTime));
+          _sub();
+        }
       } else {
         try {
           _bookingSubscription.cancel();
@@ -63,8 +66,10 @@ class BookingCubit extends Cubit<BookingState> {
 
     _selectedRoomSubscription = _selectedRoomCubit.stream.listen((event) {
       if (event.status == ESelectedRoomStatus.succeed) {
-        emit(state.copyWith(selectedRoomState: event));
-        _bookingSub();
+        if (event != state.selectedRoomState) {
+          emit(state.copyWith(selectedRoomState: event));
+          _sub();
+        }
       } else {
         try {
           _bookingSubscription.cancel();
@@ -75,7 +80,7 @@ class BookingCubit extends Cubit<BookingState> {
     });
   }
 
-  Future<void> _bookingSub() async {
+  Future<void> _sub() async {
     try {
       _bookingSubscription.cancel();
     } catch (e) {}
@@ -84,30 +89,33 @@ class BookingCubit extends Cubit<BookingState> {
       _bookingSubscription = _bookingRepository
           .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.companyId!, dateBook: state.dateTime!)
           .listen((bookings) async {
-        List<Booking> list = [];
-        for (var element in bookings!) {
-          if (accounts.contains(element.userId!)) {
-            Account account = accounts.firstWhere((e) => e.uid == element.userId);
-            list.add(element.copyWith(account: account));
-          } else {
-            if (_accountCubit.state.status == EAccountStatus.created) {
-              Account? account = await _accountRepository.getAccountById(element.userId!);
-
-              if (account != null) accounts.add(account);
-              list.add(element.copyWith(account: account));
-            }
-          }
-        }
-        emit(state.copyWith(bookings: List.from(list), status: EBookingStatus.succeed));
-        list.clear();
+        List<Booking> _bookings = await _buildBooking(bookings!);
+        emit(state.copyWith(bookings: List.from(_bookings), status: EBookingStatus.succeed));
       });
     } else {
       try {
         _bookingSubscription.cancel();
       } catch (e) {}
-
-      emit(BookingState.unknown());
+      if (state.status != EBookingStatus.unknown) emit(BookingState.unknown());
     }
+  }
+
+  Future<List<Booking>> _buildBooking(List<Booking> bookings) async {
+    List<Booking> list = [];
+    for (var element in bookings) {
+      if (accounts.contains(element.userId!)) {
+        Account account = accounts.firstWhere((e) => e.uid == element.userId);
+        list.add(element.copyWith(account: account));
+      } else {
+        if (_accountCubit.state.status == EAccountStatus.created) {
+          Account? account = await _accountRepository.getAccountById(element.userId!);
+
+          if (account != null) accounts.add(account);
+          list.add(element.copyWith(account: account));
+        }
+      }
+    }
+    return list;
   }
 
   Future<void> create(Booking booking) async {
@@ -188,5 +196,15 @@ class BookingCubit extends Cubit<BookingState> {
     } catch (e) {}
 
     return super.close();
+  }
+
+  @override
+  BookingState? fromJson(Map<String, dynamic> json) {
+    return BookingState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(BookingState state) {
+    return state.toMap();
   }
 }

@@ -22,4 +22,18 @@ class SelectedCompanyState extends Equatable {
 
   @override
   List<Object?> get props => [company, status];
+
+  Map<String, dynamic> toMap({bool hydrated = false}) {
+    return {
+      'company': this.company?.toMap(hydrated: true) ?? null,
+      'status': Enums.toText(this.status),
+    };
+  }
+
+  factory SelectedCompanyState.fromMap(Map<String, dynamic> map) {
+    return SelectedCompanyState(
+      company: map['company'] != null ? Company.fromMap(map['company']) : null,
+      status: Enums.toEnum(map['status'] ?? 'unknown', ESelectedCompanyStatus.values),
+    );
+  }
 }

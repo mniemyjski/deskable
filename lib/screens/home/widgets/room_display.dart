@@ -1,5 +1,6 @@
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
+import 'package:deskable/screens/home/cubit/creator_booking_cubit.dart';
 import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
@@ -33,10 +34,28 @@ class RoomDisplay extends StatelessWidget {
             crossAxisSpacing: 3,
             crossAxisCount: room.x,
             children: List.generate(room.x * room.y, (index) {
-              Furniture? a = room.furniture.firstWhereOrNull((element) => element.position == index);
+              Furniture? furniture = room.furniture.firstWhereOrNull((element) => element.position == index);
               return FieldInRoom(
-                furniture: a,
-                onTap: a != null ? () => customDialog(context, BookingsInDesk(furniture: a, room: room, ctx: context)) : null,
+                furniture: furniture,
+                onTap: furniture != null
+                    ? () => customDialog(
+                          context,
+                          MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                value: BlocProvider.of<BookingCubit>(context),
+                              ),
+                              BlocProvider.value(
+                                value: BlocProvider.of<SelectedDateCubit>(context),
+                              ),
+                              BlocProvider.value(
+                                value: BlocProvider.of<SelectedRoomCubit>(context),
+                              ),
+                            ],
+                            child: BookingsInDesk(furniture: furniture, room: room),
+                          ),
+                        )
+                    : null,
               );
             }),
           ),

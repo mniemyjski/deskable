@@ -4,12 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
-import 'package:deskable/utilities/enums.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
-import 'package:logger/logger.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'room_state.dart';
 
-class RoomCubit extends Cubit<RoomState> {
+class RoomCubit extends HydratedCubit<RoomState> {
   final RoomRepository _roomRepository;
   final SelectedCompanyCubit _selectedCompanyCubit;
   final AccountCubit _accountCubit;
@@ -27,30 +27,31 @@ class RoomCubit extends Cubit<RoomState> {
 
   void _init() {
     if (_selectedCompanyCubit.state.status == ESelectedCompanyStatus.succeed) {
-      _roomsSub(_selectedCompanyCubit.state);
+      sub(_selectedCompanyCubit.state);
     }
 
     _selectedCompanyCubit.stream.listen((event) {
       if (event.status == ESelectedCompanyStatus.succeed) {
-        _roomsSub(event);
+        sub(event);
       } else {
         try {
           _roomsSubscription.cancel();
         } catch (e) {}
-        emit(RoomState.unknown());
+        if (state.status != ERoomStatus.unknown) emit(RoomState.unknown());
       }
     });
   }
 
-  void _roomsSub(SelectedCompanyState selectedCompanyState) {
+  void sub(SelectedCompanyState selectedCompanyState) {
     try {
       _roomsSubscription.cancel();
     } catch (e) {}
     _roomsSubscription = _roomRepository.stream(selectedCompanyState.company!.id!).listen((rooms) {
       if (rooms.isNotEmpty) {
-        emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
+        if (state.status != ERoomStatus.succeed || rooms.toString() != state.rooms!.toString())
+          emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
       } else {
-        emit(state.copyWith(rooms: rooms, status: ERoomStatus.empty));
+        if (state.status != ERoomStatus.empty) emit(state.copyWith(rooms: [], status: ERoomStatus.empty));
       }
     });
   }
@@ -71,5 +72,15 @@ class RoomCubit extends Cubit<RoomState> {
     } catch (e) {}
 
     return super.close();
+  }
+
+  @override
+  RoomState? fromJson(Map<String, dynamic> json) {
+    return RoomState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(RoomState state) {
+    return state.toMap();
   }
 }

@@ -31,46 +31,8 @@ class _CreateCompanyState extends State<CreateCompany> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ConstrainedBox(
-            constraints: new BoxConstraints(maxWidth: 450),
-            child: Form(
-              key: _formKeyName,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: Languages.company_name(),
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(25),
-                ],
-                textInputAction: TextInputAction.next,
-                controller: _controllerName,
-                // validator: (v) => Validators.password(v),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ConstrainedBox(
-            constraints: new BoxConstraints(maxWidth: 450),
-            child: Form(
-              key: _formKeyDescription,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: Languages.description(),
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(240),
-                ],
-                textInputAction: TextInputAction.done,
-                controller: _controllerDescription,
-                // validator: (v) => Validators.password(v),
-              ),
-            ),
-          ),
-        ),
+        _buildNameForm(),
+        _buildDescForm(),
         Padding(
           padding: const EdgeInsets.only(top: 32),
           child: CustomButton(
@@ -80,13 +42,61 @@ class _CreateCompanyState extends State<CreateCompany> {
                   Text(Languages.create()),
                 ],
               ),
-              onPressed: () {
-                Company company = Company.create(name: _controllerName.text, description: _controllerDescription.text);
-                context.read<CompanyCubit>().create(company);
-                Navigator.pop(context);
-              }),
+              onPressed: () => _onTap(context)),
         ),
       ],
     );
+  }
+
+  Padding _buildDescForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyDescription,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.description(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(240),
+            ],
+            textInputAction: TextInputAction.done,
+            controller: _controllerDescription,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildNameForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyName,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.company_name(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(25),
+            ],
+            textInputAction: TextInputAction.next,
+            controller: _controllerName,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onTap(BuildContext context) {
+    Company company = Company.create(name: _controllerName.text, description: _controllerDescription.text);
+    context.read<CompanyCubit>().create(company);
+    Navigator.pop(context);
   }
 }

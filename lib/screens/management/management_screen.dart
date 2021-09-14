@@ -1,4 +1,3 @@
-import 'package:deskable/cubit/company/employees_cubit.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
@@ -88,12 +87,12 @@ class _ManagementScreenState extends State<ManagementScreen> {
                 children: [
                   BoxCompanies(),
                   SizedBox(width: 8),
-                  BoxRooms(),
-                  SizedBox(width: 8),
                   BoxOwners(),
                   SizedBox(width: 8),
                   BoxEmployees(),
                   SizedBox(width: 8),
+                  SizedBox(width: 8),
+                  BoxRooms(),
                 ],
               ),
             ),

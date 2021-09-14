@@ -5,10 +5,11 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:equatable/equatable.dart';
-import 'package:logger/logger.dart';
+import 'package:deskable/utilities/utilities.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'selected_room_state.dart';
 
-class SelectedRoomCubit extends Cubit<SelectedRoomState> {
+class SelectedRoomCubit extends HydratedCubit<SelectedRoomState> {
   final RoomCubit _roomCubit;
   late StreamSubscription<RoomState> _roomSubscription;
 
@@ -24,16 +25,17 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
     } catch (e) {}
 
     if (_roomCubit.state.status == ERoomStatus.succeed) {
-      emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms!.first));
+      if (state.status != ESelectedRoomStatus.succeed || _roomCubit.state.rooms!.first != state.room)
+        emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms!.first));
     }
 
     _roomSubscription = _roomCubit.stream.listen((room) {
       if (room.status == ERoomStatus.succeed) {
-        emit(SelectedRoomState.succeed(room: room.rooms!.first));
+        if (state.status != ESelectedRoomStatus.succeed || room.rooms!.first != state.room) emit(SelectedRoomState.succeed(room: room.rooms!.first));
       } else if (room.status == ERoomStatus.empty) {
-        emit(SelectedRoomState.empty());
+        if (state.status != ESelectedRoomStatus.empty) emit(SelectedRoomState.empty());
       } else {
-        emit(SelectedRoomState.unknown());
+        if (state.status != ESelectedRoomStatus.unknown) emit(SelectedRoomState.unknown());
       }
     });
   }
@@ -55,5 +57,15 @@ class SelectedRoomCubit extends Cubit<SelectedRoomState> {
       _roomSubscription.cancel();
     } catch (e) {}
     return super.close();
+  }
+
+  @override
+  SelectedRoomState? fromJson(Map<String, dynamic> json) {
+    return SelectedRoomState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(SelectedRoomState state) {
+    return state.toMap();
   }
 }

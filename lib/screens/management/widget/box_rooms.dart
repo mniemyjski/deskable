@@ -17,7 +17,7 @@ class BoxRooms extends StatelessWidget {
 
         return Container(
           height: 500,
-          width: 200,
+          width: 220,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
             border: Border.all(
@@ -28,64 +28,71 @@ class BoxRooms extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
-                    IconButton(
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed(CreateRoomScreen.routeName, arguments: BlocProvider.of<SelectedCompanyCubit>(context)),
-                      icon: Icon(Icons.add_circle),
-                    ),
-                  ],
-                ),
+                _buildHeader(context),
                 Divider(),
-                Builder(
-                  builder: (context) {
-                    final stateA = context.watch<RoomCubit>().state;
-
-                    return Expanded(
-                      child: ListView.separated(
-                          separatorBuilder: (context, index) => Divider(),
-                          itemCount: stateA.rooms!.length,
-                          itemBuilder: (BuildContext _, int index) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      // context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(stateA.rooms![index].name),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      bool areYouSure = false;
-                                      areYouSure = await areYouSureDialog(context);
-
-                                      if (areYouSure) context.read<RoomCubit>().delete(stateA.rooms![index]);
-                                    },
-                                    child: Icon(Icons.remove_circle),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    );
-                  },
-                ),
+                _buildListView(),
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  Row _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+        IconButton(
+          onPressed: () => Navigator.of(context).pushNamed(CreateRoomScreen.routeName, arguments: BlocProvider.of<SelectedCompanyCubit>(context)),
+          icon: Icon(Icons.add_circle),
+        ),
+      ],
+    );
+  }
+
+  Builder _buildListView() {
+    return Builder(
+      builder: (context) {
+        final stateA = context.watch<RoomCubit>().state;
+
+        return Expanded(
+          child: ListView.separated(
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: stateA.rooms!.length,
+              itemBuilder: (BuildContext _, int index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(stateA.rooms![index].name),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () => _onTap(context, stateA, index),
+                        child: Icon(Icons.remove_circle),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        );
+      },
+    );
+  }
+
+  Future<void> _onTap(BuildContext context, RoomState stateA, int index) async {
+    bool areYouSure = false;
+    areYouSure = await areYouSureDialog(context);
+
+    if (areYouSure) context.read<RoomCubit>().delete(stateA.rooms![index]);
   }
 }

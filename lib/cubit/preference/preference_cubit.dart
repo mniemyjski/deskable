@@ -21,7 +21,7 @@ class PreferenceCubit extends Cubit<PreferenceState> {
         _preferenceRepository = preferenceRepository,
         super(PreferenceState.unknown()) {
     if (_authBloc.state.status == EAuthStatus.authenticated) {
-      _preferenceSubscription = _preferenceRepository.streamPreference(_authBloc.state.user!.uid).listen((preference) {
+      _preferenceSubscription = _preferenceRepository.streamPreference(_authBloc.state.uid!).listen((preference) {
         preference != null ? emit(PreferenceState.created(preference)) : emit(PreferenceState.unCreated());
       });
     } else {
@@ -41,7 +41,7 @@ class PreferenceCubit extends Cubit<PreferenceState> {
   }
 
   createPreference() async {
-    String uid = _authBloc.state.user!.uid;
+    String uid = _authBloc.state.uid!;
     _preferenceRepository.createPreference(Preference(uid: uid));
   }
 

@@ -26,4 +26,18 @@ class SelectedRoomState extends Equatable {
 
   @override
   List<Object?> get props => [room, status];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'room': this.room?.toMap() ?? null,
+      'status': Enums.toText(this.status),
+    };
+  }
+
+  factory SelectedRoomState.fromMap(Map<String, dynamic> map) {
+    return SelectedRoomState(
+      room: map['room'] != null ? Room.fromMap(map['room']) : null,
+      status: Enums.toEnum(map['status'] ?? 'unknown', ESelectedRoomStatus.values),
+    );
+  }
 }

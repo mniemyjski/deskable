@@ -47,46 +47,8 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ConstrainedBox(
-            constraints: new BoxConstraints(maxWidth: 450),
-            child: Form(
-              key: _formKeyName,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: Languages.name(),
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(3),
-                ],
-                textInputAction: TextInputAction.done,
-                controller: _controllerName,
-                // validator: (v) => Validators.password(v),
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ConstrainedBox(
-            constraints: new BoxConstraints(maxWidth: 450),
-            child: Form(
-              key: _formKeyDescription,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: Languages.description(),
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(240),
-                ],
-                textInputAction: TextInputAction.done,
-                controller: _controllerDescription,
-                // validator: (v) => Validators.password(v),
-              ),
-            ),
-          ),
-        ),
+        _buildNameForm(),
+        _buildDescForm(),
         Container(
           width: double.infinity,
           child: CustomButton(
@@ -158,6 +120,52 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
           ),
         ),
       ],
+    );
+  }
+
+  Padding _buildDescForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyDescription,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.description(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(240),
+            ],
+            textInputAction: TextInputAction.done,
+            controller: _controllerDescription,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildNameForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyName,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.name(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(3),
+            ],
+            textInputAction: TextInputAction.done,
+            controller: _controllerName,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
     );
   }
 }

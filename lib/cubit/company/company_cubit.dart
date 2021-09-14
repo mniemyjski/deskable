@@ -7,16 +7,19 @@ import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
 import 'package:deskable/utilities/utilities.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'company_state.dart';
 
-class CompanyCubit extends Cubit<CompanyState> {
+class CompanyCubit extends HydratedCubit<CompanyState> {
   final CompanyRepository _companyRepository;
   final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
   final bool _owner;
+
+  final List<Account> _accounts = [];
+
   late StreamSubscription<List<Company?>> _companiesSubscription;
   late StreamSubscription<AccountState> _accountSubscription;
-  List<Account> _accounts = [];
 
   CompanyCubit(
       {required CompanyRepository companyRepository,
@@ -41,7 +44,7 @@ class CompanyCubit extends Cubit<CompanyState> {
         try {
           _companiesSubscription.cancel();
         } catch (e) {}
-        emit(CompanyState.unknown());
+        if (state.status != ECompanyStatus.unknown) emit(CompanyState.unknown());
       }
     });
   }
@@ -52,50 +55,72 @@ class CompanyCubit extends Cubit<CompanyState> {
     } catch (e) {}
     _companiesSubscription = _companyRepository.stream(accountId: _accountCubit.state.account!.uid, owner: _owner).listen((companies) async {
       if (companies.isNotEmpty) {
-        List<Company> _companies = [];
-
-        for (var company in companies) {
-          List<Account> owners = [];
-          List<Account> employees = [];
-
-          for (var ownerId in company.ownersId) {
-            if (_accounts.contains(ownerId)) {
-              Account account = _accounts.firstWhere((e) => e.uid == ownerId);
-              owners.add(account);
-            } else {
-              if (_accountCubit.state.status == EAccountStatus.created) {
-                Account? account = await _accountRepository.getAccountById(ownerId);
-                if (account != null) {
-                  _accounts.add(account);
-                  owners.add(account);
-                }
-              }
-            }
+        if (state.status == ECompanyStatus.succeed) {
+          if (_change(companies)) {
+            List<Company> _companies = await _buildCompanies(companies);
+            emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
           }
-
-          for (var employeeId in company.employeesId) {
-            if (_accounts.contains(employeeId)) {
-              Account account = _accounts.firstWhere((e) => e.uid == employeeId);
-              employees.add(account);
-            } else {
-              if (_accountCubit.state.status == EAccountStatus.created) {
-                Account? account = await _accountRepository.getAccountById(employeeId);
-                if (account != null) {
-                  _accounts.add(account);
-                  employees.add(account);
-                }
-              }
-            }
-          }
-
-          _companies.add(company.copyWith(owners: owners, employees: employees));
+        } else {
+          List<Company> _companies = await _buildCompanies(companies);
+          emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
         }
-
-        emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
       } else {
-        emit(state.copyWith(companies: companies, status: ECompanyStatus.empty));
+        if (state.status != ECompanyStatus.empty) emit(state.copyWith(companies: [], status: ECompanyStatus.empty));
       }
     });
+  }
+
+  bool _change(List<Company> companies) {
+    bool _change = false;
+    for (var company in companies) {
+      if (!state.companies!.contains(company)) _change = true;
+    }
+    for (var company in state.companies!) {
+      if (!companies.contains(company)) _change = true;
+    }
+    return _change;
+  }
+
+  Future<List<Company>> _buildCompanies(List<Company> companies) async {
+    List<Company> _companies = [];
+
+    for (var company in companies) {
+      List<Account> owners = [];
+      List<Account> employees = [];
+
+      for (var ownerId in company.ownersId) {
+        if (_accounts.contains(ownerId)) {
+          Account account = _accounts.firstWhere((e) => e.uid == ownerId);
+          owners.add(account);
+        } else {
+          if (_accountCubit.state.status == EAccountStatus.created) {
+            Account? account = await _accountRepository.getAccountById(ownerId);
+            if (account != null) {
+              _accounts.add(account);
+              owners.add(account);
+            }
+          }
+        }
+      }
+
+      for (var employeeId in company.employeesId) {
+        if (_accounts.contains(employeeId)) {
+          Account account = _accounts.firstWhere((e) => e.uid == employeeId);
+          employees.add(account);
+        } else {
+          if (_accountCubit.state.status == EAccountStatus.created) {
+            Account? account = await _accountRepository.getAccountById(employeeId);
+            if (account != null) {
+              _accounts.add(account);
+              employees.add(account);
+            }
+          }
+        }
+      }
+
+      _companies.add(company.copyWith(owners: owners, employees: employees));
+    }
+    return _companies;
   }
 
   @override
@@ -129,5 +154,15 @@ class CompanyCubit extends Cubit<CompanyState> {
     if (_accountCubit.state.status == EAccountStatus.created) {
       return await _companyRepository.delete(company);
     }
+  }
+
+  @override
+  CompanyState? fromJson(Map<String, dynamic> json) {
+    return CompanyState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(CompanyState state) {
+    return state.toMap(hydrated: true);
   }
 }

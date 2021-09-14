@@ -1,36 +1,59 @@
 import 'package:deskable/models/models.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 
 class Company extends Equatable {
   final String? id;
   final List<String> ownersId;
-  final List<Account>? owners;
+  final List<Account> owners;
   final List<String> employeesId;
-  final List<Account>? employees;
+  final List<Account> employees;
   final String name;
   final String description;
 
   Company({
     this.id,
     required this.ownersId,
-    this.owners,
+    required this.owners,
     required this.employeesId,
-    this.employees,
+    required this.employees,
     required this.name,
     this.description = '',
   });
 
   factory Company.create({required String name, required String description}) {
-    return Company(ownersId: [], employeesId: [], name: name, description: description);
+    return Company(ownersId: [], employeesId: [], owners: [], employees: [], name: name, description: description);
   }
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, ownersId, employeesId, employees, owners, name, description];
+  List<Object?> get props => [id, ownersId, employeesId, name, description];
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({bool hydrated = false}) {
+    if (hydrated) {
+      List<Map<String, dynamic>> _owners = [];
+      List<Map<String, dynamic>> _employees = [];
+
+      owners.forEach((element) {
+        _owners.add(element.toMap());
+      });
+      employees.forEach((element) {
+        _employees.add(element.toMap());
+      });
+
+      return {
+        'id': this.id,
+        'ownersId': this.ownersId,
+        'owners': _owners,
+        'employeesId': this.employeesId,
+        'employees': _employees,
+        'name': this.name,
+        'description': this.description,
+      };
+    }
+
     return {
       'id': this.id,
       'ownersId': this.ownersId,
@@ -41,10 +64,23 @@ class Company extends Equatable {
   }
 
   factory Company.fromMap(Map<String, dynamic> map) {
+    List<Account> _owners = [];
+    List<Account> _employees = [];
+
+    map['owners']?.forEach((element) {
+      _owners.add(Account.fromMap(element));
+    });
+
+    map['employees']?.forEach((element) {
+      _employees.add(Account.fromMap(element));
+    });
+
     return Company(
       id: map['id'] as String,
       ownersId: map['ownersId'].cast<String>() as List<String>,
+      owners: _owners,
       employeesId: map['employeesId'].cast<String>() as List<String>,
+      employees: _employees,
       name: map['name'] as String,
       description: map['description'] as String,
     );

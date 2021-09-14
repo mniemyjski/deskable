@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 import 'models.dart';
@@ -5,8 +6,6 @@ import 'models.dart';
 class Booking extends Equatable {
   final String? id;
   final String? userId;
-  // final String? userName;
-  // final String? photoUrl;
   final Account? account;
   final DateTime? dateCre;
   final String? companyId;
@@ -19,8 +18,6 @@ class Booking extends Equatable {
     this.id,
     this.account,
     this.userId,
-    // this.userName,
-    // this.photoUrl,
     this.dateCre,
     this.companyId,
     this.roomId,
@@ -35,29 +32,39 @@ class Booking extends Equatable {
   @override
   List<Object?> get props => [id, userId, account, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({bool hydrated = false}) {
     return {
       'id': this.id,
-      'dateCre': this.dateCre,
+      'dateCre': hydrated ? this.dateCre!.toIso8601String() : this.dateCre,
       'companyId': this.companyId,
       'roomId': this.roomId,
       'deskId': this.deskId,
       'userId': this.userId,
-      'dateBook': this.dateBook,
+      'dateBook': hydrated ? this.dateBook!.toIso8601String() : this.dateBook,
       'hoursBook': this.hoursBook,
+      if (hydrated) 'account': this.account?.toMap(),
     };
   }
 
-  factory Booking.fromMap(Map<String, dynamic> map) {
+  factory Booking.fromMap(Map<String, dynamic> map, {bool hydrated = false}) {
+    DateTime? _dateCre;
+    DateTime? _dateBook;
+    if (map['dateCre']?.runtimeType == Timestamp) _dateCre = map['dateCre'].toDate();
+    if (map['dateCre']?.runtimeType == String) _dateCre = DateTime.parse(map["dateCre"]);
+
+    if (map['dateBook']?.runtimeType == Timestamp) _dateBook = map['dateBook'].toDate();
+    if (map['dateBook']?.runtimeType == String) _dateBook = DateTime.parse(map["dateBook"]);
+
     return Booking(
       id: map['id'] as String,
-      dateCre: map['dateCre'].toDate() as DateTime,
+      dateCre: _dateCre,
       companyId: map['companyId'] as String,
       roomId: map['roomId'] as String,
       deskId: map['deskId'] as String,
       userId: map['userId'] as String,
-      dateBook: map['dateBook'].toDate() as DateTime,
+      dateBook: _dateBook,
       hoursBook: map['hoursBook'].cast<int>() as List<int>,
+      account: hydrated ? Account.fromMap(map['account']) : null,
     );
   }
 

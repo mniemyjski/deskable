@@ -37,4 +37,32 @@ class BookingState extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    List<Map<String, dynamic>> _bookings = [];
+    this.bookings?.forEach((booking) {
+      _bookings.add(booking.toMap(hydrated: true));
+    });
+
+    return {
+      'bookings': _bookings,
+      'dateTime': this.dateTime?.toIso8601String(),
+      'selectedRoomState': this.selectedRoomState?.toMap(),
+      'status': Enums.toText(this.status),
+    };
+  }
+
+  factory BookingState.fromMap(Map<String, dynamic> map) {
+    List<Booking> _bookings = [];
+    map['bookings']?.forEach((booking) {
+      _bookings.add(Booking.fromMap(booking, hydrated: true));
+    });
+
+    return BookingState(
+      bookings: _bookings,
+      dateTime: map['dateTime'] != null ? DateTime.parse(map["dateTime"]) : null,
+      selectedRoomState: map['selectedRoomState'] != null ? SelectedRoomState.fromMap(map['selectedRoomState']) : null,
+      status: Enums.toEnum(map['status'] ?? 'unknown', EBookingStatus.values),
+    );
+  }
 }

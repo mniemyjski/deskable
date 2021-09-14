@@ -112,7 +112,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 fontFamily: 'Georgia',
                 primarySwatch: Colors.indigo,
-                scaffoldBackgroundColor: Colors.grey[200],
+                scaffoldBackgroundColor: Colors.grey[100],
               ),
               darkTheme: ThemeData(
                 fontFamily: 'Georgia',

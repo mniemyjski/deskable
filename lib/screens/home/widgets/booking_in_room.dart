@@ -26,93 +26,104 @@ class BookingInRoom extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Builder(
-                builder: (context) {
-                  final stateA = context.watch<CompanyCubit>().state;
-                  final stateB = context.watch<SelectedCompanyCubit>().state;
-
-                  return CustomSelectorData(
-                    onPressed: () => customDialog(
-                      context,
-                      ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: stateA.companies!.length,
-                          itemBuilder: (BuildContext _, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
-                                  Navigator.pop(context);
-                                },
-                                child: Text(stateA.companies![index].name),
-                              ),
-                            );
-                          }),
-                    ),
-                    widget: Text(stateB.company?.name ?? ''),
-                  );
-                },
-              ),
-              Builder(
-                builder: (context) {
-                  final stateA = context.watch<SelectedRoomCubit>().state;
-                  final stateB = context.watch<RoomCubit>().state;
-
-                  if (stateB.status == ERoomStatus.empty) return Container();
-
-                  return CustomSelectorData(
-                    onPressed: () => customDialog(
-                      context,
-                      ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: stateB.rooms!.length,
-                          itemBuilder: (BuildContext _, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  context.read<SelectedRoomCubit>().change(stateB.rooms![index]);
-                                  Navigator.pop(context);
-                                },
-                                child: Text(stateB.rooms![index].name),
-                              ),
-                            );
-                          }),
-                    ),
-                    widget: Text(stateA.room?.name ?? ''),
-                  );
-                },
-              ),
-              CustomSelectorData(
-                onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
-                onPressedForward: () => context.read<SelectedDateCubit>().increase(),
-                onPressed: () {
-                  showDatePicker(
-                          context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
-                      .then((date) {
-                    if (date != null) {
-                      context.read<SelectedDateCubit>().change(date);
-                    }
-                  });
-                },
-                widget: BlocBuilder<SelectedDateCubit, SelectedDateState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        Text(DateFormat('dd-MM-yyyy').format(state.dateTime)),
-                        Text(state.name),
-                      ],
-                    );
-                  },
-                ),
-              ),
+              _buildCompanySelector(),
+              _buildRoomSelector(),
+              _buildDateSelector(context),
             ],
           ),
           SizedBox(height: 8),
           Schedule(),
         ],
       ),
+    );
+  }
+
+  CustomSelectorData _buildDateSelector(BuildContext context) {
+    return CustomSelectorData(
+      onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
+      onPressedForward: () => context.read<SelectedDateCubit>().increase(),
+      onPressed: () {
+        showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
+            .then((date) {
+          if (date != null) {
+            context.read<SelectedDateCubit>().change(date);
+          }
+        });
+      },
+      widget: BlocBuilder<SelectedDateCubit, SelectedDateState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              Text(DateFormat('dd-MM-yyyy').format(state.dateTime)),
+              Text(state.name),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Builder _buildRoomSelector() {
+    return Builder(
+      builder: (context) {
+        final stateA = context.watch<SelectedRoomCubit>().state;
+        final stateB = context.watch<RoomCubit>().state;
+
+        if (stateB.status == ERoomStatus.empty) return Container();
+
+        return CustomSelectorData(
+          onPressed: () => customDialog(
+            context,
+            ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: stateB.rooms!.length,
+                itemBuilder: (BuildContext _, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        context.read<SelectedRoomCubit>().change(stateB.rooms![index]);
+                        Navigator.pop(context);
+                      },
+                      child: Text(stateB.rooms![index].name),
+                    ),
+                  );
+                }),
+          ),
+          widget: Text(stateA.room?.name ?? ''),
+        );
+      },
+    );
+  }
+
+  Builder _buildCompanySelector() {
+    return Builder(
+      builder: (context) {
+        final stateA = context.watch<CompanyCubit>().state;
+        final stateB = context.watch<SelectedCompanyCubit>().state;
+
+        return CustomSelectorData(
+          onPressed: () => customDialog(
+            context,
+            ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: stateA.companies!.length,
+                itemBuilder: (BuildContext _, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
+                        Navigator.pop(context);
+                      },
+                      child: Text(stateA.companies![index].name),
+                    ),
+                  );
+                }),
+          ),
+          widget: Text(stateB.company?.name ?? ''),
+        );
+      },
     );
   }
 }

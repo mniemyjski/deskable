@@ -5,11 +5,12 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/account_repository.dart';
 import 'package:deskable/repositories/company_repository.dart';
-import 'package:deskable/utilities/enums.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'selected_company_state.dart';
 
-class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
+class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
   final CompanyCubit _companyCubit;
   final AccountCubit _accountCubit;
   final AccountRepository _accountRepository;
@@ -39,17 +40,17 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
   }
 
   void _init() {
-    emit(SelectedCompanyState.loading());
-
     if (_companyCubit.state.status == ECompanyStatus.succeed) {
-      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies!.first));
+      if (state.status != ESelectedCompanyStatus.succeed || state.company != _companyCubit.state.companies!.first)
+        emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies!.first));
     }
 
     _companySubscription = _companyCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
-        emit(SelectedCompanyState.succeed(company: company.companies!.first));
+        if (state.status != ESelectedCompanyStatus.succeed || state.company != company.companies!.first)
+          emit(SelectedCompanyState.succeed(company: company.companies!.first));
       } else {
-        emit(SelectedCompanyState.unknown());
+        if (state.status != ESelectedCompanyStatus.unknown) emit(SelectedCompanyState.unknown());
       }
     });
   }
@@ -119,5 +120,15 @@ class SelectedCompanyCubit extends Cubit<SelectedCompanyState> {
     _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
 
     return true;
+  }
+
+  @override
+  SelectedCompanyState? fromJson(Map<String, dynamic> json) {
+    return SelectedCompanyState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(SelectedCompanyState state) {
+    return state.toMap(hydrated: true);
   }
 }

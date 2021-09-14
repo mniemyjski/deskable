@@ -32,7 +32,7 @@ class Room extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id, companyId, x, y, open, close, furniture, name, description];
 
   Map<String, dynamic> toMap() {
     List _furniture = [];

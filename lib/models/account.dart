@@ -14,7 +14,7 @@ class Account extends Equatable {
   });
 
   @override
-  List<Object> get props => [name, photoUrl, uid];
+  List<Object> get props => [name, photoUrl, uid, email];
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,10 +27,10 @@ class Account extends Equatable {
 
   factory Account.fromMap(Map<String, dynamic> map) {
     return Account(
-      uid: map['uid'] as String,
-      email: map['email'] as String,
-      name: map['name'] as String,
-      photoUrl: map['photoUrl'] as String,
+      uid: map['uid'],
+      email: map['email'],
+      name: map['name'],
+      photoUrl: map['photoUrl'],
     );
   }
 

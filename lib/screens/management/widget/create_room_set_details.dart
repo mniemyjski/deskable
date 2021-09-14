@@ -35,81 +35,9 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
       children: [
         Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ConstrainedBox(
-                constraints: new BoxConstraints(maxWidth: 450),
-                child: Form(
-                  key: _formKeyName,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: Languages.room_name(),
-                    ),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(25),
-                    ],
-                    textInputAction: TextInputAction.next,
-                    controller: _controllerName,
-                    // validator: (v) => Validators.password(v),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ConstrainedBox(
-                constraints: new BoxConstraints(maxWidth: 450),
-                child: Form(
-                  key: _formKeyDesc,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: Languages.description(),
-                    ),
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(300),
-                    ],
-                    textInputAction: TextInputAction.next,
-                    controller: _controllerDesc,
-                    // validator: (v) => Validators.password(v),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              width: double.infinity,
-              child: BlocBuilder<CreateRoomCubit, CreateRoomState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          Text(Languages.open()),
-                          CustomSelectorData(
-                            onPressed: null,
-                            widget: Text(state.open.toString()),
-                            onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
-                            onPressedForward: () => context.read<CreateRoomCubit>().increaseOpen(),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(Languages.close()),
-                          CustomSelectorData(
-                            onPressed: null,
-                            widget: Text(state.close.toString()),
-                            onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
-                            onPressedForward: () => context.read<CreateRoomCubit>().increaseClose(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _buildNameForm(),
+            _buildDescForm(),
+            _buildOpenCloseSelector(),
           ],
         ),
         Container(
@@ -139,6 +67,90 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
           ),
         )
       ],
+    );
+  }
+
+  Container _buildOpenCloseSelector() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      width: double.infinity,
+      child: BlocBuilder<CreateRoomCubit, CreateRoomState>(
+        builder: (context, state) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  Text(Languages.open()),
+                  CustomSelectorData(
+                    onPressed: null,
+                    widget: Text(state.open.toString()),
+                    onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
+                    onPressedForward: () => context.read<CreateRoomCubit>().increaseOpen(),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(Languages.close()),
+                  CustomSelectorData(
+                    onPressed: null,
+                    widget: Text(state.close.toString()),
+                    onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
+                    onPressedForward: () => context.read<CreateRoomCubit>().increaseClose(),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Padding _buildDescForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyDesc,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.description(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(300),
+            ],
+            textInputAction: TextInputAction.next,
+            controller: _controllerDesc,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buildNameForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ConstrainedBox(
+        constraints: new BoxConstraints(maxWidth: 450),
+        child: Form(
+          key: _formKeyName,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: Languages.room_name(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(25),
+            ],
+            textInputAction: TextInputAction.next,
+            controller: _controllerName,
+            // validator: (v) => Validators.password(v),
+          ),
+        ),
+      ),
     );
   }
 }

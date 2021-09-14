@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:logger/logger.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:deskable/utilities/utilities.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   late StreamSubscription<User?> _userSubscription;
 
@@ -23,11 +22,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _init() {
-    try {
-      _userSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
     _userSubscription = _authRepository.user.listen((user) {
       add(AuthUserChanged(user: user));
     });
@@ -37,9 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() {
     try {
       _userSubscription.cancel();
-    } catch (e) {
-      Failure(message: "Not Initialization");
-    }
+    } catch (e) {}
     return super.close();
   }
 
@@ -57,6 +49,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapAuthUserChangedToState(AuthUserChanged event) async* {
-    yield event.user != null ? AuthState.authenticated(user: event.user!) : AuthState.unauthenticated();
+    if (event.user != null) {
+      if (state.status != EAuthStatus.authenticated || event.user!.uid != state.uid) yield AuthState.authenticated(user: event.user!);
+    } else {
+      if (state.status != EAuthStatus.unauthenticated) yield AuthState.unauthenticated();
+    }
+  }
+
+  @override
+  AuthState? fromJson(Map<String, dynamic> json) {
+    return AuthState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AuthState state) {
+    return state.toMap();
   }
 }
