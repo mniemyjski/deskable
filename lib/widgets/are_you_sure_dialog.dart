@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<bool> areYouSureDialog(BuildContext context) async {
-  return await showDialog(
+  bool? _areYouSureDialog = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -14,4 +14,5 @@ Future<bool> areYouSureDialog(BuildContext context) async {
           ],
         );
       });
+  return _areYouSureDialog ?? false;
 }

@@ -1,21 +1,16 @@
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/models/models.dart';
+
 import 'package:deskable/repositories/repositories.dart';
-import 'package:deskable/screens/home/widgets/booking_in_room.dart';
-import 'package:deskable/screens/home/widgets/room_display.dart';
-import 'package:deskable/screens/management/create_room_screen.dart';
+
 import 'package:deskable/screens/management/widget/box_companies.dart';
 import 'package:deskable/screens/management/widget/box_employees.dart';
 import 'package:deskable/screens/management/widget/box_owners.dart';
 import 'package:deskable/screens/management/widget/box_rooms.dart';
-import 'package:deskable/utilities/enums.dart';
+
 import 'package:deskable/utilities/languages.dart';
-import 'package:deskable/utilities/responsive.dart';
-import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
+import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
-import 'package:logger/logger.dart';
 
 class ManagementScreen extends StatefulWidget {
   const ManagementScreen({Key? key}) : super(key: key);
@@ -69,13 +64,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(Languages.management()),
-            actions: [
-              IconButton(onPressed: () => null, icon: Icon(Icons.messenger_outline)),
-              IconButton(onPressed: () => null, icon: Icon(Icons.notifications_none)),
-            ],
-          ),
+          appBar: customAppBar(title: Languages.management()),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

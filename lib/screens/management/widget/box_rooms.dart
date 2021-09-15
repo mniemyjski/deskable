@@ -68,14 +68,11 @@ class BoxRooms extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(stateA.rooms![index].name),
-                        ),
+                        child: Text(stateA.rooms![index].name),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(right: 8),
                       child: InkWell(
                         onTap: () => _onTap(context, stateA, index),
                         child: Icon(Icons.remove_circle),

@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateCompany extends StatefulWidget {
-  const CreateCompany({Key? key}) : super(key: key);
+  final Company? company;
+  const CreateCompany({Key? key, this.company}) : super(key: key);
 
   @override
   State<CreateCompany> createState() => _CreateCompanyState();
@@ -20,6 +21,15 @@ class _CreateCompanyState extends State<CreateCompany> {
   final GlobalKey<FormState> _formKeyDescription = GlobalKey();
 
   @override
+  void initState() {
+    if (widget.company != null) {
+      _controllerName.text = widget.company!.name;
+      _controllerDescription.text = widget.company!.description;
+    }
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _controllerName.dispose();
     _controllerDescription.dispose();
@@ -29,20 +39,25 @@ class _CreateCompanyState extends State<CreateCompany> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildNameForm(),
-        _buildDescForm(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildNameForm(),
+            _buildDescForm(),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 32),
           child: CustomButton(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(Languages.create()),
+                  Text(widget.company == null ? Languages.create() : Languages.save()),
                 ],
               ),
-              onPressed: () => _onTap(context)),
+              onPressed: () => _onTap(context, widget.company)),
         ),
       ],
     );
@@ -94,9 +109,13 @@ class _CreateCompanyState extends State<CreateCompany> {
     );
   }
 
-  void _onTap(BuildContext context) {
-    Company company = Company.create(name: _controllerName.text, description: _controllerDescription.text);
-    context.read<CompanyCubit>().create(company);
+  void _onTap(BuildContext context, Company? company) {
+    if (company != null) {
+      context.read<CompanyCubit>().update(company.copyWith(name: _controllerName.text, description: _controllerDescription.text));
+    } else {
+      Company _company = Company.create(name: _controllerName.text, description: _controllerDescription.text);
+      context.read<CompanyCubit>().create(_company);
+    }
     Navigator.pop(context);
   }
 }

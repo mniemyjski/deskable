@@ -65,34 +65,43 @@ class BoxCompanies extends StatelessWidget {
               separatorBuilder: (context, index) => Divider(),
               itemCount: stateA.companies!.length,
               itemBuilder: (BuildContext _, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            context.read<SelectedCompanyCubit>().change(index);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              stateA.companies![index].name,
-                              style: TextStyle(color: stateB.company!.id == stateA.companies![index].id ? Colors.blue : null),
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          context.read<SelectedCompanyCubit>().change(index);
+                        },
+                        child: Text(
+                          stateA.companies![index].name,
+                          style: TextStyle(color: stateB.company!.id == stateA.companies![index].id ? Colors.blue : null),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: InkWell(
+                        onTap: () {
+                          customDialog(
+                            context,
+                            BlocProvider.value(
+                              value: BlocProvider.of<CompanyCubit>(context),
+                              child: CreateCompany(company: stateA.companies![index]),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                        child: Icon(Icons.edit),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () => _onTap(context, stateA, index),
-                          child: Icon(Icons.remove_circle),
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: InkWell(
+                        onTap: () => _onTap(context, stateA, index),
+                        child: Icon(Icons.remove_circle),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               }),
         );

@@ -48,8 +48,10 @@ class RoomCubit extends HydratedCubit<RoomState> {
     } catch (e) {}
     _roomsSubscription = _roomRepository.stream(selectedCompanyState.company!.id!).listen((rooms) {
       if (rooms.isNotEmpty) {
-        if (state.status != ERoomStatus.succeed || rooms.toString() != state.rooms!.toString())
+        rooms.sort((a, b) => a.name.compareTo(b.name));
+        if (state.status != ERoomStatus.succeed || rooms.toString() != state.rooms!.toString()) {
           emit(state.copyWith(rooms: rooms, status: ERoomStatus.succeed));
+        }
       } else {
         if (state.status != ERoomStatus.empty) emit(state.copyWith(rooms: [], status: ERoomStatus.empty));
       }

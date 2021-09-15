@@ -22,9 +22,7 @@ class SettingsScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(Languages.settings()),
-        ),
+        appBar: customAppBar(title: Languages.settings()),
         drawer: CustomDrawer(),
         body: Center(
           child: Column(

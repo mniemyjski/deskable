@@ -85,19 +85,19 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
     List<Company> _companies = [];
 
     for (var company in companies) {
-      List<Account> owners = [];
-      List<Account> employees = [];
+      List<Account> _owners = [];
+      List<Account> _employees = [];
 
       for (var ownerId in company.ownersId) {
         if (_accounts.contains(ownerId)) {
           Account account = _accounts.firstWhere((e) => e.uid == ownerId);
-          owners.add(account);
+          _owners.add(account);
         } else {
           if (_accountCubit.state.status == EAccountStatus.created) {
             Account? account = await _accountRepository.getAccountById(ownerId);
             if (account != null) {
               _accounts.add(account);
-              owners.add(account);
+              _owners.add(account);
             }
           }
         }
@@ -106,19 +106,23 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
       for (var employeeId in company.employeesId) {
         if (_accounts.contains(employeeId)) {
           Account account = _accounts.firstWhere((e) => e.uid == employeeId);
-          employees.add(account);
+          _employees.add(account);
         } else {
           if (_accountCubit.state.status == EAccountStatus.created) {
             Account? account = await _accountRepository.getAccountById(employeeId);
             if (account != null) {
               _accounts.add(account);
-              employees.add(account);
+              _employees.add(account);
             }
           }
         }
       }
 
-      _companies.add(company.copyWith(owners: owners, employees: employees));
+      _owners.sort((a, b) => a.name.compareTo(b.name));
+      _employees.sort((a, b) => a.name.compareTo(b.name));
+
+      _companies.add(company.copyWith(owners: _owners, employees: _employees));
+      _companies.sort((a, b) => a.name.compareTo(b.name));
     }
     return _companies;
   }

@@ -45,9 +45,7 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(Languages.edit_profile()),
-        ),
+        appBar: customAppBar(title: Languages.edit_profile()),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

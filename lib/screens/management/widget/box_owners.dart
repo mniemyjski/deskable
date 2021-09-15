@@ -60,17 +60,12 @@ class _BoxOwnersState extends State<BoxOwners> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: InkWell(
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(state.company!.owners[index].name),
-                            )),
+                        child: InkWell(onTap: () {}, child: Text(state.company!.owners[index].name)),
                       ),
                       InkWell(
                         onTap: () => _onTap(context, state, index),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(right: 8),
                           child: Icon(Icons.remove_circle),
                         ),
                       ),

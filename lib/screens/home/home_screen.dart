@@ -7,6 +7,7 @@ import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/utilities/languages.dart';
 import 'package:deskable/utilities/responsive.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
+import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -76,13 +77,7 @@ class HomeScreen extends StatelessWidget {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(Languages.home()),
-            actions: [
-              IconButton(onPressed: () => null, icon: Icon(Icons.messenger_outline)),
-              IconButton(onPressed: () => null, icon: Icon(Icons.notifications_none)),
-            ],
-          ),
+          appBar: customAppBar(title: Languages.home()),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
             child: Padding(
