@@ -1,34 +1,29 @@
 part of 'create_room_cubit.dart';
 
 class CreateRoomState extends Equatable {
-  final int x;
-  final int y;
-  final List<Furniture> furniture;
-  final int open;
-  final int close;
+  final Room room;
+  final bool edit;
 
-  CreateRoomState({required this.x, required this.y, required this.furniture, required this.open, required this.close});
+  CreateRoomState({required this.room, required this.edit});
 
-  factory CreateRoomState.init() {
-    return CreateRoomState(x: 5, y: 5, furniture: [], open: 6, close: 23);
+  factory CreateRoomState.init({Room? room}) {
+    if (room == null) {
+      return CreateRoomState(room: Room(x: 5, y: 5, open: 6, close: 24, furniture: [], name: ''), edit: false);
+    } else {
+      return CreateRoomState(room: room, edit: true);
+    }
   }
 
   @override
-  List<Object> get props => [x, y, furniture, open, close];
+  List<Object> get props => [room];
 
   CreateRoomState copyWith({
-    int? x,
-    int? y,
-    List<Furniture>? furniture,
-    int? open,
-    int? close,
+    Room? room,
+    bool? edit,
   }) {
     return CreateRoomState(
-      x: x ?? this.x,
-      y: y ?? this.y,
-      furniture: furniture ?? this.furniture,
-      open: open ?? this.open,
-      close: close ?? this.close,
+      room: room ?? this.room,
+      edit: edit ?? this.edit,
     );
   }
 }

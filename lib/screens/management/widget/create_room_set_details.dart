@@ -29,6 +29,13 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
   }
 
   @override
+  void initState() {
+    _controllerName.text = context.read<CreateRoomCubit>().state.room.name;
+    _controllerDesc.text = context.read<CreateRoomCubit>().state.room.description;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,21 +54,15 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
             builder: (context, state) {
               return CustomButton(
                 onPressed: () {
-                  Room room = Room(
-                    x: state.x,
-                    y: state.y,
-                    open: state.open,
-                    close: state.close,
-                    furniture: state.furniture,
-                    name: _controllerName.text,
-                    description: _controllerDesc.text,
-                  );
-
-                  context.read<CreateRoomCubit>().create(room);
+                  if (state.edit) {
+                    context.read<CreateRoomCubit>().update(name: _controllerName.text, description: _controllerDesc.text);
+                  } else {
+                    context.read<CreateRoomCubit>().create(name: _controllerName.text, description: _controllerDesc.text);
+                  }
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: Text(Languages.create()),
+                child: Text(state.edit ? Languages.save() : Languages.create()),
               );
             },
           ),
@@ -84,7 +85,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                   Text(Languages.open()),
                   CustomSelectorData(
                     onPressed: null,
-                    widget: Text(state.open.toString()),
+                    widget: Text(state.room.open.toString()),
                     onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
                     onPressedNext: () => context.read<CreateRoomCubit>().increaseOpen(),
                   ),
@@ -95,7 +96,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                   Text(Languages.close()),
                   CustomSelectorData(
                     onPressed: null,
-                    widget: Text(state.close.toString()),
+                    widget: Text(state.room.close.toString()),
                     onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
                     onPressedNext: () => context.read<CreateRoomCubit>().increaseClose(),
                   ),

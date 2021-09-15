@@ -79,7 +79,7 @@ class Room extends Equatable {
     int? y,
     int? open,
     int? close,
-    List<Furniture>? fields,
+    List<Furniture>? furniture,
     String? name,
     String? description,
   }) {
@@ -90,7 +90,7 @@ class Room extends Equatable {
       y: y ?? this.y,
       open: open ?? this.open,
       close: close ?? this.close,
-      furniture: fields ?? this.furniture,
+      furniture: furniture ?? this.furniture,
       name: name ?? this.name,
       description: description ?? this.description,
     );

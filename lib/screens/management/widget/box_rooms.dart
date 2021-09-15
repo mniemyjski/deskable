@@ -45,7 +45,12 @@ class BoxRooms extends StatelessWidget {
       children: [
         Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
         IconButton(
-          onPressed: () => Navigator.of(context).pushNamed(CreateRoomScreen.routeName, arguments: BlocProvider.of<SelectedCompanyCubit>(context)),
+          onPressed: () => Navigator.of(context).pushNamed(
+            CreateRoomScreen.routeName,
+            arguments: CreateRoomScreenArguments(
+              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+            ),
+          ),
           icon: Icon(Icons.add_circle),
         ),
       ],
@@ -65,10 +70,20 @@ class BoxRooms extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
+                    Expanded(child: Text(stateA.rooms![index].name)),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
                       child: InkWell(
-                        onTap: () {},
-                        child: Text(stateA.rooms![index].name),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            CreateRoomScreen.routeName,
+                            arguments: CreateRoomScreenArguments(
+                              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+                              room: stateA.rooms![index],
+                            ),
+                          );
+                        },
+                        child: Icon(Icons.edit),
                       ),
                     ),
                     Padding(

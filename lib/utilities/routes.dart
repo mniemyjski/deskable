@@ -27,10 +27,10 @@ class CustomRouter {
         final args = settings.arguments as CropScreenArguments;
         return CropImageScreen.route(args);
       case CreateRoomScreen.routeName:
-        final args = settings.arguments as SelectedCompanyCubit?;
-
-        if (args != null) return CreateRoomScreen.route(args);
-        return ManagementScreen.route();
+        final args = settings.arguments as CreateRoomScreenArguments;
+        return CreateRoomScreen.route(args);
+      // if (args != null) return CreateRoomScreen.route(args);
+      // return ManagementScreen.route();
 
       default:
         return _errorRoute();
