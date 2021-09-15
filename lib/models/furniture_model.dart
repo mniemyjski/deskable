@@ -1,22 +1,22 @@
+import 'package:deskable/utilities/constants.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 
-// enum EFurnitureType { computer, laptop }
+enum EFurnitureType { computer, laptop, empty }
 
 class Furniture extends Equatable {
   final String id;
   final int position;
-  final String path;
+  final EFurnitureType type;
   final int rotation;
-  final bool isEmpty;
   final String name;
   final String description;
 
   Furniture({
     required this.id,
     required this.position,
-    this.isEmpty = false,
+    required this.type,
     this.rotation = 0,
-    this.path = '',
     this.name = '',
     this.description = '',
   });
@@ -25,35 +25,14 @@ class Furniture extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, position, isEmpty, rotation, path, name, description];
-
-  Furniture copyWith({
-    String? id,
-    int? position,
-    String? path,
-    int? rotation,
-    bool? isEmpty,
-    String? name,
-    String? description,
-  }) {
-    return Furniture(
-      id: id ?? this.id,
-      position: position ?? this.position,
-      path: path ?? this.path,
-      rotation: rotation ?? this.rotation,
-      isEmpty: isEmpty ?? this.isEmpty,
-      name: name ?? this.name,
-      description: description ?? this.description,
-    );
-  }
+  List<Object?> get props => [id, position, rotation, name, description, type];
 
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
       'position': this.position,
-      'path': this.path,
+      'type': Enums.toText(this.type),
       'rotation': this.rotation,
-      'isEmpty': this.isEmpty,
       'name': this.name,
       'description': this.description,
     };
@@ -63,11 +42,41 @@ class Furniture extends Equatable {
     return Furniture(
       id: map['id'] as String,
       position: map['position'] as int,
-      path: map['path'] as String,
+      type: Enums.toEnum(map['type'], EFurnitureType.values),
       rotation: map['rotation'] as int,
-      isEmpty: map['isEmpty'] as bool,
       name: map['name'] as String,
       description: map['description'] as String,
+    );
+  }
+
+  String path() {
+    switch (this.type) {
+      case EFurnitureType.computer:
+        return Constants.computer();
+
+      case EFurnitureType.laptop:
+        return Constants.laptop();
+
+      case EFurnitureType.empty:
+        return '';
+    }
+  }
+
+  Furniture copyWith({
+    String? id,
+    int? position,
+    EFurnitureType? type,
+    int? rotation,
+    String? name,
+    String? description,
+  }) {
+    return Furniture(
+      id: id ?? this.id,
+      position: position ?? this.position,
+      type: type ?? this.type,
+      rotation: rotation ?? this.rotation,
+      name: name ?? this.name,
+      description: description ?? this.description,
     );
   }
 }

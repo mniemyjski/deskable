@@ -83,7 +83,7 @@ class CreateRoomScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: 0, path: Constants.computer()),
+                            data: Furniture(id: '', position: 0, type: EFurnitureType.computer),
                             child: Image.asset(Constants.computer(),
                                 fit: BoxFit.fill,
                                 filterQuality: FilterQuality.high,
@@ -97,7 +97,7 @@ class CreateRoomScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: 0, path: Constants.laptop()),
+                            data: Furniture(id: '', position: 0, type: EFurnitureType.laptop),
                             child: Image.asset(
                               Constants.laptop(),
                               fit: BoxFit.fill,
@@ -113,7 +113,7 @@ class CreateRoomScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: 0, isEmpty: true),
+                            data: Furniture(id: '', position: 0, type: EFurnitureType.empty),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -167,15 +167,15 @@ class CreateRoomScreen extends StatelessWidget {
                                 List<dynamic> a,
                                 List<dynamic> r,
                               ) {
-                                final Furniture? f = state.furniture.firstWhereOrNull((element) => element.position == index);
+                                final Furniture? furniture = state.furniture.firstWhereOrNull((element) => element.position == index);
 
-                                if (f != null)
+                                if (furniture != null)
                                   return FieldInRoom(
                                     edit: true,
-                                    furniture: f,
+                                    furniture: furniture,
                                     onTap: () {
-                                      if (f.isEmpty) {
-                                        context.read<CreateRoomCubit>().removeFurniture(f);
+                                      if (furniture.type == EFurnitureType.empty) {
+                                        context.read<CreateRoomCubit>().removeFurniture(furniture);
                                         return;
                                       }
 
@@ -184,7 +184,7 @@ class CreateRoomScreen extends StatelessWidget {
                                         BlocProvider.value(
                                             value: BlocProvider.of<CreateRoomCubit>(context),
                                             child: DialogEditFurniture(
-                                              furniture: f,
+                                              furniture: furniture,
                                             )),
                                       );
                                     },

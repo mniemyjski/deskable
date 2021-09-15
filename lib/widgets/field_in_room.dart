@@ -17,15 +17,13 @@ class FieldInRoom extends StatelessWidget {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.5),
-          ),
+          border: Border.all(color: Colors.grey.withOpacity(0.5)),
         ),
       );
 
-    if (furniture!.isEmpty && !edit) return Container();
+    if (furniture!.type == EFurnitureType.empty && !edit) return Container();
 
-    if (furniture!.isEmpty && edit) return InkWell(splashColor: Colors.grey, onTap: onTap, child: Container());
+    if (furniture!.type == EFurnitureType.empty && edit) return InkWell(splashColor: Colors.grey, onTap: onTap, child: Container());
 
     return InkWell(
         splashColor: Colors.grey,
@@ -36,7 +34,7 @@ class FieldInRoom extends StatelessWidget {
             children: [
               RotationTransition(
                 turns: AlwaysStoppedAnimation(furniture!.rotation / 360),
-                child: Image.asset(furniture!.path,
+                child: Image.asset(furniture!.path(),
                     fit: BoxFit.fill,
                     filterQuality: FilterQuality.high,
                     color: Color.fromRGBO(255, 255, 255, 0.8),
