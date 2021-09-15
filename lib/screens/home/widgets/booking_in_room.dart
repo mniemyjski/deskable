@@ -70,7 +70,7 @@ class BookingInRoom extends StatelessWidget {
         final stateA = context.watch<SelectedRoomCubit>().state;
         final stateB = context.watch<RoomCubit>().state;
 
-        if (stateB.status == ERoomStatus.empty) return Container();
+        if (stateB.status == ERoomStatus.empty || stateA.status != ESelectedRoomStatus.succeed) return Container();
 
         return CustomSelectorData(
           onPressedNext: () => context.read<SelectedRoomCubit>().next(),
