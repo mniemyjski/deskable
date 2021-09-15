@@ -3,11 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomSelectorData extends StatelessWidget {
   final VoidCallback? onPressedBack;
-  final VoidCallback? onPressedForward;
+  final VoidCallback? onPressedNext;
   final VoidCallback? onPressed;
   final Widget widget;
 
-  const CustomSelectorData({Key? key, this.onPressedBack, this.onPressedForward, required this.onPressed, required this.widget}) : super(key: key);
+  const CustomSelectorData({Key? key, this.onPressedBack, this.onPressedNext, required this.onPressed, required this.widget}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,10 @@ class CustomSelectorData extends StatelessWidget {
               child: widget,
             ))),
         SizedBox(width: 8),
-        if (onPressedForward != null)
+        if (onPressedNext != null)
           InkWell(
             child: FaIcon(FontAwesomeIcons.chevronRight, color: Colors.grey),
-            onTap: onPressedForward,
+            onTap: onPressedNext,
           ),
       ],
     );

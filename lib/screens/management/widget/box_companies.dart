@@ -73,7 +73,7 @@ class BoxCompanies extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
+                            context.read<SelectedCompanyCubit>().change(index);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

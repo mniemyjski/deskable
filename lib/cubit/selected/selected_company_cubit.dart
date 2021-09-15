@@ -55,9 +55,27 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
     });
   }
 
-  change(Company company) {
+  change(int index) {
     emit(SelectedCompanyState.loading());
-    emit(SelectedCompanyState.succeed(company: company));
+    emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+  }
+
+  next() {
+    int index = _companyCubit.state.companies!.indexOf(state.company!) + 1;
+
+    if (_companyCubit.state.companies!.length > index) {
+      emit(SelectedCompanyState.loading());
+      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+    }
+  }
+
+  back() {
+    int index = _companyCubit.state.companies!.indexOf(state.company!) - 1;
+
+    if (index >= 0) {
+      emit(SelectedCompanyState.loading());
+      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+    }
   }
 
   Future<bool> addOwnerByEmail(String email) async {

@@ -4,6 +4,7 @@ import 'package:deskable/screens/home/widgets/schedule.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/custom_selector_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +42,7 @@ class BookingInRoom extends StatelessWidget {
   CustomSelectorData _buildDateSelector(BuildContext context) {
     return CustomSelectorData(
       onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
-      onPressedForward: () => context.read<SelectedDateCubit>().increase(),
+      onPressedNext: () => context.read<SelectedDateCubit>().increase(),
       onPressed: () {
         showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
             .then((date) {
@@ -54,8 +55,8 @@ class BookingInRoom extends StatelessWidget {
         builder: (context, state) {
           return Column(
             children: [
-              Text(DateFormat('dd-MM-yyyy').format(state.dateTime)),
-              Text(state.name),
+              Text(DateFormat('dd-MM-yyyy').format(state.dateTime), style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(state.name, style: TextStyle(fontStyle: FontStyle.italic)),
             ],
           );
         },
@@ -72,6 +73,8 @@ class BookingInRoom extends StatelessWidget {
         if (stateB.status == ERoomStatus.empty) return Container();
 
         return CustomSelectorData(
+          onPressedNext: () => context.read<SelectedRoomCubit>().next(),
+          onPressedBack: () => context.read<SelectedRoomCubit>().back(),
           onPressed: () => customDialog(
             context,
             ListView.builder(
@@ -82,7 +85,7 @@ class BookingInRoom extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: OutlinedButton(
                       onPressed: () {
-                        context.read<SelectedRoomCubit>().change(stateB.rooms![index]);
+                        context.read<SelectedRoomCubit>().change(index);
                         Navigator.pop(context);
                       },
                       child: Text(stateB.rooms![index].name),
@@ -90,7 +93,7 @@ class BookingInRoom extends StatelessWidget {
                   );
                 }),
           ),
-          widget: Text(stateA.room?.name ?? ''),
+          widget: Text(stateA.room?.name ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
         );
       },
     );
@@ -103,6 +106,8 @@ class BookingInRoom extends StatelessWidget {
         final stateB = context.watch<SelectedCompanyCubit>().state;
 
         return CustomSelectorData(
+          onPressedBack: () => context.read<SelectedCompanyCubit>().back(),
+          onPressedNext: () => context.read<SelectedCompanyCubit>().next(),
           onPressed: () => customDialog(
             context,
             ListView.builder(
@@ -113,7 +118,7 @@ class BookingInRoom extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: OutlinedButton(
                       onPressed: () {
-                        context.read<SelectedCompanyCubit>().change(stateA.companies![index]);
+                        context.read<SelectedCompanyCubit>().change(index);
                         Navigator.pop(context);
                       },
                       child: Text(stateA.companies![index].name),
@@ -121,7 +126,7 @@ class BookingInRoom extends StatelessWidget {
                   );
                 }),
           ),
-          widget: Text(stateB.company?.name ?? ''),
+          widget: Text(stateB.company?.name ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
         );
       },
     );

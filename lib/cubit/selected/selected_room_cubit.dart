@@ -40,9 +40,27 @@ class SelectedRoomCubit extends HydratedCubit<SelectedRoomState> {
     });
   }
 
-  change(Room room) {
+  change(int index) {
     emit(SelectedRoomState.loading());
-    emit(SelectedRoomState.succeed(room: room));
+    emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms![index]));
+  }
+
+  next() {
+    int index = _roomCubit.state.rooms!.indexOf(state.room!) + 1;
+
+    if (_roomCubit.state.rooms!.length > index) {
+      emit(SelectedRoomState.loading());
+      emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms![index]));
+    }
+  }
+
+  back() {
+    int index = _roomCubit.state.rooms!.indexOf(state.room!) - 1;
+
+    if (index >= 0) {
+      emit(SelectedRoomState.loading());
+      emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms![index]));
+    }
   }
 
   Furniture? getFurniture(String deskId) {
