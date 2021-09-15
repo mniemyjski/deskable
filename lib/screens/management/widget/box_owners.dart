@@ -60,7 +60,7 @@ class _BoxOwnersState extends State<BoxOwners> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: InkWell(onTap: () {}, child: Text(state.company!.owners[index].name)),
+                        child: InkWell(onTap: null, child: Text(state.company!.owners[index].name)),
                       ),
                       InkWell(
                         onTap: () => _onTap(context, state, index),

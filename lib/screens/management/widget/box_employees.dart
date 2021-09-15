@@ -59,7 +59,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: InkWell(onTap: () {}, child: Text(state.company!.employees[index].name)),
+                    child: InkWell(onTap: null, child: Text(state.company!.employees[index].name)),
                   ),
                   InkWell(
                     onTap: () => _onTap(context, state, index),
