@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           mobile: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               RoomDisplay(),
                               SizedBox(height: 4),
