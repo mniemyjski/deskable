@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final Widget child;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color textColor;
   final VoidCallback? onPressed;
 
@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     required this.child,
     this.textColor = Colors.white,
-    this.backgroundColor = Colors.indigo,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             onPrimary: textColor,
-            primary: backgroundColor,
+            primary: backgroundColor ?? Color.fromRGBO(0, 103, 163, 1),
             minimumSize: Size(56, 56),
             padding: EdgeInsets.symmetric(horizontal: 16),
             shape: const RoundedRectangleBorder(

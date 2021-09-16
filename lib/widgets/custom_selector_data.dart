@@ -35,7 +35,7 @@ class CustomSelectorData extends StatelessWidget {
         SizedBox(width: 4),
         if (onPressedNext != null)
           Padding(
-            padding: const EdgeInsets.only(left: 4),
+            padding: const EdgeInsets.only(right: 4),
             child: InkWell(
               child: FaIcon(FontAwesomeIcons.chevronRight),
               onTap: onPressedNext,
