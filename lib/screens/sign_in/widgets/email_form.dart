@@ -46,6 +46,7 @@ class _EmailFormState extends State<EmailForm> {
                   child: Form(
                     key: _formKeyEmail,
                     child: TextFormField(
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         icon: FaIcon(
                           Icons.mail,
@@ -64,6 +65,7 @@ class _EmailFormState extends State<EmailForm> {
                     child: Form(
                       key: _formKeyPassword,
                       child: TextFormField(
+                        style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           icon: FaIcon(
                             Icons.lock,

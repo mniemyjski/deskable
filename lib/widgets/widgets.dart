@@ -6,3 +6,4 @@ export 'custom_drop_down_button.dart';
 export 'field_in_room.dart';
 export 'are_you_sure_dialog.dart';
 export 'custom_app_bar.dart';
+export 'custom_login_widget.dart';

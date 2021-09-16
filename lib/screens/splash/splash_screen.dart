@@ -1,6 +1,7 @@
 import 'package:deskable/bloc/auth/auth_bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/screens/screens.dart';
+import 'package:deskable/widgets/custom_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -43,9 +44,10 @@ class SplashScreen extends StatelessWidget {
           ),
         ],
         child: const Scaffold(
-            body: Center(
-          child: CircularProgressIndicator(),
-        )),
+          body: Center(
+            child: CustomLoginWidget(),
+          ),
+        ),
       ),
     );
   }
