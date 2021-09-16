@@ -11,7 +11,7 @@ import 'package:logger/logger.dart';
 
 part 'account_state.dart';
 
-class AccountCubit extends HydratedCubit<AccountState> {
+class AccountCubit extends Cubit<AccountState> {
   final AccountRepository _accountRepository;
   final AuthBloc _authBloc;
   late StreamSubscription<Account?> _accountSubscription;
@@ -29,6 +29,9 @@ class AccountCubit extends HydratedCubit<AccountState> {
   void _init() {
     if (_authBloc.state.status == EAuthStatus.authenticated) _sub(_authBloc.state);
 
+    try {
+      _authSubscription.cancel();
+    } catch (e) {}
     _authSubscription = _authBloc.stream.listen((event) {
       if (event.status == EAuthStatus.authenticated) {
         _sub(event);
@@ -42,6 +45,9 @@ class AccountCubit extends HydratedCubit<AccountState> {
   }
 
   void _sub(AuthState authState) {
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {}
     _accountSubscription = _accountRepository.streamMyAccount(authState.uid!).listen((account) {
       if (account != null) {
         if (state.account != account || state.status != EAccountStatus.created) emit(AccountState.created(account));
@@ -80,7 +86,7 @@ class AccountCubit extends HydratedCubit<AccountState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     try {
       _authSubscription.cancel();
     } catch (e) {}
@@ -90,13 +96,13 @@ class AccountCubit extends HydratedCubit<AccountState> {
     return super.close();
   }
 
-  @override
-  AccountState? fromJson(Map<String, dynamic> json) {
-    return AccountState.fromMap(json);
-  }
-
-  @override
-  Map<String, dynamic>? toJson(AccountState state) {
-    return state.toMap();
-  }
+  // @override
+  // AccountState? fromJson(Map<String, dynamic> json) {
+  //   return AccountState.fromMap(json);
+  // }
+  //
+  // @override
+  // Map<String, dynamic>? toJson(AccountState state) {
+  //   return state.toMap();
+  // }
 }

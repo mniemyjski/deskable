@@ -29,6 +29,9 @@ class SelectedRoomCubit extends HydratedCubit<SelectedRoomState> {
         emit(SelectedRoomState.succeed(room: _roomCubit.state.rooms!.first));
     }
 
+    try {
+      _roomSubscription.cancel();
+    } catch (e) {}
     _roomSubscription = _roomCubit.stream.listen((room) {
       if (room.status == ERoomStatus.succeed) {
         if (state.status != ESelectedRoomStatus.succeed || room.rooms!.first != state.room) emit(SelectedRoomState.succeed(room: room.rooms!.first));

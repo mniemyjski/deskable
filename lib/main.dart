@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<PreferenceCubit>(
             create: (context) => PreferenceCubit(
-              authBloc: context.read<AuthBloc>(),
+              accountCubit: context.read<AccountCubit>(),
               preferenceRepository: context.read<PreferenceRepository>(),
             ),
           ),
@@ -112,11 +112,17 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 fontFamily: 'Georgia',
                 primarySwatch: Colors.indigo,
-                scaffoldBackgroundColor: Colors.grey[100],
+                scaffoldBackgroundColor: Color.fromRGBO(0, 121, 191, 1),
+                cardColor: Colors.grey[200],
               ),
               darkTheme: ThemeData(
                 fontFamily: 'Georgia',
                 brightness: Brightness.dark,
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(48, 48, 48, 1.0)),
+                  ),
+                ),
               ),
               themeMode: state ? ThemeMode.dark : ThemeMode.light,
               onGenerateRoute: CustomRouter.onGenerateRoute,

@@ -37,6 +37,9 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
   void _init() {
     if (_accountCubit.state.status == EAccountStatus.created) _sub(_accountCubit.state);
 
+    try {
+      _accountSubscription.cancel();
+    } catch (e) {}
     _accountSubscription = _accountCubit.stream.listen((event) {
       if (event.status == EAccountStatus.created) {
         _sub(event);

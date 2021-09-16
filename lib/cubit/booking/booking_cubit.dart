@@ -64,6 +64,9 @@ class BookingCubit extends HydratedCubit<BookingState> {
       }
     });
 
+    try {
+      _selectedRoomSubscription.cancel();
+    } catch (e) {}
     _selectedRoomSubscription = _selectedRoomCubit.stream.listen((event) {
       if (event.status == ESelectedRoomStatus.succeed) {
         if (event != state.selectedRoomState) {

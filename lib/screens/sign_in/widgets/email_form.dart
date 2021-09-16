@@ -49,7 +49,7 @@ class _EmailFormState extends State<EmailForm> {
                       decoration: InputDecoration(
                         icon: FaIcon(
                           Icons.mail,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
                       ),
                       textInputAction: TextInputAction.done,
@@ -67,7 +67,7 @@ class _EmailFormState extends State<EmailForm> {
                         decoration: InputDecoration(
                           icon: FaIcon(
                             Icons.lock,
-                            color: Colors.grey,
+                            color: Colors.white,
                           ),
                         ),
                         obscureText: true,
@@ -99,13 +99,15 @@ class _EmailFormState extends State<EmailForm> {
                       onPressed: () {
                         context.read<SignInCubit>().changeForm(SignInFormType.reset);
                       },
-                      child: Text(Languages.forgot_your_password())),
+                      child: Text(
+                        Languages.forgot_your_password(),
+                        style: TextStyle(color: Colors.white),
+                      )),
                 if (state.signInFormType != SignInFormType.reset)
                   TextButton(
                       onPressed: () => onPressedChangeTypeForm(state),
-                      child: Text(
-                        state.signInFormType == SignInFormType.signIn ? Languages.need_register() : Languages.have_account_sign_in(),
-                      )),
+                      child: Text(state.signInFormType == SignInFormType.signIn ? Languages.need_register() : Languages.have_account_sign_in(),
+                          style: TextStyle(color: Colors.white))),
               ],
             ),
           ),

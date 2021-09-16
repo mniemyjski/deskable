@@ -45,6 +45,9 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
         emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies!.first));
     }
 
+    try {
+      _companySubscription.cancel();
+    } catch (e) {}
     _companySubscription = _companyCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
         if (state.status != ESelectedCompanyStatus.succeed || state.company != company.companies!.first)

@@ -90,4 +90,7 @@ class Languages {
   static String friday() => "friday".tr();
   static String saturday() => "saturday".tr();
   static String sunday() => "sunday".tr();
+
+  static String organizations() => "organizations".tr();
+  static String organization() => "organization".tr();
 }

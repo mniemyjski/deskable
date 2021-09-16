@@ -23,21 +23,17 @@ class _BoxOwnersState extends State<BoxOwners> {
       builder: (context, state) {
         if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
-        return Container(
-          height: 500,
-          width: 220,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.5),
+        return Card(
+          child: Container(
+            height: 500,
+            width: 220,
+            child: Column(
+              children: [
+                _buildHeader(),
+                Divider(),
+                _buildListView(),
+              ],
             ),
-          ),
-          child: Column(
-            children: [
-              _buildHeader(),
-              Divider(),
-              _buildListView(),
-            ],
           ),
         );
       },

@@ -15,23 +15,19 @@ class BoxRooms extends StatelessWidget {
       builder: (context, state) {
         if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
-        return Container(
-          height: 500,
-          width: 220,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.5),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Column(
-              children: [
-                _buildHeader(context),
-                Divider(),
-                _buildListView(),
-              ],
+        return Card(
+          child: Container(
+            height: 500,
+            width: 220,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Column(
+                children: [
+                  _buildHeader(context),
+                  Divider(),
+                  _buildListView(),
+                ],
+              ),
             ),
           ),
         );

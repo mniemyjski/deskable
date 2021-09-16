@@ -32,6 +32,9 @@ dependencies:
 #  firebase_messaging: ^10.0.7
   google_sign_in: ^5.1.0
 
+#  facebook_audience_network: ^1.0.0-nullsafety.0
+#  google_mobile_ads: ^0.13.4
+
   connectivity_plus: ^1.1.0
   flash: ^2.0.1
 
@@ -41,11 +44,12 @@ dependencies:
 
   cached_network_image: ^3.1.0
   crop_your_image: ^0.6.0+1
-  image_picker: ^0.8.4
+  image_picker: ^0.8.4+1
 
   introduction_screen: ^2.1.0
   uuid: ^3.0.4
 
+  auto_size_text: ^3.0.0-nullsafety.0
   loader_overlay: ^2.0.2+1
 
 dev_dependencies:

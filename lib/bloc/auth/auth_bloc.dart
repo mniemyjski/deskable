@@ -10,9 +10,9 @@ import 'package:deskable/utilities/utilities.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
-  late StreamSubscription<User?> _userSubscription;
+  late StreamSubscription<User?> _authSubscription;
 
   AuthBloc({
     required AuthRepository authRepository,
@@ -22,15 +22,19 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   }
 
   void _init() {
-    _userSubscription = _authRepository.user.listen((user) {
+    try {
+      _authSubscription.cancel();
+    } catch (e) {}
+
+    _authSubscription = _authRepository.user.listen((user) {
       add(AuthUserChanged(user: user));
     });
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     try {
-      _userSubscription.cancel();
+      _authSubscription.cancel();
     } catch (e) {}
     return super.close();
   }
@@ -56,13 +60,13 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     }
   }
 
-  @override
-  AuthState? fromJson(Map<String, dynamic> json) {
-    return AuthState.fromMap(json);
-  }
-
-  @override
-  Map<String, dynamic>? toJson(AuthState state) {
-    return state.toMap();
-  }
+  // @override
+  // AuthState? fromJson(Map<String, dynamic> json) {
+  //   return AuthState.fromMap(json);
+  // }
+  //
+  // @override
+  // Map<String, dynamic>? toJson(AuthState state) {
+  //   return state.toMap();
+  // }
 }

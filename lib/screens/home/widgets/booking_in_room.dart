@@ -1,7 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/schedule.dart';
-import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/custom_selector_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,27 +13,25 @@ class BookingInRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      width: 520,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildCompanySelector(),
-              _buildRoomSelector(),
-              _buildDateSelector(context),
-            ],
-          ),
-          SizedBox(height: 8),
-          Schedule(),
-        ],
+    return Card(
+      child: Container(
+        padding: EdgeInsets.all(8),
+        width: 520,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildCompanySelector(),
+                _buildRoomSelector(),
+                _buildDateSelector(context),
+              ],
+            ),
+            SizedBox(height: 8),
+            Schedule(),
+          ],
+        ),
       ),
     );
   }
@@ -54,9 +51,22 @@ class BookingInRoom extends StatelessWidget {
       widget: BlocBuilder<SelectedDateCubit, SelectedDateState>(
         builder: (context, state) {
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(DateFormat('dd-MM-yyyy').format(state.dateTime), style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(state.name, style: TextStyle(fontStyle: FontStyle.italic)),
+              AutoSizeText(
+                DateFormat('dd-MM-yyyy').format(state.dateTime),
+                style: TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 1,
+                minFontSize: 8,
+                maxFontSize: 12,
+              ),
+              AutoSizeText(
+                state.name,
+                style: TextStyle(fontStyle: FontStyle.italic),
+                maxLines: 1,
+                minFontSize: 6,
+                maxFontSize: 12,
+              ),
             ],
           );
         },
@@ -93,7 +103,13 @@ class BookingInRoom extends StatelessWidget {
                   );
                 }),
           ),
-          widget: Text(stateA.room?.name ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+          widget: AutoSizeText(
+            stateA.room?.name ?? '',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            maxLines: 1,
+            minFontSize: 6,
+            maxFontSize: 12,
+          ),
         );
       },
     );
@@ -126,7 +142,13 @@ class BookingInRoom extends StatelessWidget {
                   );
                 }),
           ),
-          widget: Text(stateB.company?.name ?? '', style: TextStyle(fontWeight: FontWeight.bold)),
+          widget: AutoSizeText(
+            stateB.company?.name ?? '',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            maxLines: 1,
+            minFontSize: 6,
+            maxFontSize: 12,
+          ),
         );
       },
     );

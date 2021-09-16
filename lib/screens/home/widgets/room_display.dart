@@ -26,10 +26,11 @@ class RoomDisplay extends StatelessWidget {
         Room room = state.room!;
 
         return Container(
+          padding: const EdgeInsets.only(top: 4),
           width: room.x * 65,
           child: GridView.count(
             shrinkWrap: true,
-            physics: new NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             mainAxisSpacing: 3,
             crossAxisSpacing: 3,
             crossAxisCount: room.x,

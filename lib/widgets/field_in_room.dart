@@ -13,47 +13,52 @@ class FieldInRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (furniture == null)
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: Colors.grey.withOpacity(0.5)),
-        ),
-      );
+    if (furniture == null) return Card(margin: EdgeInsets.zero);
 
     if (furniture!.type == EFurnitureType.empty && !edit) return Container();
 
     if (furniture!.type == EFurnitureType.empty && edit) return InkWell(splashColor: Colors.grey, onTap: onTap, child: Container());
 
-    return InkWell(
-        splashColor: Colors.grey,
-        onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.all(1),
-          child: Stack(
-            children: [
-              RotationTransition(
-                turns: AlwaysStoppedAnimation(furniture!.rotation / 360),
-                child: Image.asset(furniture!.path(),
+    return Card(
+      margin: EdgeInsets.zero,
+      child: InkWell(
+          splashColor: Colors.grey,
+          onTap: onTap,
+          child: Container(
+            margin: EdgeInsets.all(2),
+            child: Stack(
+              children: [
+                RotationTransition(
+                  turns: AlwaysStoppedAnimation(furniture!.rotation / 360),
+                  child: Image.asset(
+                    furniture!.path(),
                     fit: BoxFit.fill,
                     filterQuality: FilterQuality.high,
-                    color: Color.fromRGBO(255, 255, 255, 0.8),
-                    colorBlendMode: BlendMode.modulate),
-              ),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    furniture?.name ?? '',
-                    style: TextStyle(color: Colors.grey),
-                  )),
-              if (false) ...[
-                CustomPaint(
-                  size: Size(50, 50),
-                  painter: PainterX(),
-                )
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    colorBlendMode: BlendMode.modulate,
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.bottomRight,
+                    child: Card(
+                      color: Theme.of(context).cardColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          furniture?.name ?? '',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    )),
+                if (false) ...[
+                  CustomPaint(
+                    size: Size(50, 50),
+                    painter: PainterX(),
+                  )
+                ],
               ],
-            ],
-          ),
-        ));
+            ),
+          )),
+    );
   }
 }

@@ -15,21 +15,22 @@ class CustomSelectorData extends StatelessWidget {
       children: [
         if (onPressedBack != null)
           InkWell(
-            child: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.grey),
+            child: FaIcon(FontAwesomeIcons.chevronLeft),
             onTap: onPressedBack,
           ),
-        SizedBox(width: 8),
-        InkWell(
-            onTap: onPressed,
-            child: Card(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: widget,
-            ))),
-        SizedBox(width: 8),
+        SizedBox(width: 4),
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(width: 100, height: 30, child: Center(child: widget)),
+          ),
+        ),
+        SizedBox(width: 4),
         if (onPressedNext != null)
           InkWell(
-            child: FaIcon(FontAwesomeIcons.chevronRight, color: Colors.grey),
+            child: FaIcon(FontAwesomeIcons.chevronRight),
             onTap: onPressedNext,
           ),
       ],

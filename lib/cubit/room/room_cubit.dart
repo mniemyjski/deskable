@@ -15,6 +15,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
   final AccountCubit _accountCubit;
 
   late StreamSubscription<List<Room>> _roomsSubscription;
+  late StreamSubscription<SelectedCompanyState> _selectedCompanySubscription;
   late StreamSubscription<AccountState> _accountSubscription;
 
   RoomCubit({required AccountCubit accountCubit, required RoomRepository roomRepository, required SelectedCompanyCubit selectedCompanyCubit})
@@ -30,7 +31,10 @@ class RoomCubit extends HydratedCubit<RoomState> {
       sub(_selectedCompanyCubit.state);
     }
 
-    _selectedCompanyCubit.stream.listen((event) {
+    try {
+      _selectedCompanySubscription.cancel();
+    } catch (e) {}
+    _selectedCompanySubscription = _selectedCompanyCubit.stream.listen((event) {
       if (event.status == ESelectedCompanyStatus.succeed) {
         sub(event);
       } else {
@@ -68,6 +72,9 @@ class RoomCubit extends HydratedCubit<RoomState> {
   Future<void> close() {
     try {
       _roomsSubscription.cancel();
+    } catch (e) {}
+    try {
+      _selectedCompanySubscription.cancel();
     } catch (e) {}
     try {
       _accountSubscription.cancel();
