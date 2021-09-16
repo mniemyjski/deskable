@@ -1,5 +1,5 @@
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/cubit/selected/selected_company_cubit.dart';
+import 'package:deskable/cubit/selected/selected_organization_cubit.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/widgets.dart';
@@ -11,7 +11,7 @@ class BoxRooms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+    return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
         if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
@@ -44,7 +44,7 @@ class BoxRooms extends StatelessWidget {
           onPressed: () => Navigator.of(context).pushNamed(
             CreateRoomScreen.routeName,
             arguments: CreateRoomScreenArguments(
-              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+              selectedCompanyCubit: context.read<SelectedOrganizationCubit>(),
             ),
           ),
           icon: Icon(Icons.add_circle),
@@ -74,7 +74,7 @@ class BoxRooms extends StatelessWidget {
                           Navigator.of(context).pushNamed(
                             CreateRoomScreen.routeName,
                             arguments: CreateRoomScreenArguments(
-                              selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+                              selectedCompanyCubit: context.read<SelectedOrganizationCubit>(),
                               room: stateA.rooms![index],
                             ),
                           );

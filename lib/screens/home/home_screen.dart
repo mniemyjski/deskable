@@ -1,4 +1,4 @@
-import 'package:deskable/cubit/company/company_cubit.dart';
+import 'package:deskable/cubit/organization/organization_cubit.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:deskable/screens/home/widgets/booking_in_room.dart';
@@ -34,18 +34,18 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CompanyCubit>(
-          create: (context) => CompanyCubit(
+        BlocProvider<OrganizationCubit>(
+          create: (context) => OrganizationCubit(
             accountCubit: context.read<AccountCubit>(),
-            companyRepository: context.read<CompanyRepository>(),
+            organizationRepository: context.read<OrganizationRepository>(),
             accountRepository: context.read<AccountRepository>(),
           ),
         ),
-        BlocProvider<SelectedCompanyCubit>(
-          create: (context) => SelectedCompanyCubit(
-            companyCubit: context.read<CompanyCubit>(),
+        BlocProvider<SelectedOrganizationCubit>(
+          create: (context) => SelectedOrganizationCubit(
+            organizationCubit: context.read<OrganizationCubit>(),
             accountRepository: context.read<AccountRepository>(),
-            companyRepository: context.read<CompanyRepository>(),
+            organizationRepository: context.read<OrganizationRepository>(),
             accountCubit: context.read<AccountCubit>(),
           ),
         ),
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),
             roomRepository: context.read<RoomRepository>(),
-            selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+            selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
           ),
         ),
         BlocProvider<SelectedRoomCubit>(
@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Builder(
                 builder: (context) {
-                  return BlocBuilder<CompanyCubit, CompanyState>(
+                  return BlocBuilder<OrganizationCubit, OrganizationState>(
                     builder: (context, state) {
                       if (state.status == ECompanyStatus.empty)
                         return Padding(
@@ -113,9 +113,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
 
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return CustomLoadingWidget();
                     },
                   );
                 },

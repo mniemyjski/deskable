@@ -11,30 +11,31 @@ part 'room_state.dart';
 
 class RoomCubit extends HydratedCubit<RoomState> {
   final RoomRepository _roomRepository;
-  final SelectedCompanyCubit _selectedCompanyCubit;
+  final SelectedOrganizationCubit _selectedOrganizationCubit;
   final AccountCubit _accountCubit;
 
   late StreamSubscription<List<Room>> _roomsSubscription;
-  late StreamSubscription<SelectedCompanyState> _selectedCompanySubscription;
+  late StreamSubscription<SelectedOrganizationState> _selectedOrganizationSubscription;
   late StreamSubscription<AccountState> _accountSubscription;
 
-  RoomCubit({required AccountCubit accountCubit, required RoomRepository roomRepository, required SelectedCompanyCubit selectedCompanyCubit})
+  RoomCubit(
+      {required AccountCubit accountCubit, required RoomRepository roomRepository, required SelectedOrganizationCubit selectedOrganizationCubit})
       : _roomRepository = roomRepository,
-        _selectedCompanyCubit = selectedCompanyCubit,
+        _selectedOrganizationCubit = selectedOrganizationCubit,
         _accountCubit = accountCubit,
         super(RoomState.unknown()) {
     _init();
   }
 
   void _init() {
-    if (_selectedCompanyCubit.state.status == ESelectedCompanyStatus.succeed) {
-      sub(_selectedCompanyCubit.state);
+    if (_selectedOrganizationCubit.state.status == ESelectedCompanyStatus.succeed) {
+      sub(_selectedOrganizationCubit.state);
     }
 
     try {
-      _selectedCompanySubscription.cancel();
+      _selectedOrganizationSubscription.cancel();
     } catch (e) {}
-    _selectedCompanySubscription = _selectedCompanyCubit.stream.listen((event) {
+    _selectedOrganizationSubscription = _selectedOrganizationCubit.stream.listen((event) {
       if (event.status == ESelectedCompanyStatus.succeed) {
         sub(event);
       } else {
@@ -46,7 +47,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
     });
   }
 
-  void sub(SelectedCompanyState selectedCompanyState) {
+  void sub(SelectedOrganizationState selectedCompanyState) {
     try {
       _roomsSubscription.cancel();
     } catch (e) {}
@@ -74,7 +75,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
       _roomsSubscription.cancel();
     } catch (e) {}
     try {
-      _selectedCompanySubscription.cancel();
+      _selectedOrganizationSubscription.cancel();
     } catch (e) {}
     try {
       _accountSubscription.cancel();

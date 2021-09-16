@@ -93,4 +93,7 @@ class Languages {
 
   static String organizations() => "organizations".tr();
   static String organization() => "organization".tr();
+
+  static String admin() => "admin".tr();
+  static String admins() => "admins".tr();
 }

@@ -4,80 +4,80 @@ import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/account_repository.dart';
-import 'package:deskable/repositories/company_repository.dart';
+import 'package:deskable/repositories/organization_repository.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-part 'selected_company_state.dart';
+part 'selected_organization_state.dart';
 
-class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
-  final CompanyCubit _companyCubit;
+class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState> {
+  final OrganizationCubit _organizationCubit;
   final AccountCubit _accountCubit;
   final AccountRepository _accountRepository;
-  final CompanyRepository _companyRepository;
-  late StreamSubscription<CompanyState> _companySubscription;
+  final OrganizationRepository _organizationRepository;
+  late StreamSubscription<OrganizationState> _organizationSubscription;
 
-  SelectedCompanyCubit(
-      {required CompanyCubit companyCubit,
-      required CompanyRepository companyRepository,
+  SelectedOrganizationCubit(
+      {required OrganizationCubit organizationCubit,
+      required OrganizationRepository organizationRepository,
       required AccountRepository accountRepository,
       required AccountCubit accountCubit})
-      : _companyCubit = companyCubit,
+      : _organizationCubit = organizationCubit,
         _accountCubit = accountCubit,
-        _companyRepository = companyRepository,
+        _organizationRepository = organizationRepository,
         _accountRepository = accountRepository,
-        super(SelectedCompanyState.unknown()) {
+        super(SelectedOrganizationState.unknown()) {
     _init();
   }
 
   @override
   Future<void> close() {
     try {
-      _companySubscription.cancel();
+      _organizationSubscription.cancel();
     } catch (e) {}
 
     return super.close();
   }
 
   void _init() {
-    if (_companyCubit.state.status == ECompanyStatus.succeed) {
-      if (state.status != ESelectedCompanyStatus.succeed || state.company != _companyCubit.state.companies!.first)
-        emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies!.first));
+    if (_organizationCubit.state.status == ECompanyStatus.succeed) {
+      if (state.status != ESelectedCompanyStatus.succeed || state.company != _organizationCubit.state.companies!.first)
+        emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies!.first));
     }
 
     try {
-      _companySubscription.cancel();
+      _organizationSubscription.cancel();
     } catch (e) {}
-    _companySubscription = _companyCubit.stream.listen((company) {
+    _organizationSubscription = _organizationCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
         if (state.status != ESelectedCompanyStatus.succeed || state.company != company.companies!.first)
-          emit(SelectedCompanyState.succeed(company: company.companies!.first));
+          emit(SelectedOrganizationState.succeed(company: company.companies!.first));
       } else {
-        if (state.status != ESelectedCompanyStatus.unknown) emit(SelectedCompanyState.unknown());
+        if (state.status != ESelectedCompanyStatus.unknown) emit(SelectedOrganizationState.unknown());
       }
     });
   }
 
   change(int index) {
-    emit(SelectedCompanyState.loading());
-    emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+    emit(SelectedOrganizationState.loading());
+    emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
   }
 
   next() {
-    int index = _companyCubit.state.companies!.indexOf(state.company!) + 1;
+    int index = _organizationCubit.state.companies!.indexOf(state.company!) + 1;
 
-    if (_companyCubit.state.companies!.length > index) {
-      emit(SelectedCompanyState.loading());
-      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+    if (_organizationCubit.state.companies!.length > index) {
+      emit(SelectedOrganizationState.loading());
+      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
     }
   }
 
   back() {
-    int index = _companyCubit.state.companies!.indexOf(state.company!) - 1;
+    int index = _organizationCubit.state.companies!.indexOf(state.company!) - 1;
 
     if (index >= 0) {
-      emit(SelectedCompanyState.loading());
-      emit(SelectedCompanyState.succeed(company: _companyCubit.state.companies![index]));
+      emit(SelectedOrganizationState.loading());
+      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
     }
   }
 
@@ -87,7 +87,7 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
 
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.add(account.uid);
-    _companyRepository.update(state.company!.copyWith(ownersId: ownerId));
+    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
 
     return true;
   }
@@ -99,7 +99,7 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
 
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.remove(account.uid);
-    _companyRepository.update(state.company!.copyWith(ownersId: ownerId));
+    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
 
     return true;
   }
@@ -108,7 +108,7 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
     if (_accountCubit.state.account!.uid == accountId) return false;
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.remove(accountId);
-    _companyRepository.update(state.company!.copyWith(ownersId: ownerId));
+    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
 
     return true;
   }
@@ -119,7 +119,7 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
 
     List<String> employeesId = List.from(state.company!.employeesId);
     employeesId.add(account.uid);
-    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
 
     return true;
   }
@@ -130,7 +130,7 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
 
     List<String> employeesId = List.from(state.company!.employeesId);
     employeesId.remove(account.uid);
-    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
 
     return true;
   }
@@ -138,18 +138,18 @@ class SelectedCompanyCubit extends HydratedCubit<SelectedCompanyState> {
   Future<bool> removeEmployeeById(String accountId) async {
     List<String> employeesId = List.from(state.company!.employeesId);
     employeesId.remove(accountId);
-    _companyRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
 
     return true;
   }
 
   @override
-  SelectedCompanyState? fromJson(Map<String, dynamic> json) {
-    return SelectedCompanyState.fromMap(json);
+  SelectedOrganizationState? fromJson(Map<String, dynamic> json) {
+    return SelectedOrganizationState.fromMap(json);
   }
 
   @override
-  Map<String, dynamic>? toJson(SelectedCompanyState state) {
+  Map<String, dynamic>? toJson(SelectedOrganizationState state) {
     return state.toMap(hydrated: true);
   }
 }

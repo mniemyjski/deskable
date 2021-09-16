@@ -6,8 +6,8 @@ import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BoxCompanies extends StatelessWidget {
-  const BoxCompanies({Key? key}) : super(key: key);
+class BoxOrganizations extends StatelessWidget {
+  const BoxOrganizations({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class BoxCompanies extends StatelessWidget {
             customDialog(
               context,
               BlocProvider.value(
-                value: BlocProvider.of<CompanyCubit>(context),
-                child: CreateCompany(),
+                value: BlocProvider.of<OrganizationCubit>(context),
+                child: CreateOrganizations(),
               ),
             );
           },
@@ -53,8 +53,8 @@ class BoxCompanies extends StatelessWidget {
   Builder _buildListView() {
     return Builder(
       builder: (context) {
-        final stateA = context.watch<CompanyCubit>().state;
-        final stateB = context.watch<SelectedCompanyCubit>().state;
+        final stateA = context.watch<OrganizationCubit>().state;
+        final stateB = context.watch<SelectedOrganizationCubit>().state;
 
         return Expanded(
           child: ListView.separated(
@@ -67,7 +67,7 @@ class BoxCompanies extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          context.read<SelectedCompanyCubit>().change(index);
+                          context.read<SelectedOrganizationCubit>().change(index);
                         },
                         child: Text(
                           stateA.companies![index].name,
@@ -82,8 +82,8 @@ class BoxCompanies extends StatelessWidget {
                           customDialog(
                             context,
                             BlocProvider.value(
-                              value: BlocProvider.of<CompanyCubit>(context),
-                              child: CreateCompany(company: stateA.companies![index]),
+                              value: BlocProvider.of<OrganizationCubit>(context),
+                              child: CreateOrganizations(company: stateA.companies![index]),
                             ),
                           );
                         },
@@ -105,10 +105,10 @@ class BoxCompanies extends StatelessWidget {
     );
   }
 
-  Future<void> _onTap(BuildContext context, CompanyState stateA, int index) async {
+  Future<void> _onTap(BuildContext context, OrganizationState stateA, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
 
-    if (areYouSure) context.read<CompanyCubit>().delete(stateA.companies![index]);
+    if (areYouSure) context.read<OrganizationCubit>().delete(stateA.companies![index]);
   }
 }

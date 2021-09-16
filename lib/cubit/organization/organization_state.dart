@@ -1,26 +1,26 @@
-part of 'company_cubit.dart';
+part of 'organization_cubit.dart';
 
 enum ECompanyStatus { unknown, loading, succeed, empty }
 
-class CompanyState extends Equatable {
-  final List<Company>? companies;
+class OrganizationState extends Equatable {
+  final List<Organization>? companies;
 
   final ECompanyStatus status;
 
-  const CompanyState({required this.companies, required this.status});
+  const OrganizationState({required this.companies, required this.status});
 
-  factory CompanyState.unknown() {
-    return CompanyState(status: ECompanyStatus.unknown, companies: []);
+  factory OrganizationState.unknown() {
+    return OrganizationState(status: ECompanyStatus.unknown, companies: []);
   }
 
   @override
   List<Object?> get props => [companies, status];
 
-  CompanyState copyWith({
-    List<Company>? companies,
+  OrganizationState copyWith({
+    List<Organization>? companies,
     ECompanyStatus? status,
   }) {
-    return CompanyState(
+    return OrganizationState(
       companies: companies ?? this.companies,
       status: status ?? this.status,
     );
@@ -38,13 +38,13 @@ class CompanyState extends Equatable {
     };
   }
 
-  factory CompanyState.fromMap(Map<String, dynamic> map, {bool hydrated = false}) {
-    List<Company> _companies = [];
+  factory OrganizationState.fromMap(Map<String, dynamic> map, {bool hydrated = false}) {
+    List<Organization> _companies = [];
     map['companies'].forEach((company) {
-      _companies.add(Company.fromMap(company));
+      _companies.add(Organization.fromMap(company));
     });
 
-    return CompanyState(
+    return OrganizationState(
       companies: _companies,
       status: Enums.toEnum(map['status'] ?? 'unknown', ECompanyStatus.values),
     );

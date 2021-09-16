@@ -2,35 +2,35 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/models/company_model.dart';
+import 'package:deskable/models/organization_model.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-part 'company_state.dart';
+part 'organization_state.dart';
 
-class CompanyCubit extends HydratedCubit<CompanyState> {
-  final CompanyRepository _companyRepository;
+class OrganizationCubit extends HydratedCubit<OrganizationState> {
+  final OrganizationRepository _organizationRepository;
   final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
   final bool _owner;
 
   final List<Account> _accounts = [];
 
-  late StreamSubscription<List<Company?>> _companiesSubscription;
+  late StreamSubscription<List<Organization?>> _organizationSubscription;
   late StreamSubscription<AccountState> _accountSubscription;
 
-  CompanyCubit(
-      {required CompanyRepository companyRepository,
+  OrganizationCubit(
+      {required OrganizationRepository organizationRepository,
       required AccountCubit accountCubit,
       required AccountRepository accountRepository,
       bool owner = false})
-      : _companyRepository = companyRepository,
+      : _organizationRepository = organizationRepository,
         _accountCubit = accountCubit,
         _accountRepository = accountRepository,
         _owner = owner,
-        super(CompanyState.unknown()) {
+        super(OrganizationState.unknown()) {
     _init();
   }
 
@@ -45,26 +45,26 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
         _sub(event);
       } else {
         try {
-          _companiesSubscription.cancel();
+          _organizationSubscription.cancel();
         } catch (e) {}
-        if (state.status != ECompanyStatus.unknown) emit(CompanyState.unknown());
+        if (state.status != ECompanyStatus.unknown) emit(OrganizationState.unknown());
       }
     });
   }
 
   void _sub(AccountState authState) {
     try {
-      _companiesSubscription.cancel();
+      _organizationSubscription.cancel();
     } catch (e) {}
-    _companiesSubscription = _companyRepository.stream(accountId: _accountCubit.state.account!.uid, owner: _owner).listen((companies) async {
+    _organizationSubscription = _organizationRepository.stream(accountId: _accountCubit.state.account!.uid, owner: _owner).listen((companies) async {
       if (companies.isNotEmpty) {
         if (state.status == ECompanyStatus.succeed) {
           if (_change(companies)) {
-            List<Company> _companies = await _buildCompanies(companies);
+            List<Organization> _companies = await _buildCompanies(companies);
             emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
           }
         } else {
-          List<Company> _companies = await _buildCompanies(companies);
+          List<Organization> _companies = await _buildCompanies(companies);
           emit(state.copyWith(companies: _companies, status: ECompanyStatus.succeed));
         }
       } else {
@@ -73,7 +73,7 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
     });
   }
 
-  bool _change(List<Company> companies) {
+  bool _change(List<Organization> companies) {
     bool _change = false;
     for (var company in companies) {
       if (!state.companies!.contains(company)) _change = true;
@@ -84,8 +84,8 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
     return _change;
   }
 
-  Future<List<Company>> _buildCompanies(List<Company> companies) async {
-    List<Company> _companies = [];
+  Future<List<Organization>> _buildCompanies(List<Organization> companies) async {
+    List<Organization> _companies = [];
 
     for (var company in companies) {
       List<Account> _owners = [];
@@ -133,7 +133,7 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
   @override
   Future<void> close() {
     try {
-      _companiesSubscription.cancel();
+      _organizationSubscription.cancel();
     } catch (e) {}
     try {
       _accountSubscription.cancel();
@@ -142,34 +142,34 @@ class CompanyCubit extends HydratedCubit<CompanyState> {
     return super.close();
   }
 
-  Future<void> create(Company company) async {
+  Future<void> create(Organization company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      await _companyRepository.create(company.copyWith(
+      await _organizationRepository.create(company.copyWith(
         ownersId: [_accountCubit.state.account!.uid],
         employeesId: [_accountCubit.state.account!.uid],
       ));
     }
   }
 
-  Future<void> update(Company company) async {
+  Future<void> update(Organization company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      return await _companyRepository.update(company);
+      return await _organizationRepository.update(company);
     }
   }
 
-  Future<void> delete(Company company) async {
+  Future<void> delete(Organization company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
-      return await _companyRepository.delete(company);
+      return await _organizationRepository.delete(company);
     }
   }
 
   @override
-  CompanyState? fromJson(Map<String, dynamic> json) {
-    return CompanyState.fromMap(json);
+  OrganizationState? fromJson(Map<String, dynamic> json) {
+    return OrganizationState.fromMap(json);
   }
 
   @override
-  Map<String, dynamic>? toJson(CompanyState state) {
+  Map<String, dynamic>? toJson(OrganizationState state) {
     return state.toMap(hydrated: true);
   }
 }

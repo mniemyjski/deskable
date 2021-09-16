@@ -13,7 +13,7 @@ class FieldInRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (furniture == null) return Card(margin: EdgeInsets.zero);
+    if (furniture == null) return const Card(margin: EdgeInsets.zero);
 
     if (furniture!.type == EFurnitureType.empty && !edit) return Container();
 

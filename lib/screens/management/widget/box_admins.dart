@@ -6,20 +6,20 @@ import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BoxOwners extends StatefulWidget {
-  const BoxOwners({Key? key}) : super(key: key);
+class BoxAdmins extends StatefulWidget {
+  const BoxAdmins({Key? key}) : super(key: key);
 
   @override
-  State<BoxOwners> createState() => _BoxOwnersState();
+  State<BoxAdmins> createState() => _BoxAdminsState();
 }
 
-class _BoxOwnersState extends State<BoxOwners> {
+class _BoxAdminsState extends State<BoxAdmins> {
   bool search = false;
   String _email = '';
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+    return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
         if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
@@ -44,7 +44,7 @@ class _BoxOwnersState extends State<BoxOwners> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+        child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
           builder: (context, state) {
             if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
 
@@ -74,10 +74,10 @@ class _BoxOwnersState extends State<BoxOwners> {
     );
   }
 
-  Future<void> _onTap(BuildContext context, SelectedCompanyState state, int index) async {
+  Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
-    if (areYouSure) context.read<SelectedCompanyCubit>().removeOwnerById(state.company!.owners[index].uid);
+    if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.company!.owners[index].uid);
   }
 
   _buildHeader() {
@@ -87,7 +87,7 @@ class _BoxOwnersState extends State<BoxOwners> {
             onTapAdd: () async {
               setState(() => search = !search);
               bool succeed = false;
-              succeed = await context.read<SelectedCompanyCubit>().addOwnerByEmail(_email);
+              succeed = await context.read<SelectedOrganizationCubit>().addOwnerByEmail(_email);
               if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
             },
             onTapRemove: () async {
@@ -96,7 +96,7 @@ class _BoxOwnersState extends State<BoxOwners> {
               areYouSure = await areYouSureDialog(context);
               if (areYouSure) {
                 bool succeed = false;
-                succeed = await context.read<SelectedCompanyCubit>().removeOwnerByEmail(_email);
+                succeed = await context.read<SelectedOrganizationCubit>().removeOwnerByEmail(_email);
                 if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
               }
             },
@@ -107,7 +107,7 @@ class _BoxOwnersState extends State<BoxOwners> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${Languages.owners()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('${Languages.admins()}:', style: TextStyle(fontWeight: FontWeight.bold)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

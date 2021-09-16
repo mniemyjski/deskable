@@ -2,38 +2,38 @@ import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class _BaseCompanyRepository {
-  Future<String> create(Company company);
-  Future<void> delete(Company company);
-  Future<void> update(Company company);
-  Stream<List<Company?>> stream({required String accountId, bool owner = false});
+abstract class _BaseOrganizationRepository {
+  Future<String> create(Organization company);
+  Future<void> delete(Organization company);
+  Future<void> update(Organization company);
+  Stream<List<Organization?>> stream({required String accountId, bool owner = false});
 }
 
-final _ref = FirebaseFirestore.instance.collection(Path.companies()).withConverter<Company>(
-      fromFirestore: (snapshot, _) => Company.fromMap(snapshot.data()!),
+final _ref = FirebaseFirestore.instance.collection(Path.companies()).withConverter<Organization>(
+      fromFirestore: (snapshot, _) => Organization.fromMap(snapshot.data()!),
       toFirestore: (company, _) => company.toMap(),
     );
 
-class CompanyRepository extends _BaseCompanyRepository {
+class OrganizationRepository extends _BaseOrganizationRepository {
   @override
-  Future<String> create(Company company) async {
+  Future<String> create(Organization company) async {
     DocumentReference doc = _ref.doc();
     await doc.set(company.copyWith(id: doc.id));
     return doc.id;
   }
 
   @override
-  delete(Company company) async {
+  delete(Organization company) async {
     return await _ref.doc(company.id).delete();
   }
 
   @override
-  update(Company company) async {
+  update(Organization company) async {
     return await _ref.doc(company.id).set(company);
   }
 
   @override
-  Stream<List<Company>> stream({required String accountId, bool owner = false}) {
+  Stream<List<Organization>> stream({required String accountId, bool owner = false}) {
     if (owner)
       return _ref.where('ownersId', arrayContains: accountId).snapshots().map((snap) {
         return snap.docs.isNotEmpty ? snap.docs.map((e) => e.data()).toList() : [];

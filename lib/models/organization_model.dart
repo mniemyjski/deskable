@@ -2,7 +2,7 @@ import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 
-class Company extends Equatable {
+class Organization extends Equatable {
   final String? id;
   final List<String> ownersId;
   final List<Account> owners;
@@ -11,7 +11,7 @@ class Company extends Equatable {
   final String name;
   final String description;
 
-  Company({
+  Organization({
     this.id,
     required this.ownersId,
     required this.owners,
@@ -21,8 +21,8 @@ class Company extends Equatable {
     this.description = '',
   });
 
-  factory Company.create({required String name, required String description}) {
-    return Company(ownersId: [], employeesId: [], owners: [], employees: [], name: name, description: description);
+  factory Organization.create({required String name, required String description}) {
+    return Organization(ownersId: [], employeesId: [], owners: [], employees: [], name: name, description: description);
   }
 
   @override
@@ -63,7 +63,7 @@ class Company extends Equatable {
     };
   }
 
-  factory Company.fromMap(Map<String, dynamic> map) {
+  factory Organization.fromMap(Map<String, dynamic> map) {
     List<Account> _owners = [];
     List<Account> _employees = [];
 
@@ -75,7 +75,7 @@ class Company extends Equatable {
       _employees.add(Account.fromMap(element));
     });
 
-    return Company(
+    return Organization(
       id: map['id'] as String,
       ownersId: map['ownersId'].cast<String>() as List<String>,
       owners: _owners,
@@ -86,7 +86,7 @@ class Company extends Equatable {
     );
   }
 
-  Company copyWith({
+  Organization copyWith({
     String? id,
     List<String>? ownersId,
     List<Account>? owners,
@@ -95,7 +95,7 @@ class Company extends Equatable {
     String? name,
     String? description,
   }) {
-    return Company(
+    return Organization(
       id: id ?? this.id,
       ownersId: ownersId ?? this.ownersId,
       owners: owners ?? this.owners,

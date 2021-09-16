@@ -14,7 +14,7 @@ import 'package:collection/collection.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateRoomScreenArguments {
-  final SelectedCompanyCubit selectedCompanyCubit;
+  final SelectedOrganizationCubit selectedCompanyCubit;
   final Room? room;
 
   CreateRoomScreenArguments({required this.selectedCompanyCubit, this.room});
@@ -42,7 +42,7 @@ class CreateRoomScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CreateRoomCubit(
         accountCubit: context.read<AccountCubit>(),
-        selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+        selectedCompanyCubit: context.read<SelectedOrganizationCubit>(),
         roomRepository: context.read<RoomRepository>(),
       )..init(room),
       child: BlocBuilder<CreateRoomCubit, CreateRoomState>(

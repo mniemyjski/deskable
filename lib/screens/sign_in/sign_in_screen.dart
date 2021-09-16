@@ -4,7 +4,7 @@ import 'package:deskable/screens/sign_in/cubit/sign_in_cubit.dart';
 import 'package:deskable/screens/sign_in/widgets/button_sign_in_with_email.dart';
 import 'package:deskable/screens/sign_in/widgets/button_sign_in_with_google.dart';
 import 'package:deskable/screens/sign_in/widgets/email_form.dart';
-import 'package:deskable/widgets/custom_login_widget.dart';
+import 'package:deskable/widgets/custom_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ class SignInScreen extends StatelessWidget {
           if (state.signInStatus == SignInStatus.loading)
             return const Scaffold(
                 body: Center(
-              child: CustomLoginWidget(),
+              child: CustomLoadingWidget(),
             ));
 
           return Scaffold(

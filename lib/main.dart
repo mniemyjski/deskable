@@ -1,4 +1,4 @@
-import 'package:deskable/cubit/selected/selected_company_cubit.dart';
+import 'package:deskable/cubit/selected/selected_organization_cubit.dart';
 import 'package:deskable/cubit/selected/selected_date_cubit.dart';
 import 'package:deskable/cubit/selected/selected_room_cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
@@ -61,8 +61,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<PreferenceRepository>(
           create: (_) => PreferenceRepository(),
         ),
-        RepositoryProvider<CompanyRepository>(
-          create: (_) => CompanyRepository(),
+        RepositoryProvider<OrganizationRepository>(
+          create: (_) => OrganizationRepository(),
         ),
         RepositoryProvider<RoomRepository>(
           create: (_) => RoomRepository(),

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateCompany extends StatefulWidget {
-  final Company? company;
-  const CreateCompany({Key? key, this.company}) : super(key: key);
+class CreateOrganizations extends StatefulWidget {
+  final Organization? company;
+  const CreateOrganizations({Key? key, this.company}) : super(key: key);
 
   @override
-  State<CreateCompany> createState() => _CreateCompanyState();
+  State<CreateOrganizations> createState() => _CreateOrganizationsState();
 }
 
-class _CreateCompanyState extends State<CreateCompany> {
+class _CreateOrganizationsState extends State<CreateOrganizations> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerDescription = TextEditingController();
   final GlobalKey<FormState> _formKeyName = GlobalKey();
@@ -109,12 +109,12 @@ class _CreateCompanyState extends State<CreateCompany> {
     );
   }
 
-  void _onTap(BuildContext context, Company? company) {
+  void _onTap(BuildContext context, Organization? company) {
     if (company != null) {
-      context.read<CompanyCubit>().update(company.copyWith(name: _controllerName.text, description: _controllerDescription.text));
+      context.read<OrganizationCubit>().update(company.copyWith(name: _controllerName.text, description: _controllerDescription.text));
     } else {
-      Company _company = Company.create(name: _controllerName.text, description: _controllerDescription.text);
-      context.read<CompanyCubit>().create(_company);
+      Organization _company = Organization.create(name: _controllerName.text, description: _controllerDescription.text);
+      context.read<OrganizationCubit>().create(_company);
     }
     Navigator.pop(context);
   }

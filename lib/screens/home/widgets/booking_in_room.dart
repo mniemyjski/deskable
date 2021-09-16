@@ -118,12 +118,12 @@ class BookingInRoom extends StatelessWidget {
   Builder _buildCompanySelector() {
     return Builder(
       builder: (context) {
-        final stateA = context.watch<CompanyCubit>().state;
-        final stateB = context.watch<SelectedCompanyCubit>().state;
+        final stateA = context.watch<OrganizationCubit>().state;
+        final stateB = context.watch<SelectedOrganizationCubit>().state;
 
         return CustomSelectorData(
-          onPressedBack: () => context.read<SelectedCompanyCubit>().back(),
-          onPressedNext: () => context.read<SelectedCompanyCubit>().next(),
+          onPressedBack: () => context.read<SelectedOrganizationCubit>().back(),
+          onPressedNext: () => context.read<SelectedOrganizationCubit>().next(),
           onPressed: () => customDialog(
             context,
             ListView.builder(
@@ -134,7 +134,7 @@ class BookingInRoom extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: OutlinedButton(
                       onPressed: () {
-                        context.read<SelectedCompanyCubit>().change(index);
+                        context.read<SelectedOrganizationCubit>().change(index);
                         Navigator.pop(context);
                       },
                       child: Text(stateA.companies![index].name),

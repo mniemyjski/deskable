@@ -2,9 +2,9 @@ import 'package:deskable/cubit/cubit.dart';
 
 import 'package:deskable/repositories/repositories.dart';
 
-import 'package:deskable/screens/management/widget/box_companies.dart';
+import 'package:deskable/screens/management/widget/box_organizations.dart';
 import 'package:deskable/screens/management/widget/box_employees.dart';
-import 'package:deskable/screens/management/widget/box_owners.dart';
+import 'package:deskable/screens/management/widget/box_admins.dart';
 import 'package:deskable/screens/management/widget/box_rooms.dart';
 
 import 'package:deskable/utilities/languages.dart';
@@ -32,27 +32,27 @@ class _ManagementScreenState extends State<ManagementScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CompanyCubit>(
-          create: (context) => CompanyCubit(
+        BlocProvider<OrganizationCubit>(
+          create: (context) => OrganizationCubit(
             accountCubit: context.read<AccountCubit>(),
-            companyRepository: context.read<CompanyRepository>(),
+            organizationRepository: context.read<OrganizationRepository>(),
             accountRepository: context.read<AccountRepository>(),
             owner: true,
           ),
         ),
-        BlocProvider<SelectedCompanyCubit>(
-          create: (context) => SelectedCompanyCubit(
+        BlocProvider<SelectedOrganizationCubit>(
+          create: (context) => SelectedOrganizationCubit(
             accountCubit: context.read<AccountCubit>(),
             accountRepository: context.read<AccountRepository>(),
-            companyCubit: context.read<CompanyCubit>(),
-            companyRepository: context.read<CompanyRepository>(),
+            organizationCubit: context.read<OrganizationCubit>(),
+            organizationRepository: context.read<OrganizationRepository>(),
           ),
         ),
         BlocProvider<RoomCubit>(
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),
             roomRepository: context.read<RoomRepository>(),
-            selectedCompanyCubit: context.read<SelectedCompanyCubit>(),
+            selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
           ),
         ),
         BlocProvider<SelectedRoomCubit>(
@@ -74,9 +74,9 @@ class _ManagementScreenState extends State<ManagementScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  BoxCompanies(),
+                  BoxOrganizations(),
                   SizedBox(width: 8),
-                  BoxOwners(),
+                  BoxAdmins(),
                   SizedBox(width: 8),
                   BoxEmployees(),
                   SizedBox(width: 8),

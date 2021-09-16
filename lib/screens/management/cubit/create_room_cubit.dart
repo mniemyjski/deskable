@@ -9,13 +9,13 @@ part 'create_room_state.dart';
 
 class CreateRoomCubit extends Cubit<CreateRoomState> {
   final RoomRepository _roomRepository;
-  final SelectedCompanyCubit _selectedCompanyCubit;
+  final SelectedOrganizationCubit _selectedCompanyCubit;
   final AccountCubit _accountCubit;
 
   CreateRoomCubit({
     required AccountCubit accountCubit,
     required RoomRepository roomRepository,
-    required SelectedCompanyCubit selectedCompanyCubit,
+    required SelectedOrganizationCubit selectedCompanyCubit,
   })  : _roomRepository = roomRepository,
         _selectedCompanyCubit = selectedCompanyCubit,
         _accountCubit = accountCubit,

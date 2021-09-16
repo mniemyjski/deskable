@@ -18,7 +18,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+    return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
         if (state.status != ESelectedCompanyStatus.succeed) return Container();
 
@@ -43,7 +43,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   }
 
   Expanded _buildListView() {
-    return Expanded(child: BlocBuilder<SelectedCompanyCubit, SelectedCompanyState>(
+    return Expanded(child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
         if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
 
@@ -71,10 +71,10 @@ class _BoxEmployeesState extends State<BoxEmployees> {
     ));
   }
 
-  Future<void> _onTap(BuildContext context, SelectedCompanyState state, int index) async {
+  Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
-    if (areYouSure) context.read<SelectedCompanyCubit>().removeEmployeeById(state.company!.employees[index].uid);
+    if (areYouSure) context.read<SelectedOrganizationCubit>().removeEmployeeById(state.company!.employees[index].uid);
   }
 
   _buildHeader() {
@@ -84,7 +84,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
             onTapAdd: () async {
               setState(() => search = !search);
               bool succeed = false;
-              succeed = await context.read<SelectedCompanyCubit>().addEmployeeByEmail(_email);
+              succeed = await context.read<SelectedOrganizationCubit>().addEmployeeByEmail(_email);
               if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
             },
             onTapRemove: () async {
@@ -93,7 +93,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
               areYouSure = await areYouSureDialog(context);
               if (areYouSure) {
                 bool succeed = false;
-                succeed = await context.read<SelectedCompanyCubit>().removeEmployeeByEmail(_email);
+                succeed = await context.read<SelectedOrganizationCubit>().removeEmployeeByEmail(_email);
                 if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
               }
             },
