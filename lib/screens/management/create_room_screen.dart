@@ -66,26 +66,35 @@ class CreateRoomScreen extends StatelessWidget {
             bottomNavigationBar: Card(
               elevation: 1.0,
               child: Container(
-                height: 125,
+                height: 130,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomSelectorData(
-                          onPressed: null,
-                          widget: Text(state.room.x.toString()),
-                          onPressedBack: () => context.read<CreateRoomCubit>().decreaseX(),
-                          onPressedNext: () => context.read<CreateRoomCubit>().increaseX(),
-                        ),
-                        SizedBox(width: 16),
-                        CustomSelectorData(
-                          onPressed: null,
-                          widget: Text(state.room.y.toString()),
-                          onPressedBack: () => context.read<CreateRoomCubit>().decreaseY(),
-                          onPressedNext: () => context.read<CreateRoomCubit>().increaseY(),
-                        ),
-                      ],
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      width: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: CustomSelectorData(
+                              onPressed: null,
+                              widget: Text(state.room.x.toString()),
+                              onPressedBack: () => context.read<CreateRoomCubit>().decreaseX(),
+                              onPressedNext: () => context.read<CreateRoomCubit>().increaseX(),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: CustomSelectorData(
+                              onPressed: null,
+                              widget: Text(state.room.y.toString()),
+                              onPressedBack: () => context.read<CreateRoomCubit>().decreaseY(),
+                              onPressedNext: () => context.read<CreateRoomCubit>().increaseY(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),

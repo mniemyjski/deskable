@@ -34,7 +34,7 @@ class FieldInRoom extends StatelessWidget {
                     furniture!.path(),
                     fit: BoxFit.fill,
                     filterQuality: FilterQuality.high,
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                    color: Color.fromRGBO(255, 255, 255, 0.8),
                     colorBlendMode: BlendMode.modulate,
                   ),
                 ),

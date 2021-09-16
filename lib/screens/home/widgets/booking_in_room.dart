@@ -23,9 +23,9 @@ class BookingInRoom extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildCompanySelector(),
-                _buildRoomSelector(),
-                _buildDateSelector(context),
+                Expanded(child: _buildCompanySelector()),
+                Expanded(child: _buildRoomSelector()),
+                Expanded(child: _buildDateSelector(context)),
               ],
             ),
             SizedBox(height: 8),
@@ -57,7 +57,7 @@ class BookingInRoom extends StatelessWidget {
                 DateFormat('dd-MM-yyyy').format(state.dateTime),
                 style: TextStyle(fontWeight: FontWeight.bold),
                 maxLines: 1,
-                minFontSize: 8,
+                minFontSize: 6,
                 maxFontSize: 12,
               ),
               AutoSizeText(

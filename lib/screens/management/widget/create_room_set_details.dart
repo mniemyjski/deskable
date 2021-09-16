@@ -80,27 +80,45 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
-                children: [
-                  Text(Languages.open()),
-                  CustomSelectorData(
-                    onPressed: null,
-                    widget: Text(state.room.open.toString()),
-                    onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
-                    onPressedNext: () => context.read<CreateRoomCubit>().increaseOpen(),
-                  ),
-                ],
+              Container(
+                height: 50,
+                width: 100,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(Languages.open()),
+                    ),
+                    Expanded(
+                      child: CustomSelectorData(
+                        onPressed: null,
+                        widget: Text(state.room.open.toString()),
+                        onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
+                        onPressedNext: () => context.read<CreateRoomCubit>().increaseOpen(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Column(
-                children: [
-                  Text(Languages.close()),
-                  CustomSelectorData(
-                    onPressed: null,
-                    widget: Text(state.room.close.toString()),
-                    onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
-                    onPressedNext: () => context.read<CreateRoomCubit>().increaseClose(),
-                  ),
-                ],
+              Container(
+                height: 50,
+                width: 100,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(Languages.close()),
+                    ),
+                    Expanded(
+                      child: CustomSelectorData(
+                        onPressed: null,
+                        widget: Text(state.room.close.toString()),
+                        onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
+                        onPressedNext: () => context.read<CreateRoomCubit>().increaseClose(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           );

@@ -12,7 +12,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).appBarTheme.color,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).primaryColorDark.withOpacity(0.6),
@@ -25,7 +25,7 @@ class Header extends StatelessWidget {
       child: DrawerHeader(
           margin: EdgeInsets.zero,
           padding: EdgeInsets.zero,
-          decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          decoration: BoxDecoration(color: Theme.of(context).appBarTheme.color),
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(AccountEditScreen.routeName);

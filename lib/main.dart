@@ -111,8 +111,15 @@ class MyApp extends StatelessWidget {
               title: 'Deskable',
               theme: ThemeData(
                 fontFamily: 'Georgia',
-                primarySwatch: Colors.indigo,
+                // primarySwatch: Colors.indigo,
+
+                appBarTheme: AppBarTheme(color: Color.fromRGBO(0, 103, 163, 1)),
                 scaffoldBackgroundColor: Color.fromRGBO(0, 121, 191, 1),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(0, 103, 163, 1)),
+                  ),
+                ),
                 cardColor: Colors.grey[200],
               ),
               darkTheme: ThemeData(

@@ -14,24 +14,32 @@ class CustomSelectorData extends StatelessWidget {
     return Row(
       children: [
         if (onPressedBack != null)
-          InkWell(
-            child: FaIcon(FontAwesomeIcons.chevronLeft),
-            onTap: onPressedBack,
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: InkWell(
+              child: FaIcon(FontAwesomeIcons.chevronLeft),
+              onTap: onPressedBack,
+            ),
           ),
         SizedBox(width: 4),
-        ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(width: 100, height: 30, child: Center(child: widget)),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(height: 30, child: Center(child: widget)),
+            ),
           ),
         ),
         SizedBox(width: 4),
         if (onPressedNext != null)
-          InkWell(
-            child: FaIcon(FontAwesomeIcons.chevronRight),
-            onTap: onPressedNext,
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: InkWell(
+              child: FaIcon(FontAwesomeIcons.chevronRight),
+              onTap: onPressedNext,
+            ),
           ),
       ],
     );
