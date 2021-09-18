@@ -43,7 +43,7 @@ class _SearchFieldState extends State<SearchField> {
                   hintText: Languages.email(),
                 ),
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(50),
+                  LengthLimitingTextInputFormatter(100),
                 ],
                 textInputAction: TextInputAction.done,
                 controller: _controller,

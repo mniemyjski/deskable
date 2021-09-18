@@ -79,21 +79,21 @@ class HomeScreen extends StatelessWidget {
         child: Scaffold(
           appBar: customAppBar(title: Languages.home()),
           drawer: CustomDrawer(),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Builder(
-                builder: (context) {
-                  return BlocBuilder<OrganizationCubit, OrganizationState>(
-                    builder: (context, state) {
-                      if (state.status == ECompanyStatus.empty)
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(child: Text(Languages.wait_for_the_invitation_or_create_your_own_company())),
-                        );
+          body: Builder(
+            builder: (context) {
+              return BlocBuilder<OrganizationCubit, OrganizationState>(
+                builder: (context, state) {
+                  if (state.status == ECompanyStatus.empty)
+                    return Scaffold(
+                        body: Center(
+                      child: Text(Languages.wait_for_the_invitation_or_create_your_own_company()),
+                    ));
 
-                      if (state.status == ECompanyStatus.succeed)
-                        return Responsive(
+                  if (state.status == ECompanyStatus.succeed)
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Responsive(
                           desktop: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -111,14 +111,17 @@ class HomeScreen extends StatelessWidget {
                               BookingInRoom(),
                             ],
                           ),
-                        );
+                        ),
+                      ),
+                    );
 
-                      return CustomLoadingWidget();
-                    },
-                  );
+                  return const Scaffold(
+                      body: Center(
+                    child: CustomLoadingWidget(),
+                  ));
                 },
-              ),
-            ),
+              );
+            },
           ),
         ),
       ),

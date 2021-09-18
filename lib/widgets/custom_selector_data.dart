@@ -15,13 +15,16 @@ class CustomSelectorData extends StatelessWidget {
       children: [
         if (onPressedBack != null)
           Padding(
-            padding: const EdgeInsets.only(left: 4),
+            padding: const EdgeInsets.only(right: 2),
             child: InkWell(
-              child: FaIcon(FontAwesomeIcons.chevronLeft),
+              child: FaIcon(
+                FontAwesomeIcons.caretSquareLeft,
+                size: 45,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: onPressedBack,
             ),
           ),
-        SizedBox(width: 4),
         Expanded(
           child: ElevatedButton(
             onPressed: onPressed,
@@ -32,12 +35,15 @@ class CustomSelectorData extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 4),
         if (onPressedNext != null)
           Padding(
-            padding: const EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(left: 2),
             child: InkWell(
-              child: FaIcon(FontAwesomeIcons.chevronRight),
+              child: FaIcon(
+                FontAwesomeIcons.caretSquareRight,
+                size: 45,
+                color: Theme.of(context).primaryColor,
+              ),
               onTap: onPressedNext,
             ),
           ),

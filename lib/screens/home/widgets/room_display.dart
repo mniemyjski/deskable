@@ -4,6 +4,7 @@ import 'package:deskable/screens/home/cubit/creator_booking_cubit.dart';
 import 'package:deskable/screens/home/widgets/booking_in_desk.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
+import 'package:deskable/widgets/custom_loading_widget.dart';
 import 'package:deskable/widgets/field_in_room.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +18,7 @@ class RoomDisplay extends StatelessWidget {
     return BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
       builder: (context, state) {
         if (state.status == ESelectedRoomStatus.unknown || state.status == ESelectedRoomStatus.loading)
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return CustomLoadingWidget(color: Theme.of(context).primaryColor);
 
         if (state.status == ESelectedRoomStatus.empty) return Container();
 

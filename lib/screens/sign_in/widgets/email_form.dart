@@ -48,6 +48,25 @@ class _EmailFormState extends State<EmailForm> {
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
+                        hintText: Languages.email(),
+                        hintStyle: TextStyle(color: Colors.white38),
+                        isCollapsed: true,
+                        contentPadding: EdgeInsets.all(12),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                          borderSide: BorderSide(
+                            color: Colors.white38,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
                         icon: FaIcon(
                           Icons.mail,
                           color: Colors.white,
@@ -67,6 +86,25 @@ class _EmailFormState extends State<EmailForm> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
+                          hintText: Languages.password(),
+                          hintStyle: TextStyle(color: Colors.white38),
+                          isCollapsed: true,
+                          contentPadding: EdgeInsets.all(12),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: Colors.white38,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
                           icon: FaIcon(
                             Icons.lock,
                             color: Colors.white,
@@ -80,7 +118,7 @@ class _EmailFormState extends State<EmailForm> {
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 32),
+                  padding: const EdgeInsets.only(top: 8),
                   child: CustomButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

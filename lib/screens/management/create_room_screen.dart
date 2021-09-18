@@ -66,13 +66,13 @@ class CreateRoomScreen extends StatelessWidget {
             bottomNavigationBar: Card(
               elevation: 1.0,
               child: Container(
-                height: 130,
+                height: 150,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       padding: EdgeInsets.all(2),
-                      width: 200,
+                      width: 280,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

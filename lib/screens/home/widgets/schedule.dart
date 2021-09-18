@@ -4,6 +4,7 @@ import 'package:deskable/screens/home/widgets/avatar_booking.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
+import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,45 +26,38 @@ class Schedule extends StatelessWidget {
           ],
         ),
         Divider(),
-        Container(
-          height: 400,
-          child: BlocBuilder<SelectedRoomCubit, SelectedRoomState>(
-            builder: (context, stateA) {
-              if (stateA.status == ESelectedRoomStatus.unknown || stateA.status == ESelectedRoomStatus.loading)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+        Builder(
+          builder: (context) {
+            final stateA = context.watch<SelectedRoomCubit>().state;
+            final stateB = context.watch<BookingCubit>().state;
 
-              if (stateA.status == ESelectedRoomStatus.empty)
-                return Center(
-                  child: Text(Languages.need_create_first_room()),
-                );
+            if (_status(stateA, stateB)) return CustomLoadingWidget(color: Theme.of(context).primaryColor);
+            if (stateA.status == ESelectedRoomStatus.empty) return Center(child: Text(Languages.need_create_first_room()));
 
-              return BlocBuilder<BookingCubit, BookingState>(
-                builder: (context, stateB) {
-                  if (stateB.status != EBookingStatus.succeed)
-                    return Center(
-                      child: CircularProgressIndicator(),
+            return Container(
+              height: (stateA.room!.close - stateA.room!.open) * 28,
+              child: ListView.builder(
+                  itemCount: stateA.room!.close - stateA.room!.open,
+                  itemBuilder: (BuildContext context, int index) {
+                    List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
+
+                    return buildBookingInTime(
+                      context: context,
+                      time: stateA.room!.open + index,
+                      accounts: accounts,
                     );
-
-                  return ListView.builder(
-                      itemCount: stateA.room!.close - stateA.room!.open,
-                      itemBuilder: (BuildContext context, int index) {
-                        List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
-
-                        return buildBookingInTime(
-                          context: context,
-                          time: stateA.room!.open + index,
-                          accounts: accounts,
-                        );
-                      });
-                },
-              );
-            },
-          ),
+                  }),
+            );
+            //   },
+            // );
+          },
         ),
       ],
     );
+  }
+
+  bool _status(SelectedRoomState stateA, BookingState stateB) {
+    return stateA.status == ESelectedRoomStatus.unknown || stateA.status == ESelectedRoomStatus.loading || stateB.status != EBookingStatus.succeed;
   }
 
   Row buildBookingInTime({required BuildContext context, required int time, required List<Account> accounts}) {
@@ -127,7 +121,7 @@ class Schedule extends StatelessWidget {
                     ),
                   ),
                 )
-              : Padding(padding: EdgeInsets.all(13)),
+              : Padding(padding: EdgeInsets.all(14)),
         ),
       ],
     );

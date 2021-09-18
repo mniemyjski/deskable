@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class CustomAvatar extends StatelessWidget {
@@ -24,7 +25,7 @@ class CustomAvatar extends StatelessWidget {
                   image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
                 ),
               ),
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => CustomLoadingWidget(),
               errorWidget: (context, url, error) => Icon(
                 Icons.account_circle,
                 size: 110,

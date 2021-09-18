@@ -81,8 +81,8 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                height: 50,
-                width: 100,
+                height: 80,
+                width: 150,
                 child: Column(
                   children: [
                     Padding(
@@ -101,8 +101,8 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                 ),
               ),
               Container(
-                height: 50,
-                width: 100,
+                height: 80,
+                width: 150,
                 child: Column(
                   children: [
                     Padding(

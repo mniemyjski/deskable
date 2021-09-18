@@ -1,5 +1,5 @@
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/screens/management/widget/create_company.dart';
+import 'package:deskable/screens/management/widget/create_organization.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/widgets.dart';

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/screens/home/widgets/schedule.dart';
+import 'package:deskable/widgets/custom_button.dart';
 import 'package:deskable/widgets/custom_dialog.dart';
 import 'package:deskable/widgets/custom_selector_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,15 +21,19 @@ class BookingInRoom extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(child: _buildCompanySelector()),
-                Expanded(child: _buildRoomSelector()),
-                Expanded(child: _buildDateSelector(context)),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(flex: 3, child: _buildCompanySelector()),
+                  SizedBox(width: 8),
+                  Expanded(flex: 3, child: _buildRoomSelector()),
+                  SizedBox(width: 8),
+                  Expanded(flex: 5, child: _buildDateSelector(context)),
+                ],
+              ),
             ),
-            SizedBox(height: 8),
             Schedule(),
           ],
         ),
@@ -83,8 +88,8 @@ class BookingInRoom extends StatelessWidget {
         if (stateB.status == ERoomStatus.empty || stateA.status != ESelectedRoomStatus.succeed) return Container();
 
         return CustomSelectorData(
-          onPressedNext: () => context.read<SelectedRoomCubit>().next(),
-          onPressedBack: () => context.read<SelectedRoomCubit>().back(),
+          // onPressedNext: () => context.read<SelectedRoomCubit>().next(),
+          // onPressedBack: () => context.read<SelectedRoomCubit>().back(),
           onPressed: () => customDialog(
             context,
             ListView.builder(
@@ -122,8 +127,8 @@ class BookingInRoom extends StatelessWidget {
         final stateB = context.watch<SelectedOrganizationCubit>().state;
 
         return CustomSelectorData(
-          onPressedBack: () => context.read<SelectedOrganizationCubit>().back(),
-          onPressedNext: () => context.read<SelectedOrganizationCubit>().next(),
+          // onPressedBack: () => context.read<SelectedOrganizationCubit>().back(),
+          // onPressedNext: () => context.read<SelectedOrganizationCubit>().next(),
           onPressed: () => customDialog(
             context,
             ListView.builder(
