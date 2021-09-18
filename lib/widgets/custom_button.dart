@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             onPrimary: textColor,
-            primary: backgroundColor ?? Color.fromRGBO(0, 103, 163, 1),
+            primary: backgroundColor ?? Theme.of(context).primaryColor,
             minimumSize: Size(56, 56),
             padding: EdgeInsets.symmetric(horizontal: 16),
             shape: const RoundedRectangleBorder(

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/home/widgets/printer_x.dart';
 import 'package:flutter/material.dart';
@@ -39,17 +37,20 @@ class FieldInRoom extends StatelessWidget {
                   ),
                 ),
                 Align(
-                    alignment: Alignment.bottomRight,
-                    child: Card(
-                      color: Theme.of(context).cardColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                          furniture?.name ?? '',
-                          style: TextStyle(fontSize: 10),
-                        ),
-                      ),
-                    )),
+                  alignment: Alignment.bottomRight,
+                  child: furniture!.name.isNotEmpty
+                      ? Card(
+                          color: Theme.of(context).cardColor.withOpacity(0.8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(
+                              furniture!.name,
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ),
                 if (false) ...[
                   CustomPaint(
                     size: Size(50, 50),

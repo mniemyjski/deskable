@@ -37,6 +37,8 @@ class Schedule extends StatelessWidget {
             return Container(
               height: (stateA.room!.close - stateA.room!.open) * 28,
               child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: stateA.room!.close - stateA.room!.open,
                   itemBuilder: (BuildContext context, int index) {
                     List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
@@ -60,70 +62,73 @@ class Schedule extends StatelessWidget {
     return stateA.status == ESelectedRoomStatus.unknown || stateA.status == ESelectedRoomStatus.loading || stateB.status != EBookingStatus.succeed;
   }
 
-  Row buildBookingInTime({required BuildContext context, required int time, required List<Account> accounts}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(flex: 2, child: Text('$time:00')),
-        Expanded(flex: 2, child: Text(accounts.length.toString())),
-        Expanded(
-          flex: 5,
-          child: accounts.isNotEmpty
-              ? TextButton(
-                  onPressed: () => customDialog(
-                      context,
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
-                              Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
-                            ],
-                          ),
-                          Divider(),
-                          Container(
-                            height: 300,
-                            child: ListView.builder(
-                                itemCount: accounts.length,
-                                itemBuilder: (BuildContext _, int index) {
-                                  String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
-                                  Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
+  Container buildBookingInTime({required BuildContext context, required int time, required List<Account> accounts}) {
+    return Container(
+      height: 28,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(flex: 2, child: Text('$time:00')),
+          Expanded(flex: 2, child: Text(accounts.length.toString())),
+          Expanded(
+            flex: 5,
+            child: accounts.isNotEmpty
+                ? InkWell(
+                    onTap: () => customDialog(
+                        context,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
+                                Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
+                              ],
+                            ),
+                            Divider(),
+                            Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  itemCount: accounts.length,
+                                  itemBuilder: (BuildContext _, int index) {
+                                    String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
+                                    Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
 
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Row(
-                                          children: [
-                                            AvatarBooking(url: accounts[index].photoUrl),
-                                            SizedBox(width: 8),
-                                            Text(accounts[index].name),
-                                          ],
+                                    return Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Row(
+                                            children: [
+                                              AvatarBooking(url: accounts[index].photoUrl),
+                                              SizedBox(width: 8),
+                                              Text(accounts[index].name),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
-                                    ],
-                                  );
-                                }),
-                          ),
-                        ],
-                      )),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: List.generate(
-                          accounts.length > 5 ? 5 : accounts.length,
-                          (index) => AvatarBooking(
-                                url: accounts[index].photoUrl,
-                              )),
+                                        Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
+                                      ],
+                                    );
+                                  }),
+                            ),
+                          ],
+                        )),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: List.generate(
+                            accounts.length > 5 ? 5 : accounts.length,
+                            (index) => AvatarBooking(
+                                  url: accounts[index].photoUrl,
+                                )),
+                      ),
                     ),
-                  ),
-                )
-              : Padding(padding: EdgeInsets.all(14)),
-        ),
-      ],
+                  )
+                : Container(),
+          ),
+        ],
+      ),
     );
   }
 }

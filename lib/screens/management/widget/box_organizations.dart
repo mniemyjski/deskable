@@ -66,12 +66,13 @@ class BoxOrganizations extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {
-                          context.read<SelectedOrganizationCubit>().change(index);
-                        },
-                        child: Text(
-                          stateA.companies![index].name,
-                          style: TextStyle(color: stateB.company!.id == stateA.companies![index].id ? Colors.blue : null),
+                        onTap: () => context.read<SelectedOrganizationCubit>().change(index),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            stateA.companies![index].name,
+                            style: TextStyle(color: stateB.company!.id == stateA.companies![index].id ? Colors.blue : null),
+                          ),
                         ),
                       ),
                     ),
