@@ -37,20 +37,23 @@ class BookingsInDesk extends StatelessWidget {
         bookingCubit: context.read<BookingCubit>(),
         selectedRoomCubit: context.read<SelectedRoomCubit>(),
       )..init(furniture.id),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildHeader(openClose),
-          Builder(builder: (context) {
-            return Container(
-              width: double.infinity,
-              child: CustomButton(
-                onPressed: () => _onTap(context),
-                child: Text(Languages.save()),
-              ),
-            );
-          }),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildHeader(openClose),
+            Builder(builder: (context) {
+              return Container(
+                width: double.infinity,
+                child: CustomButton(
+                  onPressed: () => _onTap(context),
+                  child: Text(Languages.save()),
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

@@ -80,7 +80,13 @@ class CreateRoomScreen extends StatelessWidget {
                             child: CustomSelectorData(
                               onPressed: null,
                               widget: Text(state.room.x.toString()),
-                              onPressedBack: () => context.read<CreateRoomCubit>().decreaseX(),
+                              onPressedBack: () {
+                                if (state.room.furniture.isEmpty) {
+                                  context.read<CreateRoomCubit>().decreaseX();
+                                } else {
+                                  customFlashBar(context, Languages.before_remove_furnitures());
+                                }
+                              },
                               onPressedNext: () => context.read<CreateRoomCubit>().increaseX(),
                             ),
                           ),
@@ -89,7 +95,13 @@ class CreateRoomScreen extends StatelessWidget {
                             child: CustomSelectorData(
                               onPressed: null,
                               widget: Text(state.room.y.toString()),
-                              onPressedBack: () => context.read<CreateRoomCubit>().decreaseY(),
+                              onPressedBack: () {
+                                if (state.room.furniture.isEmpty) {
+                                  context.read<CreateRoomCubit>().decreaseY();
+                                } else {
+                                  customFlashBar(context, Languages.before_remove_furnitures());
+                                }
+                              },
                               onPressedNext: () => context.read<CreateRoomCubit>().increaseY(),
                             ),
                           ),

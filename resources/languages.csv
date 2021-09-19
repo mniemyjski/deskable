@@ -74,6 +74,7 @@ admin,Admin,Admin
 admins,Admini,Admins
 you_can_not_do_it,Nie mozesz tego zrobić,You can not do it
 add_many,Dodaj wielu,Add many
-add_many_email,Wprowadź adresu email oddzielone '';'',add_many_email
+add_many_email,Wprowadź adresy email oddzielone '';'',add_many_email
 add_many_email_sample,np. taco@deskable.pl; chorizo@deskable.pl; pete@deskable.pl,np. taco@deskable.pl; chorizo@deskable.pl; pete@deskable.pl
 add,Dodaj,Add
+before_remove_furnitures,Najpierw usuń wszystkie elementy,before_remove_furnitures

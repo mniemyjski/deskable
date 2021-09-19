@@ -102,4 +102,5 @@ class Languages {
   static String add_many_email_sample() => "add_many_email_sample".tr();
 
   static String add() => "add".tr();
+  static String before_remove_furnitures() => "before_remove_furnitures".tr();
 }

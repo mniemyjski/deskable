@@ -19,6 +19,7 @@ class CreateRoomState extends Equatable {
 
   CreateRoomState copyWith({
     Room? room,
+    List<String>? toRemove,
     bool? edit,
   }) {
     return CreateRoomState(

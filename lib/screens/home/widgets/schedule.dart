@@ -77,43 +77,46 @@ class Schedule extends StatelessWidget {
                 ? InkWell(
                     onTap: () => customDialog(
                         context,
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
-                                Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
-                              ],
-                            ),
-                            Divider(),
-                            Container(
-                              height: 300,
-                              child: ListView.builder(
-                                  itemCount: accounts.length,
-                                  itemBuilder: (BuildContext _, int index) {
-                                    String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
-                                    Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
+                                  Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
+                                ],
+                              ),
+                              Divider(),
+                              Container(
+                                height: 300,
+                                child: ListView.builder(
+                                    itemCount: accounts.length,
+                                    itemBuilder: (BuildContext _, int index) {
+                                      String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
+                                      Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
 
-                                    return Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Row(
-                                            children: [
-                                              AvatarBooking(url: accounts[index].photoUrl),
-                                              SizedBox(width: 8),
-                                              Text(accounts[index].name),
-                                            ],
+                                      return Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Row(
+                                              children: [
+                                                AvatarBooking(url: accounts[index].photoUrl),
+                                                SizedBox(width: 8),
+                                                Text(accounts[index].name),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
+                                          Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
+                                        ],
+                                      );
+                                    }),
+                              ),
+                            ],
+                          ),
                         )),
                     child: Align(
                       alignment: Alignment.centerLeft,

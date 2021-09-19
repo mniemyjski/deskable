@@ -50,66 +50,60 @@ class _SearchDialogState extends State<SearchDialog> {
       ),
       child: BlocBuilder<SearchAccountCubit, SearchAccountState>(
         builder: (context, state) {
-          return search
-              ? _buildSearch(context, state)
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => setState(() => search = !search),
-                          icon: Icon(Icons.arrow_back_ios),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(Languages.add_many_email(), style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: TextFormField(
-                          minLines: 15,
-                          maxLines: 15,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(8),
-                            hintText: Languages.add_many_email_sample(),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(100),
-                          ],
-                          textInputAction: TextInputAction.done,
-                          controller: _controller,
-                          onChanged: (String search) {
-                            if (search.length > 2) context.read<SearchAccountCubit>().search(search);
-                          },
-                        ),
-                      ),
-                    ),
-                    Container(
-                        width: double.infinity,
-                        child: CustomButton(
-                            onPressed: () async {
-                              String txt = _controller.text.replaceAll(RegExp(r' '), '');
-                              List<String> result = txt.split(';');
-
-                              List<Account> accounts = await context.read<SearchAccountCubit>().searchManyEmail(result);
-                              widget.onTapMany(accounts);
-                            },
-                            child: Text(
-                              Languages.add(),
-                            )))
-                  ],
-                );
+          return search ? _buildSearch(context, state) : _buildAddMany(context);
         },
       ),
+    );
+  }
+
+  Column _buildAddMany(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            IconButton(
+              onPressed: () => setState(() => search = !search),
+              icon: Icon(Icons.arrow_back_ios),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(Languages.add_many_email(), style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              minLines: 15,
+              maxLines: 15,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(8),
+                hintText: Languages.add_many_email_sample(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              textInputAction: TextInputAction.done,
+              controller: _controller,
+            ),
+          ),
+        ),
+        Container(
+            width: double.infinity,
+            child: CustomButton(
+                onPressed: () async {
+                  String txt = _controller.text.replaceAll(RegExp(r' '), '');
+                  List<String> result = txt.split(';');
+
+                  List<Account> accounts = await context.read<SearchAccountCubit>().searchManyEmail(result);
+                  widget.onTapMany(accounts);
+                },
+                child: Text(Languages.add())))
+      ],
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:collection/collection.dart';
+import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 
 part 'create_room_state.dart';
@@ -65,8 +66,8 @@ class CreateRoomCubit extends Cubit<CreateRoomState> {
 
   removeFurniture(Furniture furniture) {
     List<Furniture> a = List.from(state.room.furniture);
-
     a.removeWhere((element) => element.position == furniture.position);
+
     emit(state.copyWith(room: state.room.copyWith(furniture: a)));
   }
 
