@@ -35,8 +35,6 @@ abstract class Validators {
   static organizationName(String? v) {
     if (v == null || v.isEmpty) {
       return "* Required";
-    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v)) {
-      return 'Wrong organization name';
     } else if (v.length > 20) {
       return 'Organization name should not be greater than 20 characters';
     }
@@ -46,8 +44,6 @@ abstract class Validators {
   static roomName(String? v) {
     if (v == null || v.isEmpty) {
       return "* Required";
-    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v)) {
-      return 'Wrong room name';
     } else if (v.length > 20) {
       return 'Room name should not be greater than 20 characters';
     }

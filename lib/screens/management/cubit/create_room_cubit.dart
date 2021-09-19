@@ -26,19 +26,19 @@ class CreateRoomCubit extends Cubit<CreateRoomState> {
   }
 
   increaseX() {
-    emit(state.copyWith(room: state.room.copyWith(x: state.room.x + 1)));
+    if (state.room.x < 25) emit(state.copyWith(room: state.room.copyWith(x: state.room.x + 1)));
   }
 
   increaseY() {
-    emit(state.copyWith(room: state.room.copyWith(y: state.room.y + 1)));
+    if (state.room.y < 25) emit(state.copyWith(room: state.room.copyWith(y: state.room.y + 1)));
   }
 
   decreaseX() {
-    if (state.room.x > 1) emit(state.copyWith(room: state.room.copyWith(x: state.room.x - 1)));
+    if (state.room.x > 2) emit(state.copyWith(room: state.room.copyWith(x: state.room.x - 1)));
   }
 
   decreaseY() {
-    if (state.room.y > 1) emit(state.copyWith(room: state.room.copyWith(y: state.room.y - 1)));
+    if (state.room.y > 2) emit(state.copyWith(room: state.room.copyWith(y: state.room.y - 1)));
   }
 
   increaseOpen() {

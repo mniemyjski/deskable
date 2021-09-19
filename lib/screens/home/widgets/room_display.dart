@@ -26,7 +26,7 @@ class RoomDisplay extends StatelessWidget {
 
         return Container(
           padding: const EdgeInsets.only(top: 4),
-          width: room.x * 65,
+          width: _widthRoom(context, room),
           child: GridView.count(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -62,5 +62,15 @@ class RoomDisplay extends StatelessWidget {
         );
       },
     );
+  }
+
+  double _widthRoom(BuildContext context, Room room) {
+    double width = 0;
+    if (MediaQuery.of(context).size.width >= 850) {
+      width = (MediaQuery.of(context).size.width - 560) > room.x * 65 ? room.x * 65 : MediaQuery.of(context).size.width - 560;
+    } else {
+      width = room.x * 65;
+    }
+    return width;
   }
 }

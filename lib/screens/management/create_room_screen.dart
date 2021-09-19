@@ -172,7 +172,6 @@ class CreateRoomScreen extends StatelessWidget {
                     children: [
                       Container(
                         width: state.room.x * 65,
-                        height: state.room.y * 65,
                         child: GridView.count(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
