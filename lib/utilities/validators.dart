@@ -24,8 +24,6 @@ abstract class Validators {
   static name(String? v) {
     if (v == null || v.isEmpty) {
       return "* Required";
-    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v)) {
-      return 'Wrong name';
     } else if (v.length > 20) {
       return 'Name should not be greater than 20 characters';
     }
