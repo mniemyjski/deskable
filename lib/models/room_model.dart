@@ -3,7 +3,7 @@ import 'models.dart';
 
 class Room extends Equatable {
   final String? id;
-  final String? companyId;
+  final String? organizationId;
 
   final int x;
   final int y;
@@ -18,7 +18,7 @@ class Room extends Equatable {
 
   Room({
     this.id,
-    this.companyId,
+    this.organizationId,
     required this.x,
     required this.y,
     required this.open,
@@ -32,7 +32,7 @@ class Room extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, companyId, x, y, open, close, furniture, name, description];
+  List<Object?> get props => [id, organizationId, x, y, open, close, furniture, name, description];
 
   Map<String, dynamic> toMap() {
     List _furniture = [];
@@ -42,7 +42,7 @@ class Room extends Equatable {
 
     return {
       'id': this.id,
-      'companyId': this.companyId,
+      'organizationId': this.organizationId,
       'x': this.x,
       'y': this.y,
       'open': this.open,
@@ -61,7 +61,7 @@ class Room extends Equatable {
 
     return Room(
       id: map['id'] as String,
-      companyId: map['companyId'] as String,
+      organizationId: map['organizationId'] as String,
       x: map['x'] as int,
       y: map['y'] as int,
       open: map['open'] as int,
@@ -74,7 +74,7 @@ class Room extends Equatable {
 
   Room copyWith({
     String? id,
-    String? companyId,
+    String? organizationId,
     int? x,
     int? y,
     int? open,
@@ -85,7 +85,7 @@ class Room extends Equatable {
   }) {
     return Room(
       id: id ?? this.id,
-      companyId: companyId ?? this.companyId,
+      organizationId: organizationId ?? this.organizationId,
       x: x ?? this.x,
       y: y ?? this.y,
       open: open ?? this.open,

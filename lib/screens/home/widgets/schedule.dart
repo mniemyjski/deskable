@@ -31,35 +31,36 @@ class Schedule extends StatelessWidget {
             final stateA = context.watch<SelectedRoomCubit>().state;
             final stateB = context.watch<BookingCubit>().state;
 
-            if (_status(stateA, stateB)) return CustomLoadingWidget(color: Theme.of(context).primaryColor);
-            if (stateA.status == ESelectedRoomStatus.empty) return Center(child: Text(Languages.need_create_first_room()));
+            if (stateA.status == ESelectedRoomStatus.empty)
+              return Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(Languages.need_create_first_room()),
+              ));
 
-            return Container(
-              height: (stateA.room!.close - stateA.room!.open) * 28,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: stateA.room!.close - stateA.room!.open,
-                  itemBuilder: (BuildContext context, int index) {
-                    List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
+            if (stateB.status == EBookingStatus.succeed)
+              return Container(
+                height: (stateA.room!.close - stateA.room!.open) * 28,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: stateA.room!.close - stateA.room!.open,
+                    itemBuilder: (BuildContext context, int index) {
+                      List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
 
-                    return buildBookingInTime(
-                      context: context,
-                      time: stateA.room!.open + index,
-                      accounts: accounts,
-                    );
-                  }),
-            );
-            //   },
-            // );
+                      return buildBookingInTime(
+                        context: context,
+                        time: stateA.room!.open + index,
+                        accounts: accounts,
+                      );
+                    }),
+              );
+
+            return CustomLoadingWidget(color: Theme.of(context).primaryColor);
           },
         ),
       ],
     );
-  }
-
-  bool _status(SelectedRoomState stateA, BookingState stateB) {
-    return stateA.status == ESelectedRoomStatus.unknown || stateA.status == ESelectedRoomStatus.loading || stateB.status != EBookingStatus.succeed;
   }
 
   Container buildBookingInTime({required BuildContext context, required int time, required List<Account> accounts}) {

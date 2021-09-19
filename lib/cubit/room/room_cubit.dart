@@ -51,7 +51,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
     try {
       _roomsSubscription.cancel();
     } catch (e) {}
-    _roomsSubscription = _roomRepository.stream(selectedCompanyState.company!.id!).listen((rooms) {
+    _roomsSubscription = _roomRepository.stream(selectedCompanyState.organization!.id!).listen((rooms) {
       if (rooms.isNotEmpty) {
         rooms.sort((a, b) => a.name.compareTo(b.name));
         if (state.status != ERoomStatus.succeed || rooms.toString() != state.rooms!.toString()) {

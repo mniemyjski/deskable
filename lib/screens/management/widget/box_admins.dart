@@ -26,7 +26,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
             width: 220,
             child: Column(
               children: [
-                _buildHeader(state.company!.owners),
+                _buildHeader(state.organization!.admins),
                 Divider(),
                 _buildListView(),
               ],
@@ -47,13 +47,13 @@ class _BoxAdminsState extends State<BoxAdmins> {
 
             return ListView.separated(
                 separatorBuilder: (context, index) => Divider(),
-                itemCount: state.company!.owners.length,
+                itemCount: state.organization!.admins.length,
                 itemBuilder: (BuildContext _, int index) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: InkWell(onTap: null, child: Text(state.company!.owners[index].name)),
+                        child: InkWell(onTap: null, child: Text(state.organization!.admins[index].name)),
                       ),
                       InkWell(
                         onTap: () => _onTap(context, state, index),
@@ -72,12 +72,12 @@ class _BoxAdminsState extends State<BoxAdmins> {
   }
 
   Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
-    bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(state.company!.owners[index].uid);
+    bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(state.organization!.admins[index].uid);
 
     if (isPossible) {
       bool areYouSure = false;
       areYouSure = await areYouSureDialog(context);
-      if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.company!.owners[index].uid);
+      if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.organization!.admins[index].uid);
     } else {
       customFlashBar(context, Languages.you_can_not_do_it());
     }

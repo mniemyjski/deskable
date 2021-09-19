@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/account_repository.dart';
@@ -41,8 +40,8 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
 
   void _init() {
     if (_organizationCubit.state.status == ECompanyStatus.succeed) {
-      if (state.status != ESelectedCompanyStatus.succeed || state.company != _organizationCubit.state.companies!.first)
-        emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies!.first));
+      if (state.status != ESelectedCompanyStatus.succeed || state.organization != _organizationCubit.state.organizations!.first)
+        emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.organizations!.first));
     }
 
     try {
@@ -50,8 +49,8 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     } catch (e) {}
     _organizationSubscription = _organizationCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
-        if (state.status != ESelectedCompanyStatus.succeed || state.company != company.companies!.first)
-          emit(SelectedOrganizationState.succeed(company: company.companies!.first));
+        if (state.status != ESelectedCompanyStatus.succeed || state.organization != company.organizations!.first)
+          emit(SelectedOrganizationState.succeed(company: company.organizations!.first));
       } else {
         if (state.status != ESelectedCompanyStatus.unknown) emit(SelectedOrganizationState.unknown());
       }
@@ -60,24 +59,24 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
 
   change(int index) {
     emit(SelectedOrganizationState.loading());
-    emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
+    emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.organizations![index]));
   }
 
   next() {
-    int index = _organizationCubit.state.companies!.indexOf(state.company!) + 1;
+    int index = _organizationCubit.state.organizations!.indexOf(state.organization!) + 1;
 
-    if (_organizationCubit.state.companies!.length > index) {
+    if (_organizationCubit.state.organizations!.length > index) {
       emit(SelectedOrganizationState.loading());
-      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
+      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.organizations![index]));
     }
   }
 
   back() {
-    int index = _organizationCubit.state.companies!.indexOf(state.company!) - 1;
+    int index = _organizationCubit.state.organizations!.indexOf(state.organization!) - 1;
 
     if (index >= 0) {
       emit(SelectedOrganizationState.loading());
-      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.companies![index]));
+      emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.organizations![index]));
     }
   }
 
@@ -88,38 +87,38 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
   }
 
   addAdmin(Account account) async {
-    List<String> ownerId = List.from(state.company!.ownersId);
+    List<String> ownerId = List.from(state.organization!.adminsId);
     ownerId.add(account.uid);
-    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
+    _organizationRepository.update(state.organization!.copyWith(adminsId: ownerId));
   }
 
   removeOwnerById(String accountId) async {
-    List<String> ownerId = List.from(state.company!.ownersId);
+    List<String> ownerId = List.from(state.organization!.adminsId);
     ownerId.remove(accountId);
-    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
+    _organizationRepository.update(state.organization!.copyWith(adminsId: ownerId));
   }
 
   addEmployee(Account account) async {
-    List<String> employeesId = List.from(state.company!.employeesId);
+    List<String> employeesId = List.from(state.organization!.usersId);
     employeesId.add(account.uid);
-    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.organization!.copyWith(usersId: employeesId));
   }
 
   Future<bool> addEmployeeById(String id) async {
     Account? account = await _accountRepository.getAccountById(id);
     if (account == null) return false;
 
-    List<String> employeesId = List.from(state.company!.employeesId);
+    List<String> employeesId = List.from(state.organization!.usersId);
     employeesId.add(account.uid);
-    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.organization!.copyWith(usersId: employeesId));
 
     return true;
   }
 
   removeEmployeeById(String accountId) async {
-    List<String> employeesId = List.from(state.company!.employeesId);
+    List<String> employeesId = List.from(state.organization!.usersId);
     employeesId.remove(accountId);
-    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
+    _organizationRepository.update(state.organization!.copyWith(usersId: employeesId));
   }
 
   @override

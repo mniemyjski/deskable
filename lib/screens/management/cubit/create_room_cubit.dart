@@ -89,7 +89,7 @@ class CreateRoomCubit extends Cubit<CreateRoomState> {
   Future<void> create({required String name, required String description}) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
       return await _roomRepository.create(state.room.copyWith(
-        companyId: _selectedCompanyCubit.state.company!.id,
+        organizationId: _selectedCompanyCubit.state.organization!.id,
         name: name,
         description: description,
       ));
@@ -99,7 +99,7 @@ class CreateRoomCubit extends Cubit<CreateRoomState> {
   Future<void> update({required String name, required String description}) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
       return await _roomRepository.update(state.room.copyWith(
-        companyId: _selectedCompanyCubit.state.company!.id,
+        organizationId: _selectedCompanyCubit.state.organization!.id,
         name: name,
         description: description,
       ));

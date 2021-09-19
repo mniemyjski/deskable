@@ -59,7 +59,7 @@ class BoxOrganizations extends StatelessWidget {
         return Expanded(
           child: ListView.separated(
               separatorBuilder: (context, index) => Divider(),
-              itemCount: stateA.companies!.length,
+              itemCount: stateA.organizations!.length,
               itemBuilder: (BuildContext _, int index) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,8 +70,8 @@ class BoxOrganizations extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            stateA.companies![index].name,
-                            style: TextStyle(color: stateB.company!.id == stateA.companies![index].id ? Colors.blue : null),
+                            stateA.organizations![index].name,
+                            style: TextStyle(color: stateB.organization!.id == stateA.organizations![index].id ? Colors.blue : null),
                           ),
                         ),
                       ),
@@ -84,7 +84,7 @@ class BoxOrganizations extends StatelessWidget {
                             context,
                             BlocProvider.value(
                               value: BlocProvider.of<OrganizationCubit>(context),
-                              child: CreateOrganizations(company: stateA.companies![index]),
+                              child: CreateOrganizations(company: stateA.organizations![index]),
                             ),
                           );
                         },
@@ -110,6 +110,6 @@ class BoxOrganizations extends StatelessWidget {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
 
-    if (areYouSure) context.read<OrganizationCubit>().delete(stateA.companies![index]);
+    if (areYouSure) context.read<OrganizationCubit>().delete(stateA.organizations![index]);
   }
 }

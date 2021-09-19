@@ -38,17 +38,15 @@ count,Liczba,Count
 free,Wolne,Free
 highlight,Wyróżnij,Highlight
 show,Pokaż,Show
-companies,Firmy,companies
+organization_name,Nazwa Organizatcji,Organization name
 rooms,Pokoje,rooms
 management,Zarządzanie,management
 already_booked_other_user,Ups... Ktoś Cie uprzedził,already_booked_other_user
 already_booked_in_other_desk,Zarezerwowałeś już dana godzinne na innym biurku,already_booked_in_other_desk
 dismiss,Wyłącz,Dismiss
 create,Utwórz,Create
-company_name,Nazwa firmy,Company name
 create_room,Kreator,create_room
-need_create_first_room,Nie utworzona jeszcze pokoju dla tej firmy,need_create_first_room
-owners,Właściciele,Owners
+need_create_first_room,Nie utworzono jeszcze pokoju dla tej organizacji,need_create_first_room
 users,Użytkownicy,Users
 are_you_sure_you_want_to_do_this,Czy na pewno chcesz to zrobić?,Are you sure you want to do this?
 yes,Tak,Yes
@@ -58,7 +56,7 @@ open,Otwarte,Open
 close,Zamkniete,close
 search,Szukaj,Search
 there_is_no_such_email_address,Nie ma takiego adresu email,There is no such email address
-wait_for_the_invitation_or_create_your_own_company,Poczekaj na zaproszenie lub utwórz własną firme,Wait for the invitation or create your own company
+wait_for_the_invitation_or_create_your_own_organization,Poczekaj na zaproszenie lub utwórz własną organizacje,Wait for the invitation or create your own organization
 position,Stanowisko,Position
 today,Dzisiaj,Today
 yesterday,Wczoraj,Yesterday

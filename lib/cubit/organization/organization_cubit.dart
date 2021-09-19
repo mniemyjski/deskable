@@ -14,7 +14,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
   final OrganizationRepository _organizationRepository;
   final AccountRepository _accountRepository;
   final AccountCubit _accountCubit;
-  final bool _owner;
+  final bool _admin;
 
   final List<Account> _accounts = [];
 
@@ -29,7 +29,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
       : _organizationRepository = organizationRepository,
         _accountCubit = accountCubit,
         _accountRepository = accountRepository,
-        _owner = owner,
+        _admin = owner,
         super(OrganizationState.unknown()) {
     _init();
   }
@@ -56,7 +56,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
     try {
       _organizationSubscription.cancel();
     } catch (e) {}
-    _organizationSubscription = _organizationRepository.stream(accountId: _accountCubit.state.account!.uid, owner: _owner).listen((companies) async {
+    _organizationSubscription = _organizationRepository.stream(accountId: _accountCubit.state.account!.uid, admin: _admin).listen((companies) async {
       if (companies.isNotEmpty) {
         if (state.status == ECompanyStatus.succeed) {
           if (_change(companies)) {
@@ -76,9 +76,9 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
   bool _change(List<Organization> companies) {
     bool _change = false;
     for (var company in companies) {
-      if (!state.companies!.contains(company)) _change = true;
+      if (!state.organizations!.contains(company)) _change = true;
     }
-    for (var company in state.companies!) {
+    for (var company in state.organizations!) {
       if (!companies.contains(company)) _change = true;
     }
     return _change;
@@ -91,7 +91,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
       List<Account> _owners = [];
       List<Account> _employees = [];
 
-      for (var ownerId in company.ownersId) {
+      for (var ownerId in company.adminsId) {
         if (_accounts.contains(ownerId)) {
           Account account = _accounts.firstWhere((e) => e.uid == ownerId);
           _owners.add(account);
@@ -106,7 +106,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
         }
       }
 
-      for (var employeeId in company.employeesId) {
+      for (var employeeId in company.usersId) {
         if (_accounts.contains(employeeId)) {
           Account account = _accounts.firstWhere((e) => e.uid == employeeId);
           _employees.add(account);
@@ -124,7 +124,7 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
       _owners.sort((a, b) => a.name.compareTo(b.name));
       _employees.sort((a, b) => a.name.compareTo(b.name));
 
-      _companies.add(company.copyWith(owners: _owners, employees: _employees));
+      _companies.add(company.copyWith(admins: _owners, users: _employees));
       _companies.sort((a, b) => a.name.compareTo(b.name));
     }
     return _companies;
@@ -145,8 +145,8 @@ class OrganizationCubit extends HydratedCubit<OrganizationState> {
   Future<void> create(Organization company) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
       await _organizationRepository.create(company.copyWith(
-        ownersId: [_accountCubit.state.account!.uid],
-        employeesId: [_accountCubit.state.account!.uid],
+        adminsId: [_accountCubit.state.account!.uid],
+        usersId: [_accountCubit.state.account!.uid],
       ));
     }
   }

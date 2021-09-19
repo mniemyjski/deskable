@@ -8,7 +8,7 @@ class Booking extends Equatable {
   final String? userId;
   final Account? account;
   final DateTime? dateCre;
-  final String? companyId;
+  final String? organizationId;
   final String? roomId;
   final String? deskId;
   final DateTime? dateBook;
@@ -19,7 +19,7 @@ class Booking extends Equatable {
     this.account,
     this.userId,
     this.dateCre,
-    this.companyId,
+    this.organizationId,
     this.roomId,
     this.deskId,
     this.dateBook,
@@ -30,13 +30,13 @@ class Booking extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, userId, account, dateCre, companyId, roomId, deskId, dateBook, hoursBook];
+  List<Object?> get props => [id, userId, account, dateCre, organizationId, roomId, deskId, dateBook, hoursBook];
 
   Map<String, dynamic> toMap({bool hydrated = false}) {
     return {
       'id': this.id,
       'dateCre': hydrated ? this.dateCre!.toIso8601String() : this.dateCre,
-      'companyId': this.companyId,
+      'organizationId': this.organizationId,
       'roomId': this.roomId,
       'deskId': this.deskId,
       'userId': this.userId,
@@ -58,7 +58,7 @@ class Booking extends Equatable {
     return Booking(
       id: map['id'] as String,
       dateCre: _dateCre,
-      companyId: map['companyId'] as String,
+      organizationId: map['organizationId'] as String,
       roomId: map['roomId'] as String,
       deskId: map['deskId'] as String,
       userId: map['userId'] as String,
@@ -73,7 +73,7 @@ class Booking extends Equatable {
     String? userId,
     Account? account,
     DateTime? dateCre,
-    String? companyId,
+    String? organizationId,
     String? roomId,
     String? deskId,
     DateTime? dateBook,
@@ -84,7 +84,7 @@ class Booking extends Equatable {
       userId: userId ?? this.userId,
       account: account ?? this.account,
       dateCre: dateCre ?? this.dateCre,
-      companyId: companyId ?? this.companyId,
+      organizationId: organizationId ?? this.organizationId,
       roomId: roomId ?? this.roomId,
       deskId: deskId ?? this.deskId,
       dateBook: dateBook ?? this.dateBook,

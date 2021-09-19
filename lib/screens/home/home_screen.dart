@@ -3,6 +3,7 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:deskable/screens/home/widgets/booking_in_room.dart';
 import 'package:deskable/screens/home/widgets/room_display.dart';
+import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/enums.dart';
 import 'package:deskable/utilities/languages.dart';
 import 'package:deskable/utilities/responsive.dart';
@@ -86,7 +87,15 @@ class HomeScreen extends StatelessWidget {
                   if (state.status == ECompanyStatus.empty)
                     return Scaffold(
                         body: Center(
-                      child: Text(Languages.wait_for_the_invitation_or_create_your_own_company()),
+                      child: ElevatedButton(
+                          onPressed: () => Navigator.of(context).pushNamed(ManagementScreen.routeName),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              Languages.wait_for_the_invitation_or_create_your_own_organization(),
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          )),
                     ));
 
                   if (state.status == ECompanyStatus.succeed)

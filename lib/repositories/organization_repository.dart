@@ -3,10 +3,10 @@ import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class _BaseOrganizationRepository {
-  Future<String> create(Organization company);
-  Future<void> delete(Organization company);
-  Future<void> update(Organization company);
-  Stream<List<Organization?>> stream({required String accountId, bool owner = false});
+  Future<String> create(Organization organization);
+  Future<void> delete(Organization organization);
+  Future<void> update(Organization organization);
+  Stream<List<Organization?>> stream({required String accountId, bool admin = false});
 }
 
 final _ref = FirebaseFirestore.instance.collection(Path.companies()).withConverter<Organization>(
@@ -23,23 +23,23 @@ class OrganizationRepository extends _BaseOrganizationRepository {
   }
 
   @override
-  delete(Organization company) async {
-    return await _ref.doc(company.id).delete();
+  delete(Organization organization) async {
+    return await _ref.doc(organization.id).delete();
   }
 
   @override
-  update(Organization company) async {
-    return await _ref.doc(company.id).set(company);
+  update(Organization organization) async {
+    return await _ref.doc(organization.id).set(organization);
   }
 
   @override
-  Stream<List<Organization>> stream({required String accountId, bool owner = false}) {
-    if (owner)
-      return _ref.where('ownersId', arrayContains: accountId).snapshots().map((snap) {
+  Stream<List<Organization>> stream({required String accountId, bool admin = false}) {
+    if (admin)
+      return _ref.where('adminsId', arrayContains: accountId).snapshots().map((snap) {
         return snap.docs.isNotEmpty ? snap.docs.map((e) => e.data()).toList() : [];
       });
 
-    return _ref.where('employeesId', arrayContains: accountId).snapshots().map((snap) {
+    return _ref.where('usersId', arrayContains: accountId).snapshots().map((snap) {
       return snap.docs.isNotEmpty ? snap.docs.map((e) => e.data()).toList() : [];
     });
   }

@@ -90,7 +90,7 @@ class BookingCubit extends HydratedCubit<BookingState> {
     if (state.dateTime != null && (state.selectedRoomState?.status ?? ESelectedRoomStatus.unknown) == ESelectedRoomStatus.succeed) {
       emit(state.copyWith(status: EBookingStatus.loading));
       _bookingSubscription = _bookingRepository
-          .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.companyId!, dateBook: state.dateTime!)
+          .stream(roomId: state.selectedRoomState!.room!.id!, companyId: state.selectedRoomState!.room!.organizationId!, dateBook: state.dateTime!)
           .listen((bookings) async {
         List<Booking> _bookings = await _buildBooking(bookings!);
         emit(state.copyWith(bookings: List.from(_bookings), status: EBookingStatus.succeed));

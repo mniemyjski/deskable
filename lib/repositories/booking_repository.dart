@@ -3,12 +3,12 @@ import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
-extension WhereNotInExt<T> on Iterable<T> {
-  Iterable<T> whereNotIn(Iterable<T> reject) {
-    final rejectSet = reject.toSet();
-    return where((el) => !rejectSet.contains(el));
-  }
-}
+// extension WhereNotInExt<T> on Iterable<T> {
+//   Iterable<T> whereNotIn(Iterable<T> reject) {
+//     final rejectSet = reject.toSet();
+//     return where((el) => !rejectSet.contains(el));
+//   }
+// }
 
 abstract class _BaseBookingRepository {
   Future<void> create(Booking booking);
@@ -21,7 +21,7 @@ abstract class _BaseBookingRepository {
 class BookingRepository extends _BaseBookingRepository {
   @override
   create(Booking booking) async {
-    String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
+    String path = "${Path.companies()}/${booking.organizationId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
 
     CollectionReference ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
@@ -38,7 +38,7 @@ class BookingRepository extends _BaseBookingRepository {
 
   @override
   delete(Booking booking) async {
-    String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
+    String path = "${Path.companies()}/${booking.organizationId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
     CollectionReference _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -49,7 +49,7 @@ class BookingRepository extends _BaseBookingRepository {
 
   @override
   update(Booking booking) async {
-    String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
+    String path = "${Path.companies()}/${booking.organizationId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
     CollectionReference _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -68,30 +68,10 @@ class BookingRepository extends _BaseBookingRepository {
         );
 
     return ref
-        .where('companyId', isEqualTo: companyId)
+        .where('organizationId', isEqualTo: companyId)
         .where('roomId', isEqualTo: roomId)
         .where('dateBook', isEqualTo: dateBook)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
   }
-
-  // @override
-  // Future<Booking?> alreadyCreated(Booking booking) async {
-  //   String path = "${Path.companies()}/${booking.companyId}/${Path.rooms()}/${booking.roomId}/${Path.bookings()}";
-  //
-  //   final _ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
-  //         fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
-  //         toFirestore: (room, _) => room.toMap(),
-  //       );
-  //
-  //   return await _ref
-  //       .where('companyId', isEqualTo: booking.companyId)
-  //       .where('roomId', isEqualTo: booking.roomId)
-  //       .where('dateBook', isEqualTo: booking.dateBook)
-  //       .where('userId', isEqualTo: booking.userId)
-  //       .get()
-  //       .then((value) {
-  //     if (value.docs.isNotEmpty) return value.docs.first.data();
-  //   });
-  // }
 }

@@ -26,7 +26,7 @@ class CreatorBookingCubit extends Cubit<CreatorBookingState> {
     Booking booking;
     if (already == null) {
       booking = Booking(
-        companyId: _selectedRoomCubit.state.room!.companyId,
+        organizationId: _selectedRoomCubit.state.room!.organizationId,
         roomId: _selectedRoomCubit.state.room!.id,
         deskId: deskId,
         dateBook: _selectedDateCubit.state.dateTime,

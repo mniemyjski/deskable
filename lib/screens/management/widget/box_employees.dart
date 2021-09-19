@@ -27,7 +27,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
             width: 220,
             child: Column(
               children: [
-                _buildHeader(state.company!.employees),
+                _buildHeader(state.organization!.users),
                 Divider(),
                 _buildListView(),
               ],
@@ -47,13 +47,13 @@ class _BoxEmployeesState extends State<BoxEmployees> {
           padding: const EdgeInsets.only(left: 8.0),
           child: ListView.separated(
               separatorBuilder: (context, index) => Divider(),
-              itemCount: state.company!.employees.length,
+              itemCount: state.organization!.users.length,
               itemBuilder: (BuildContext _, int index) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: InkWell(onTap: null, child: Text(state.company!.employees[index].name)),
+                      child: InkWell(onTap: null, child: Text(state.organization!.users[index].name)),
                     ),
                     InkWell(
                       onTap: () => _onTap(context, state, index),
@@ -73,7 +73,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
-    if (areYouSure) context.read<SelectedOrganizationCubit>().removeEmployeeById(state.company!.employees[index].uid);
+    if (areYouSure) context.read<SelectedOrganizationCubit>().removeEmployeeById(state.organization!.users[index].uid);
   }
 
   _buildHeader(List<Account> emp) {

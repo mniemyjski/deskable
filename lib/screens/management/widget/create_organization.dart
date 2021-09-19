@@ -95,7 +95,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
           key: _formKeyName,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.company_name(),
+              labelText: Languages.organization_name(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(25),

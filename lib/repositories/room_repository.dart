@@ -13,7 +13,7 @@ abstract class _BaseRoomRepository {
 class RoomRepository extends _BaseRoomRepository {
   @override
   create(Room room) async {
-    String path = "${Path.companies()}/${room.companyId}/${Path.rooms()}";
+    String path = "${Path.companies()}/${room.organizationId}/${Path.rooms()}";
 
     final ref = FirebaseFirestore.instance.collection(path).withConverter<Room>(
           fromFirestore: (snapshot, _) => Room.fromMap(snapshot.data()!),
@@ -26,7 +26,7 @@ class RoomRepository extends _BaseRoomRepository {
 
   @override
   delete(Room room) async {
-    String path = "${Path.companies()}/${room.companyId}/${Path.rooms()}";
+    String path = "${Path.companies()}/${room.organizationId}/${Path.rooms()}";
 
     final ref = FirebaseFirestore.instance.collection(path).withConverter<Room>(
           fromFirestore: (snapshot, _) => Room.fromMap(snapshot.data()!),
@@ -37,7 +37,7 @@ class RoomRepository extends _BaseRoomRepository {
 
   @override
   update(Room room) async {
-    String path = "${Path.companies()}/${room.companyId}/${Path.rooms()}";
+    String path = "${Path.companies()}/${room.organizationId}/${Path.rooms()}";
     final ref = FirebaseFirestore.instance.collection(path).withConverter<Room>(
           fromFirestore: (snapshot, _) => Room.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -54,6 +54,6 @@ class RoomRepository extends _BaseRoomRepository {
           toFirestore: (room, _) => room.toMap(),
         );
 
-    return ref.where('companyId', isEqualTo: companyId).snapshots().map((snap) => snap.docs.map((e) => e.data()).toList());
+    return ref.where('organizationId', isEqualTo: companyId).snapshots().map((snap) => snap.docs.map((e) => e.data()).toList());
   }
 }

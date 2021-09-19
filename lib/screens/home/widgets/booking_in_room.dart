@@ -133,7 +133,7 @@ class BookingInRoom extends StatelessWidget {
             context,
             ListView.builder(
                 padding: const EdgeInsets.all(8),
-                itemCount: stateA.companies!.length,
+                itemCount: stateA.organizations!.length,
                 itemBuilder: (BuildContext _, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -142,13 +142,13 @@ class BookingInRoom extends StatelessWidget {
                         context.read<SelectedOrganizationCubit>().change(index);
                         Navigator.pop(context);
                       },
-                      child: Text(stateA.companies![index].name),
+                      child: Text(stateA.organizations![index].name),
                     ),
                   );
                 }),
           ),
           widget: AutoSizeText(
-            stateB.company?.name ?? '',
+            stateB.organization?.name ?? '',
             style: TextStyle(fontWeight: FontWeight.bold),
             maxLines: 1,
             minFontSize: 6,
