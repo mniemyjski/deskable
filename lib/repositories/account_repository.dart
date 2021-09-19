@@ -8,6 +8,7 @@ abstract class _BaseAccountRepository {
   Future<Account?> getAccountById(String id);
   Future<Account?> getAccountByEmail(String email);
   Future<List<Account>> searchAccount(String txt);
+  Future<List<Account>> searchManyAccount(List<String> emails);
   Future<bool> nameAvailable(String name);
   Future<void> createAccount(Account account);
   Future<void> updateAccount(Account account);
@@ -60,19 +61,24 @@ class AccountRepository extends _BaseAccountRepository {
     email = await _ref.orderBy('email').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
     name = await _ref.orderBy('name').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
 
-    email = await _ref
-        .where('email', isGreaterThanOrEqualTo: search)
-        .where('email', isLessThan: search + 'z')
-        .get()
-        .then((value) => value.docs.map((e) => e.data()).toList());
-    name = await _ref
-        .where('name', isGreaterThanOrEqualTo: search)
-        .where('name', isLessThan: search + 'z')
-        .get()
-        .then((value) => value.docs.map((e) => e.data()).toList());
+    // email = await _ref
+    //     .where('email', isGreaterThanOrEqualTo: search)
+    //     .where('email', isLessThan: search + 'z')
+    //     .get()
+    //     .then((value) => value.docs.map((e) => e.data()).toList());
+    // name = await _ref
+    //     .where('name', isGreaterThanOrEqualTo: search)
+    //     .where('name', isLessThan: search + 'z')
+    //     .get()
+    //     .then((value) => value.docs.map((e) => e.data()).toList());
 
     List<Account> accounts = LinkedHashSet<Account>.from(email + name).toList();
 
     return accounts;
+  }
+
+  @override
+  Future<List<Account>> searchManyAccount(List<String> emails) async {
+    return await _ref.where('email', whereIn: emails).get().then((value) => value.docs.map((e) => e.data()).toList());
   }
 }

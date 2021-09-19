@@ -40,7 +40,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
   Expanded _buildListView() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
           builder: (context, state) {
             if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
@@ -57,10 +57,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
                       ),
                       InkWell(
                         onTap: () => _onTap(context, state, index),
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Icon(Icons.remove_circle),
-                        ),
+                        child: Icon(Icons.remove_circle),
                       ),
                     ],
                   );
@@ -115,6 +112,12 @@ class _BoxAdminsState extends State<BoxAdmins> {
                           } else {
                             customFlashBar(context, Languages.you_can_not_do_it());
                           }
+                        },
+                        onTapMany: (List<Account> accounts) async {
+                          for (final a in accounts) {
+                            await context.read<SelectedOrganizationCubit>().addAdmin(a);
+                          }
+                          Navigator.pop(context);
                         },
                       ));
                 },

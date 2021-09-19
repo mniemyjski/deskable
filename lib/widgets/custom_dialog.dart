@@ -15,9 +15,6 @@ customDialog(BuildContext context, Widget body) {
                   minHeight: 100,
                   maxHeight: 500.0,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: body,
-                )));
+                child: body));
       });
 }

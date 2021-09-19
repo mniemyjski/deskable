@@ -19,15 +19,12 @@ class BoxRooms extends StatelessWidget {
           child: Container(
             height: 500,
             width: 220,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Column(
-                children: [
-                  _buildHeader(context),
-                  Divider(),
-                  _buildListView(),
-                ],
-              ),
+            child: Column(
+              children: [
+                _buildHeader(context),
+                Divider(),
+                _buildListView(),
+              ],
             ),
           ),
         );
@@ -35,21 +32,24 @@ class BoxRooms extends StatelessWidget {
     );
   }
 
-  Row _buildHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
-        IconButton(
-          onPressed: () => Navigator.of(context).pushNamed(
-            CreateRoomScreen.routeName,
-            arguments: CreateRoomScreenArguments(
-              selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+  Padding _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          IconButton(
+            onPressed: () => Navigator.of(context).pushNamed(
+              CreateRoomScreen.routeName,
+              arguments: CreateRoomScreenArguments(
+                selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+              ),
             ),
+            icon: Icon(Icons.add_circle),
           ),
-          icon: Icon(Icons.add_circle),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -60,16 +60,19 @@ class BoxRooms extends StatelessWidget {
 
         return Expanded(
           child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Divider(),
+                  ),
               itemCount: stateA.rooms!.length,
               itemBuilder: (BuildContext _, int index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Text(stateA.rooms![index].name)),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: InkWell(
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Text(stateA.rooms![index].name)),
+                      InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             CreateRoomScreen.routeName,
@@ -81,15 +84,15 @@ class BoxRooms extends StatelessWidget {
                         },
                         child: Icon(Icons.edit),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: InkWell(
-                        onTap: () => _onTap(context, stateA, index),
-                        child: Icon(Icons.remove_circle),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: InkWell(
+                          onTap: () => _onTap(context, stateA, index),
+                          child: Icon(Icons.remove_circle),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }),
         );

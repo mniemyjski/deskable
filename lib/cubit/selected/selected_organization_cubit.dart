@@ -86,10 +86,10 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     return true;
   }
 
-  addAdmin(Account account) async {
+  Future<void> addAdmin(Account account) async {
     List<String> ownerId = List.from(state.organization!.adminsId);
     ownerId.add(account.uid);
-    _organizationRepository.update(state.organization!.copyWith(adminsId: ownerId));
+    return await _organizationRepository.update(state.organization!.copyWith(adminsId: ownerId));
   }
 
   removeOwnerById(String accountId) async {
@@ -98,10 +98,10 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     _organizationRepository.update(state.organization!.copyWith(adminsId: ownerId));
   }
 
-  addEmployee(Account account) async {
+  Future<void> addEmployee(Account account) async {
     List<String> employeesId = List.from(state.organization!.usersId);
     employeesId.add(account.uid);
-    _organizationRepository.update(state.organization!.copyWith(usersId: employeesId));
+    return await _organizationRepository.update(state.organization!.copyWith(usersId: employeesId));
   }
 
   Future<bool> addEmployeeById(String id) async {

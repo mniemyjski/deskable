@@ -15,38 +15,38 @@ class BoxOrganizations extends StatelessWidget {
       child: Container(
         height: 500,
         width: 220,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Column(
-            children: [
-              _buildHeader(context),
-              Divider(),
-              _buildListView(),
-            ],
-          ),
+        child: Column(
+          children: [
+            _buildHeader(context),
+            Divider(),
+            _buildListView(),
+          ],
         ),
       ),
     );
   }
 
-  Row _buildHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('${Languages.organizations()}:', style: TextStyle(fontWeight: FontWeight.bold)),
-        IconButton(
-          onPressed: () {
-            customDialog(
-              context,
-              BlocProvider.value(
-                value: BlocProvider.of<OrganizationCubit>(context),
-                child: CreateOrganizations(),
-              ),
-            );
-          },
-          icon: Icon(Icons.add_circle),
-        ),
-      ],
+  Padding _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('${Languages.organizations()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          IconButton(
+            onPressed: () {
+              customDialog(
+                context,
+                BlocProvider.value(
+                  value: BlocProvider.of<OrganizationCubit>(context),
+                  child: CreateOrganizations(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add_circle),
+          ),
+        ],
+      ),
     );
   }
 
@@ -58,27 +58,27 @@ class BoxOrganizations extends StatelessWidget {
 
         return Expanded(
           child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Divider(),
+                  ),
               itemCount: stateA.organizations!.length,
               itemBuilder: (BuildContext _, int index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () => context.read<SelectedOrganizationCubit>().change(index),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => context.read<SelectedOrganizationCubit>().change(index),
                           child: Text(
                             stateA.organizations![index].name,
                             style: TextStyle(color: stateB.organization!.id == stateA.organizations![index].id ? Colors.blue : null),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: InkWell(
+                      InkWell(
                         onTap: () {
                           customDialog(
                             context,
@@ -90,15 +90,15 @@ class BoxOrganizations extends StatelessWidget {
                         },
                         child: Icon(Icons.edit),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: InkWell(
-                        onTap: () => _onTap(context, stateA, index),
-                        child: Icon(Icons.remove_circle),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: InkWell(
+                          onTap: () => _onTap(context, stateA, index),
+                          child: Icon(Icons.remove_circle),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }),
         );

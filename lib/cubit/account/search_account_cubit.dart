@@ -17,4 +17,8 @@ class SearchAccountCubit extends Cubit<SearchAccountState> {
     List<Account> accounts = await _accountRepository.searchAccount(search);
     accounts.isNotEmpty ? emit(SearchAccountState.succeed(accounts)) : emit(SearchAccountState.empty());
   }
+
+  Future<List<Account>> searchManyEmail(List<String> search) async {
+    return await _accountRepository.searchManyAccount(search);
+  }
 }

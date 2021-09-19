@@ -96,4 +96,10 @@ class Languages {
 
   static String you_can_not_do_it() => "you_can_not_do_it".tr();
   static String organization_name() => "organization_name".tr();
+
+  static String add_many() => "add_many".tr();
+  static String add_many_email() => "add_many_email".tr();
+  static String add_many_email_sample() => "add_many_email_sample".tr();
+
+  static String add() => "add".tr();
 }

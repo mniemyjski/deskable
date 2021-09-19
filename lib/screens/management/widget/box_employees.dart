@@ -43,13 +43,16 @@ class _BoxEmployeesState extends State<BoxEmployees> {
       builder: (context, state) {
         if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(),
-              itemCount: state.organization!.users.length,
-              itemBuilder: (BuildContext _, int index) {
-                return Row(
+        return ListView.separated(
+            separatorBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Divider(),
+                ),
+            itemCount: state.organization!.users.length,
+            itemBuilder: (BuildContext _, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
@@ -57,15 +60,12 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                     ),
                     InkWell(
                       onTap: () => _onTap(context, state, index),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Icon(Icons.remove_circle),
-                      ),
+                      child: Icon(Icons.remove_circle),
                     ),
                   ],
-                );
-              }),
-        );
+                ),
+              );
+            });
       },
     ));
   }
@@ -88,22 +88,30 @@ class _BoxEmployeesState extends State<BoxEmployees> {
               IconButton(
                 onPressed: () {
                   customDialog(
-                      context,
-                      SearchDialog(
-                        alreadyAccountAdded: emp,
-                        onTapAdd: (Account account) async {
-                          await context.read<SelectedOrganizationCubit>().addEmployee(account);
+                    context,
+                    SearchDialog(
+                      alreadyAccountAdded: emp,
+                      onTapAdd: (Account account) async {
+                        await context.read<SelectedOrganizationCubit>().addEmployee(account);
+                        Navigator.pop(context);
+                      },
+                      onTapRemove: (Account account) async {
+                        bool areYouSure = false;
+                        areYouSure = await areYouSureDialog(context);
+                        if (areYouSure) {
+                          await context.read<SelectedOrganizationCubit>().removeEmployeeById(account.uid);
                           Navigator.pop(context);
-                        },
-                        onTapRemove: (Account account) async {
-                          bool areYouSure = false;
-                          areYouSure = await areYouSureDialog(context);
-                          if (areYouSure) {
-                            await context.read<SelectedOrganizationCubit>().removeEmployeeById(account.uid);
-                            Navigator.pop(context);
-                          }
-                        },
-                      ));
+                        }
+                      },
+                      onTapMany: (List<Account> accounts) async {
+                        Logger().wtf(accounts);
+                        for (final a in accounts) {
+                          await context.read<SelectedOrganizationCubit>().addEmployee(a);
+                        }
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
                 },
                 icon: Icon(Icons.search),
               ),

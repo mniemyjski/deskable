@@ -47,49 +47,54 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: customAppBar(title: Languages.edit_profile()),
+        appBar: AppBar(
+          title: Text(Languages.edit_profile()),
+          actions: [
+            IconButton(
+              onPressed: () => _save(context: context, name: _controllerName.text),
+              icon: Icon(Icons.save),
+            ),
+          ],
+        ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () => _changeImage(context),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: BlocBuilder<AccountCubit, AccountState>(
-                      builder: (context, state) {
-                        if (state.status == EAccountStatus.created) return CustomAvatar(url: state.account!.photoUrl);
-                        return CustomAvatar();
-                      },
+                Center(
+                  child: GestureDetector(
+                    onTap: () => _changeImage(context),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: BlocBuilder<AccountCubit, AccountState>(
+                        builder: (context, state) {
+                          if (state.status == EAccountStatus.created) return CustomAvatar(url: state.account!.photoUrl);
+                          return CustomAvatar();
+                        },
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    key: _formKeyName,
-                    child: TextFormField(
-                      decoration: InputDecoration(labelText: Languages.name()),
-                      textInputAction: TextInputAction.done,
-                      controller: _controllerName,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(20),
-                      ],
-                      validator: (v) => Validators.name(v),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 300),
+                    child: Form(
+                      key: _formKeyName,
+                      child: TextFormField(
+                        decoration: InputDecoration(labelText: Languages.name()),
+                        textInputAction: TextInputAction.done,
+                        controller: _controllerName,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20),
+                        ],
+                        validator: (v) => Validators.name(v),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            CustomButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(Languages.save()),
-                  ],
-                ),
-                onPressed: () => _save(context: context, name: _controllerName.text)),
           ],
         ),
       ),
