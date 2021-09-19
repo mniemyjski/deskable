@@ -81,40 +81,32 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     }
   }
 
-  Future<bool> addOwnerByEmail(String email) async {
-    Account? account = await _accountRepository.getAccountByEmail(email);
-    if (account == null) return false;
+  Future<bool> isPossible(String accountId) async {
+    if (_accountCubit.state.account!.uid == accountId) return false;
 
+    return true;
+  }
+
+  addAdmin(Account account) async {
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.add(account.uid);
     _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
-
-    return true;
   }
 
-  Future<bool> removeOwnerByEmail(String email) async {
-    Account? account = await _accountRepository.getAccountByEmail(email);
-    if (account == null) return false;
-    if (_accountCubit.state.account!.uid == account.uid) return false;
-
-    List<String> ownerId = List.from(state.company!.ownersId);
-    ownerId.remove(account.uid);
-    _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
-
-    return true;
-  }
-
-  Future<bool> removeOwnerById(String accountId) async {
-    if (_accountCubit.state.account!.uid == accountId) return false;
+  removeOwnerById(String accountId) async {
     List<String> ownerId = List.from(state.company!.ownersId);
     ownerId.remove(accountId);
     _organizationRepository.update(state.company!.copyWith(ownersId: ownerId));
-
-    return true;
   }
 
-  Future<bool> addEmployeeByEmail(String email) async {
-    Account? account = await _accountRepository.getAccountByEmail(email);
+  addEmployee(Account account) async {
+    List<String> employeesId = List.from(state.company!.employeesId);
+    employeesId.add(account.uid);
+    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
+  }
+
+  Future<bool> addEmployeeById(String id) async {
+    Account? account = await _accountRepository.getAccountById(id);
     if (account == null) return false;
 
     List<String> employeesId = List.from(state.company!.employeesId);
@@ -124,23 +116,10 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     return true;
   }
 
-  Future<bool> removeEmployeeByEmail(String email) async {
-    Account? account = await _accountRepository.getAccountByEmail(email);
-    if (account == null) return false;
-
-    List<String> employeesId = List.from(state.company!.employeesId);
-    employeesId.remove(account.uid);
-    _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
-
-    return true;
-  }
-
-  Future<bool> removeEmployeeById(String accountId) async {
+  removeEmployeeById(String accountId) async {
     List<String> employeesId = List.from(state.company!.employeesId);
     employeesId.remove(accountId);
     _organizationRepository.update(state.company!.copyWith(employeesId: employeesId));
-
-    return true;
   }
 
   @override

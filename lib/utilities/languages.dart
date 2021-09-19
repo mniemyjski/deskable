@@ -96,4 +96,6 @@ class Languages {
 
   static String admin() => "admin".tr();
   static String admins() => "admins".tr();
+
+  static String you_can_not_do_it() => "you_can_not_do_it".tr();
 }

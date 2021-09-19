@@ -1,13 +1,13 @@
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:logger/logger.dart';
+import "dart:collection";
 
 abstract class _BaseAccountRepository {
   streamMyAccount(String uid);
   Future<Account?> getAccountById(String id);
   Future<Account?> getAccountByEmail(String email);
+  Future<List<Account>> searchAccount(String txt);
   Future<bool> nameAvailable(String name);
   Future<void> createAccount(Account account);
   Future<void> updateAccount(Account account);
@@ -52,4 +52,27 @@ class AccountRepository extends _BaseAccountRepository {
 
   @override
   Future<bool> nameAvailable(String name) => _ref.where('name', isEqualTo: name).get().then((value) => value.docs.length > 0 ? false : true);
+
+  @override
+  Future<List<Account>> searchAccount(String search) async {
+    List<Account> email;
+    List<Account> name;
+    email = await _ref.orderBy('email').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
+    name = await _ref.orderBy('name').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
+
+    email = await _ref
+        .where('email', isGreaterThanOrEqualTo: search)
+        .where('email', isLessThan: search + 'z')
+        .get()
+        .then((value) => value.docs.map((e) => e.data()).toList());
+    name = await _ref
+        .where('name', isGreaterThanOrEqualTo: search)
+        .where('name', isLessThan: search + 'z')
+        .get()
+        .then((value) => value.docs.map((e) => e.data()).toList());
+
+    List<Account> accounts = LinkedHashSet<Account>.from(email + name).toList();
+
+    return accounts;
+  }
 }

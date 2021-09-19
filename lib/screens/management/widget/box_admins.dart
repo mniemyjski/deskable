@@ -1,6 +1,6 @@
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
-import 'package:deskable/screens/management/widget/search_field.dart';
+import 'package:deskable/screens/management/widget/search_dialog.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,6 @@ class BoxAdmins extends StatefulWidget {
 }
 
 class _BoxAdminsState extends State<BoxAdmins> {
-  bool search = false;
-  String _email = '';
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
@@ -29,7 +26,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
             width: 220,
             child: Column(
               children: [
-                _buildHeader(),
+                _buildHeader(state.company!.owners),
                 Divider(),
                 _buildListView(),
               ],
@@ -75,50 +72,58 @@ class _BoxAdminsState extends State<BoxAdmins> {
   }
 
   Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
-    bool areYouSure = false;
-    areYouSure = await areYouSureDialog(context);
-    if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.company!.owners[index].uid);
+    bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(state.company!.owners[index].uid);
+
+    if (isPossible) {
+      bool areYouSure = false;
+      areYouSure = await areYouSureDialog(context);
+      if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.company!.owners[index].uid);
+    } else {
+      customFlashBar(context, Languages.you_can_not_do_it());
+    }
   }
 
-  _buildHeader() {
-    return search
-        ? SearchField(
-            onTapBack: () => setState(() => search = !search),
-            onTapAdd: () async {
-              setState(() => search = !search);
-              bool succeed = false;
-              succeed = await context.read<SelectedOrganizationCubit>().addOwnerByEmail(_email);
-              if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
-            },
-            onTapRemove: () async {
-              setState(() => search = !search);
-              bool areYouSure = false;
-              areYouSure = await areYouSureDialog(context);
-              if (areYouSure) {
-                bool succeed = false;
-                succeed = await context.read<SelectedOrganizationCubit>().removeOwnerByEmail(_email);
-                if (!succeed) customFlashBar(context, Languages.there_is_no_such_email_address());
-              }
-            },
-            text: (String email) => _email = email,
-          )
-        : Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('${Languages.admins()}:', style: TextStyle(fontWeight: FontWeight.bold)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () => setState(() => search = !search),
-                      icon: Icon(Icons.search),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+  _buildHeader(List<Account> admins) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('${Languages.admins()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  customDialog(
+                      context,
+                      SearchDialog(
+                        alreadyAccountAdded: admins,
+                        onTapAdd: (Account account) async {
+                          await context.read<SelectedOrganizationCubit>().addAdmin(account);
+                          Navigator.pop(context);
+                        },
+                        onTapRemove: (Account account) async {
+                          bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(account.uid);
+
+                          if (isPossible) {
+                            bool areYouSure = false;
+                            areYouSure = await areYouSureDialog(context);
+                            if (areYouSure) {
+                              context.read<SelectedOrganizationCubit>().removeOwnerById(account.uid);
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            customFlashBar(context, Languages.you_can_not_do_it());
+                          }
+                        },
+                      ));
+                },
+                icon: Icon(Icons.search),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
