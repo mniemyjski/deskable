@@ -1,14 +1,15 @@
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/utilities/utilities.dart';
+import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateOrganizations extends StatefulWidget {
-  final Organization? company;
-  const CreateOrganizations({Key? key, this.company}) : super(key: key);
+  final Organization? organization;
+  const CreateOrganizations({Key? key, this.organization}) : super(key: key);
 
   @override
   State<CreateOrganizations> createState() => _CreateOrganizationsState();
@@ -22,9 +23,9 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
 
   @override
   void initState() {
-    if (widget.company != null) {
-      _controllerName.text = widget.company!.name;
-      _controllerDescription.text = widget.company!.description;
+    if (widget.organization != null) {
+      _controllerName.text = widget.organization!.name;
+      _controllerDescription.text = widget.organization!.description;
     }
     super.initState();
   }
@@ -54,10 +55,10 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.company == null ? Languages.create() : Languages.save()),
+                  Text(widget.organization == null ? Languages.create() : Languages.save()),
                 ],
               ),
-              onPressed: () => _onTap(context, widget.company)),
+              onPressed: () => _onTap(context, widget.organization)),
         ),
       ],
     );
@@ -75,11 +76,10 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
               labelText: Languages.description(),
             ),
             inputFormatters: [
-              LengthLimitingTextInputFormatter(240),
+              LengthLimitingTextInputFormatter(300),
             ],
             textInputAction: TextInputAction.done,
             controller: _controllerDescription,
-            // validator: (v) => Validators.password(v),
           ),
         ),
       ),
@@ -98,24 +98,26 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
               labelText: Languages.organization_name(),
             ),
             inputFormatters: [
-              LengthLimitingTextInputFormatter(25),
+              LengthLimitingTextInputFormatter(20),
             ],
             textInputAction: TextInputAction.next,
             controller: _controllerName,
-            // validator: (v) => Validators.password(v),
+            validator: (v) => Validators.organizationName(v),
           ),
         ),
       ),
     );
   }
 
-  void _onTap(BuildContext context, Organization? company) {
-    if (company != null) {
-      context.read<OrganizationCubit>().update(company.copyWith(name: _controllerName.text, description: _controllerDescription.text));
-    } else {
-      Organization _company = Organization.create(name: _controllerName.text, description: _controllerDescription.text);
-      context.read<OrganizationCubit>().create(_company);
+  void _onTap(BuildContext context, Organization? organization) {
+    if (_formKeyName.currentState!.validate()) {
+      if (organization != null) {
+        context.read<OrganizationCubit>().update(organization.copyWith(name: _controllerName.text, description: _controllerDescription.text));
+      } else {
+        Organization _company = Organization.create(name: _controllerName.text, description: _controllerDescription.text);
+        context.read<OrganizationCubit>().create(_company);
+      }
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
   }
 }

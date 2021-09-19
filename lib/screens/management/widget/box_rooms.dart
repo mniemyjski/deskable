@@ -44,7 +44,7 @@ class BoxRooms extends StatelessWidget {
           onPressed: () => Navigator.of(context).pushNamed(
             CreateRoomScreen.routeName,
             arguments: CreateRoomScreenArguments(
-              selectedCompanyCubit: context.read<SelectedOrganizationCubit>(),
+              selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
             ),
           ),
           icon: Icon(Icons.add_circle),
@@ -74,7 +74,7 @@ class BoxRooms extends StatelessWidget {
                           Navigator.of(context).pushNamed(
                             CreateRoomScreen.routeName,
                             arguments: CreateRoomScreenArguments(
-                              selectedCompanyCubit: context.read<SelectedOrganizationCubit>(),
+                              selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
                               room: stateA.rooms![index],
                             ),
                           );

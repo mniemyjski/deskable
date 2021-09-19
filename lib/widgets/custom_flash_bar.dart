@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 customFlashBar(BuildContext context, String text) {
   return showFlash(
       context: context,
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 3),
       builder: (context, controller) {
         return BlocBuilder<DarkModeCubit, bool>(
           builder: (context, state) {

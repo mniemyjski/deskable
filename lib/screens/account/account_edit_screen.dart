@@ -4,8 +4,10 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -71,6 +73,10 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
                       decoration: InputDecoration(labelText: Languages.name()),
                       textInputAction: TextInputAction.done,
                       controller: _controllerName,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(20),
+                      ],
+                      validator: (v) => Validators.name(v),
                     ),
                   ),
                 ),
@@ -89,38 +95,40 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
       ),
     );
   }
-}
 
-_changeImage(BuildContext context) async {
-  final picker = ImagePicker();
-  final result = await picker.pickImage(
-    source: ImageSource.gallery,
-    imageQuality: 50,
-    maxWidth: 1080,
-    maxHeight: 1920,
-  );
-
-  if (result != null) {
-    Uint8List uint8List = await result.readAsBytes();
-    var image = await Navigator.pushNamed(
-      context,
-      CropImageScreen.routeName,
-      arguments: CropScreenArguments(uint8List: uint8List, isCircleUi: true),
+  _changeImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final result = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 1080,
+      maxHeight: 1920,
     );
-    if (image != null) {
-      context.read<UpdateAvatarCubit>().update(image as Uint8List);
+
+    if (result != null) {
+      Uint8List uint8List = await result.readAsBytes();
+      var image = await Navigator.pushNamed(
+        context,
+        CropImageScreen.routeName,
+        arguments: CropScreenArguments(uint8List: uint8List, isCircleUi: true),
+      );
+      if (image != null) {
+        context.read<UpdateAvatarCubit>().update(image as Uint8List);
+      }
     }
   }
-}
 
-_save({required BuildContext context, required String name}) async {
-  FocusScope.of(context).unfocus();
+  _save({required BuildContext context, required String name}) async {
+    if (_formKeyName.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
 
-  bool updated = await context.read<AccountCubit>().updateName(name);
+      bool updated = await context.read<AccountCubit>().updateName(name);
 
-  if (updated) {
-    Navigator.pop(context);
-  } else {
-    customFlashBar(context, Languages.name_not_available());
+      if (updated) {
+        Navigator.pop(context);
+      } else {
+        customFlashBar(context, Languages.name_not_available());
+      }
+    }
   }
 }

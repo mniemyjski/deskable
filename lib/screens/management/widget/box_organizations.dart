@@ -84,7 +84,7 @@ class BoxOrganizations extends StatelessWidget {
                             context,
                             BlocProvider.value(
                               value: BlocProvider.of<OrganizationCubit>(context),
-                              child: CreateOrganizations(company: stateA.organizations![index]),
+                              child: CreateOrganizations(organization: stateA.organizations![index]),
                             ),
                           );
                         },

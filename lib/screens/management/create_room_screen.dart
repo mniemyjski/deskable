@@ -14,10 +14,10 @@ import 'package:collection/collection.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateRoomScreenArguments {
-  final SelectedOrganizationCubit selectedCompanyCubit;
+  final SelectedOrganizationCubit selectedOrganizationCubit;
   final Room? room;
 
-  CreateRoomScreenArguments({required this.selectedCompanyCubit, this.room});
+  CreateRoomScreenArguments({required this.selectedOrganizationCubit, this.room});
 }
 
 class CreateRoomScreen extends StatelessWidget {
@@ -31,7 +31,7 @@ class CreateRoomScreen extends StatelessWidget {
     return MaterialPageRoute(
       settings: const RouteSettings(name: routeName),
       builder: (_) => BlocProvider.value(
-        value: args.selectedCompanyCubit,
+        value: args.selectedOrganizationCubit,
         child: CreateRoomScreen(room: args.room),
       ),
     );

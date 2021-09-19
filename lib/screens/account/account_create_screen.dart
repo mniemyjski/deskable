@@ -7,6 +7,7 @@ import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountCreateScreen extends StatefulWidget {
@@ -57,6 +58,9 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
                     decoration: InputDecoration(labelText: Languages.name()),
                     textInputAction: TextInputAction.done,
                     controller: _controllerName,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(20),
+                    ],
                     validator: (v) => Validators.name(v),
                   ),
                 ),

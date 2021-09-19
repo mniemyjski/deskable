@@ -2,6 +2,7 @@ import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/screens/management/cubit/create_room_cubit.dart';
 import 'package:deskable/utilities/utilities.dart';
+import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/custom_button.dart';
 import 'package:deskable/widgets/custom_selector_data.dart';
 import 'package:flutter/material.dart';
@@ -54,13 +55,15 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
             builder: (context, state) {
               return CustomButton(
                 onPressed: () {
-                  if (state.edit) {
-                    context.read<CreateRoomCubit>().update(name: _controllerName.text, description: _controllerDesc.text);
-                  } else {
-                    context.read<CreateRoomCubit>().create(name: _controllerName.text, description: _controllerDesc.text);
+                  if (_formKeyName.currentState!.validate()) {
+                    if (state.edit) {
+                      context.read<CreateRoomCubit>().update(name: _controllerName.text, description: _controllerDesc.text);
+                    } else {
+                      context.read<CreateRoomCubit>().create(name: _controllerName.text, description: _controllerDesc.text);
+                    }
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
-                  Navigator.pop(context);
                 },
                 child: Text(state.edit ? Languages.save() : Languages.create()),
               );
@@ -143,7 +146,6 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
             ],
             textInputAction: TextInputAction.next,
             controller: _controllerDesc,
-            // validator: (v) => Validators.password(v),
           ),
         ),
       ),
@@ -162,11 +164,11 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
               labelText: Languages.room_name(),
             ),
             inputFormatters: [
-              LengthLimitingTextInputFormatter(25),
+              LengthLimitingTextInputFormatter(20),
             ],
             textInputAction: TextInputAction.next,
             controller: _controllerName,
-            // validator: (v) => Validators.password(v),
+            validator: (v) => Validators.roomName(v),
           ),
         ),
       ),
