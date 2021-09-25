@@ -100,5 +100,14 @@ class IncomingBooking extends StatelessWidget {
     );
   }
 
-  Expanded _textHeader(String name, int flex) => Expanded(flex: flex, child: Text(name, style: TextStyle(fontWeight: FontWeight.bold)));
+  Expanded _textHeader(String name, int flex) => Expanded(
+        flex: flex,
+        child: AutoSizeText(
+          name,
+          style: TextStyle(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          minFontSize: 6,
+          maxFontSize: 16,
+        ),
+      );
 }
