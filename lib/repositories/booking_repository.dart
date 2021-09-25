@@ -15,7 +15,7 @@ abstract class _BaseBookingRepository {
   Future<void> delete(Booking booking);
   Future<void> update(Booking booking);
   Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook});
-  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime});
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime, required String userId});
 }
 
 class BookingRepository extends _BaseBookingRepository {
@@ -73,7 +73,7 @@ class BookingRepository extends _BaseBookingRepository {
   }
 
   @override
-  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime}) {
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime, required String userId}) {
     final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -81,6 +81,7 @@ class BookingRepository extends _BaseBookingRepository {
 
     return ref
         .where('organizationId', isEqualTo: organizationId)
+        .where('userId', isEqualTo: userId)
         .where('dateBook', isGreaterThan: dateTime)
         .orderBy('dateBook')
         .limit(10)

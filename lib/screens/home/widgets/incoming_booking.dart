@@ -17,6 +17,7 @@ class IncomingBooking extends StatelessWidget {
       create: (context) => IncomingBookingCubit(
         bookingRepository: context.read<BookingRepository>(),
         selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+        accountCubit: context.read<AccountCubit>(),
       ),
       child: BlocBuilder<IncomingBookingCubit, IncomingBookingState>(
         builder: (context, state) {
