@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:deskable/bloc/bloc.dart';
 import 'package:deskable/cubit/account/account_cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:logger/logger.dart';
 part 'preference_state.dart';
 
 class PreferenceCubit extends Cubit<PreferenceState> {

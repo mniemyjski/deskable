@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
 import 'package:deskable/screens/screens.dart';
@@ -124,6 +125,11 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
   }
 
   _save({required BuildContext context, required String name}) async {
+    final loading = BotToast.showLoading();
+    final name = context.read<AccountCubit>().state.account!.name;
+
+    if (name == _controllerName.text) Navigator.pop(context);
+
     if (_formKeyName.currentState!.validate()) {
       FocusScope.of(context).unfocus();
 
@@ -132,8 +138,10 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
       if (updated) {
         Navigator.pop(context);
       } else {
-        customFlashBar(context, Languages.name_not_available());
+        customFlashBar(Languages.name_not_available());
+        _controllerName.text = context.read<AccountCubit>().state.account!.name;
       }
     }
+    loading.call();
   }
 }

@@ -1,9 +1,12 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class DarkModeCubit extends HydratedCubit<bool> {
   DarkModeCubit() : super(false);
 
-  void change() => emit(!state);
+  void change() async {
+    emit(!state);
+  }
 
   @override
   bool fromJson(Map<String, dynamic> json) => json['value'] as bool;

@@ -84,7 +84,7 @@ class CreateRoomScreen extends StatelessWidget {
                                 if (state.room.furniture.isEmpty) {
                                   context.read<CreateRoomCubit>().decreaseX();
                                 } else {
-                                  customFlashBar(context, Languages.before_remove_furnitures());
+                                  customFlashBar(Languages.before_remove_furnitures());
                                 }
                               },
                               onPressedNext: () => context.read<CreateRoomCubit>().increaseX(),
@@ -99,7 +99,7 @@ class CreateRoomScreen extends StatelessWidget {
                                 if (state.room.furniture.isEmpty) {
                                   context.read<CreateRoomCubit>().decreaseY();
                                 } else {
-                                  customFlashBar(context, Languages.before_remove_furnitures());
+                                  customFlashBar(Languages.before_remove_furnitures());
                                 }
                               },
                               onPressedNext: () => context.read<CreateRoomCubit>().increaseY(),

@@ -9,8 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmailForm extends StatefulWidget {
-  final BuildContext contextMain;
-  const EmailForm({Key? key, required this.contextMain}) : super(key: key);
+  const EmailForm({Key? key}) : super(key: key);
 
   @override
   _EmailFormState createState() => _EmailFormState();
@@ -169,13 +168,13 @@ class _EmailFormState extends State<EmailForm> {
     if (state.signInFormType == SignInFormType.reset && _formKeyEmail.currentState!.validate()) {
       context.read<SignInCubit>().valueForm(email: _controllerEmail.text);
       failure = await context.read<SignInCubit>().signInWithEmail();
-      if (failure == null) customFlashBar(widget.contextMain, Languages.reset_mail());
+      if (failure == null) customFlashBar(Languages.reset_mail());
     }
 
     if (state.signInFormType != SignInFormType.reset && _formKeyEmail.currentState!.validate() && _formKeyPassword.currentState!.validate()) {
       context.read<SignInCubit>().valueForm(email: _controllerEmail.text, password: _controllerPassword.text);
       failure = await context.read<SignInCubit>().signInWithEmail();
     }
-    if (failure != null) customFlashBar(widget.contextMain, failure.message);
+    if (failure != null) customFlashBar(failure.message);
   }
 }

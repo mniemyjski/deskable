@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:deskable/cubit/selected/selected_organization_cubit.dart';
 import 'package:deskable/cubit/selected/selected_date_cubit.dart';
 import 'package:deskable/cubit/selected/selected_room_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -104,10 +106,13 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<DarkModeCubit, bool>(
           builder: (context, state) {
             return MaterialApp(
+              scrollBehavior: MyCustomScrollBehavior(),
               debugShowCheckedModeBanner: false,
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
+              builder: BotToastInit(),
+              navigatorObservers: [BotToastNavigatorObserver()],
               title: 'Deskable',
               theme: ThemeData(
                 fontFamily: 'Georgia',
@@ -140,4 +145,14 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        // etc.
+      };
 }

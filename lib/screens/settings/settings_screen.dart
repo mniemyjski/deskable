@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/utilities/languages.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';

@@ -22,19 +22,17 @@ class CreatorBookingCubit extends Cubit<CreatorBookingState> {
         super(CreatorBookingState.unknown());
 
   void init(String deskId) {
-    Booking? already = _bookingCubit.getMyBooking(deskId: deskId);
-    Booking booking;
-    if (already == null) {
-      booking = Booking(
-        organizationId: _selectedRoomCubit.state.room!.organizationId,
-        roomId: _selectedRoomCubit.state.room!.id,
-        deskId: deskId,
-        dateBook: _selectedDateCubit.state.dateTime,
-        hoursBook: [],
-      );
-    } else {
-      booking = already;
-    }
+    Booking? booking = _bookingCubit.getMyBooking(deskId: deskId);
+
+    booking = Booking(
+      id: booking?.id,
+      userId: booking?.userId,
+      organizationId: _selectedRoomCubit.state.room!.organizationId,
+      roomId: _selectedRoomCubit.state.room!.id,
+      deskId: deskId,
+      dateBook: _selectedDateCubit.state.dateTime,
+      hoursBook: List.from(_bookingCubit.getMyBooking(deskId: deskId)?.hoursBook ?? []),
+    );
 
     emit(CreatorBookingState.succeed(booking));
   }

@@ -9,7 +9,6 @@ import 'package:deskable/utilities/languages.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class BookingsInDesk extends StatelessWidget {
   final Furniture furniture;
@@ -43,28 +42,28 @@ class BookingsInDesk extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildHeader(openClose),
-            Builder(builder: (context) {
-              return Container(
-                width: double.infinity,
-                child: CustomButton(
-                  onPressed: () => _onTap(context),
-                  child: Text(Languages.save()),
-                ),
-              );
-            }),
+            BlocBuilder<CreatorBookingCubit, CreatorBookingState>(
+              builder: (context, state) {
+                return Container(
+                  width: double.infinity,
+                  child: CustomButton(
+                    onPressed: () => _onTap(context, state),
+                    child: Text(Languages.save()),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  _onTap(BuildContext context) {
-    final state = context.read<CreatorBookingCubit>().state;
-
+  _onTap(BuildContext context, CreatorBookingState state) {
     bool available = context.read<BookingCubit>().alreadyBookedOtherUser(state.booking);
 
     if (!available) {
-      customFlashBar(context, Languages.already_booked_other_user());
+      customFlashBar(Languages.already_booked_other_user());
       Navigator.pop(context);
       return;
     }
@@ -72,7 +71,7 @@ class BookingsInDesk extends StatelessWidget {
     available = context.read<BookingCubit>().alreadyBookedInOtherDesk(state.booking);
 
     if (!available) {
-      customFlashBar(context, Languages.already_booked_in_other_desk());
+      customFlashBar(Languages.already_booked_in_other_desk());
       Navigator.pop(context);
       return;
     }

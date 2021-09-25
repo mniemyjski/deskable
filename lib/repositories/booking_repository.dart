@@ -60,16 +60,27 @@ class BookingRepository extends _BaseBookingRepository {
 
   @override
   Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook}) {
-    String path = "${Path.companies()}/$companyId/${Path.rooms()}/$roomId/${Path.bookings()}";
+    // String path = "${Path.companies()}/$companyId/${Path.rooms()}/$roomId/${Path.bookings()}";
+    //
+    // final ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
+    //       fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
+    //       toFirestore: (room, _) => room.toMap(),
+    //     );
 
-    final ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
+    // return ref
+    //     .where('organizationId', isEqualTo: companyId)
+    //     .where('roomId', isEqualTo: roomId)
+    //     .where('dateBook', isEqualTo: dateBook)
+    //     .snapshots()
+    //     .map((snap) => snap.docs.map((e) => e.data()).toList());
+
+    final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
         );
 
     return ref
         .where('organizationId', isEqualTo: companyId)
-        .where('roomId', isEqualTo: roomId)
         .where('dateBook', isEqualTo: dateBook)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());

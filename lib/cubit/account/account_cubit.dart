@@ -7,7 +7,6 @@ import 'package:bloc/bloc.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:logger/logger.dart';
 
 part 'account_state.dart';
 
@@ -51,7 +50,7 @@ class AccountCubit extends Cubit<AccountState> {
     _accountSubscription = _accountRepository.streamMyAccount(authState.uid!).listen((account) {
       if (account != null) {
         if (state.account != account || state.status != EAccountStatus.created) emit(AccountState.created(account));
-      } else {
+      } else if (state.status != EAccountStatus.uncreated) {
         emit(AccountState.unCreated());
       }
     });

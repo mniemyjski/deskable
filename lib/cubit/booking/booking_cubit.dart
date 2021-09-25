@@ -103,6 +103,21 @@ class BookingCubit extends HydratedCubit<BookingState> {
     }
   }
 
+  @override
+  Future<void> close() {
+    try {
+      _bookingSubscription.cancel();
+    } catch (e) {}
+    try {
+      _selectedDateSubscription.cancel();
+    } catch (e) {}
+    try {
+      _selectedRoomSubscription.cancel();
+    } catch (e) {}
+
+    return super.close();
+  }
+
   Future<List<Booking>> _buildBooking(List<Booking> bookings) async {
     List<Booking> list = [];
     for (var element in bookings) {
@@ -130,8 +145,11 @@ class BookingCubit extends HydratedCubit<BookingState> {
   }
 
   Booking? getBooking({required String deskId, required int hour}) {
-    return state.bookings!
-        .firstWhereOrNull((element) => element.deskId == deskId && element.hoursBook.contains(hour) && element.dateBook == state.dateTime);
+    return state.bookings!.firstWhereOrNull((element) =>
+        element.roomId == _selectedRoomCubit.state.room!.id &&
+        element.deskId == deskId &&
+        element.hoursBook.contains(hour) &&
+        element.dateBook == state.dateTime);
   }
 
   bool alreadyBookedOtherUser(Booking booking) {
@@ -175,7 +193,7 @@ class BookingCubit extends HydratedCubit<BookingState> {
   List<Account> getListUserRoomBookingInTime(int time) {
     List<Account> list = [];
     for (var e in state.bookings!) {
-      if (e.hoursBook.contains(time)) list.add(e.account!);
+      if (e.hoursBook.contains(time) && e.roomId == _selectedRoomCubit.state.room!.id) list.add(e.account!);
     }
     return list;
   }
@@ -184,21 +202,6 @@ class BookingCubit extends HydratedCubit<BookingState> {
     for (var e in state.bookings!) {
       if (e.hoursBook.contains(time) && e.account!.uid == account.uid) return e.deskId!;
     }
-  }
-
-  @override
-  Future<void> close() {
-    try {
-      _bookingSubscription.cancel();
-    } catch (e) {}
-    try {
-      _selectedDateSubscription.cancel();
-    } catch (e) {}
-    try {
-      _selectedRoomSubscription.cancel();
-    } catch (e) {}
-
-    return super.close();
   }
 
   @override

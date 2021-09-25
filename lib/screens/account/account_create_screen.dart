@@ -78,7 +78,7 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
                       bool done = await context.read<AccountCubit>().createAccount(_controllerName.text);
                       await context.read<PreferenceCubit>().createPreference();
 
-                      if (!done) customFlashBar(context, Languages.name_not_available());
+                      if (!done) customFlashBar(Languages.name_not_available());
                     }
                   }),
             ],

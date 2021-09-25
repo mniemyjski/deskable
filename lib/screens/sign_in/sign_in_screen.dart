@@ -77,7 +77,7 @@ class SignInScreen extends StatelessWidget {
                 ),
                 if (state.signInFormType == SignInFormType.initial) ButtonSignInWithGoogle(),
                 if (state.signInFormType == SignInFormType.initial) ButtonSignInWithEmail(),
-                if (state.signInFormType != SignInFormType.initial) EmailForm(contextMain: context),
+                if (state.signInFormType != SignInFormType.initial) EmailForm(),
               ],
             ),
           );

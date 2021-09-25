@@ -16,27 +16,31 @@ dependencies:
   easy_localization_loader: ^1.0.0
   url_strategy: ^0.2.0
 
-  flutter_bloc: ^7.2.0
-  hydrated_bloc: ^7.0.1
+  flutter_bloc: ^7.3.0
+  hydrated_bloc: ^7.1.0
+  get_it: ^7.2.0
+  injectable: ^1.5.0
   rxdart: ^0.27.2
 
   equatable: ^2.0.3
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.0.8
 
   firebase_core: ^1.6.0
   firebase_auth: ^3.1.1
-  cloud_firestore: ^2.5.2
+  cloud_firestore: ^2.5.3
   firebase_storage: ^10.0.3
   firebase_analytics: ^8.3.2
 #  firebase_performance: ^0.7.1
 #  firebase_messaging: ^10.0.7
-  google_sign_in: ^5.1.0
+  google_sign_in: ^5.1.1
 
 #  facebook_audience_network: ^1.0.0-nullsafety.0
 #  google_mobile_ads: ^0.13.4
 
   connectivity_plus: ^1.1.0
-  flash: ^2.0.1
+  bot_toast: ^4.0.1
+#  flash: ^2.0.1
+
 
   font_awesome_flutter: ^9.1.0
   google_fonts: ^2.1.0
@@ -44,7 +48,7 @@ dependencies:
 
   cached_network_image: ^3.1.0
   crop_your_image: ^0.6.0+1
-  image_picker: ^0.8.4+1
+  image_picker: ^0.8.4+2
 
   introduction_screen: ^2.1.0
   uuid: ^3.0.4
@@ -59,7 +63,7 @@ dev_dependencies:
 
   build_runner: ^2.1.2
   logger: ^1.1.0
-  bloc_test: ^8.1.0
+  bloc_test: ^8.2.0
 
 flutter:
   uses-material-design: true

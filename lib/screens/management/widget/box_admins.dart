@@ -76,7 +76,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
       areYouSure = await areYouSureDialog(context);
       if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.organization!.admins[index].uid);
     } else {
-      customFlashBar(context, Languages.you_can_not_do_it());
+      customFlashBar( Languages.you_can_not_do_it());
     }
   }
 
@@ -110,7 +110,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
                               Navigator.pop(context);
                             }
                           } else {
-                            customFlashBar(context, Languages.you_can_not_do_it());
+                            customFlashBar(Languages.you_can_not_do_it());
                           }
                         },
                         onTapMany: (List<Account> accounts) async {
