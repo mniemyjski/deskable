@@ -40,7 +40,7 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
 
   void _init() {
     if (_organizationCubit.state.status == ECompanyStatus.succeed) {
-      if (state.status != ESelectedCompanyStatus.succeed || state.organization != _organizationCubit.state.organizations!.first)
+      if (state.status != ESelectedOrganizationStatus.succeed || state.organization != _organizationCubit.state.organizations!.first)
         emit(SelectedOrganizationState.succeed(company: _organizationCubit.state.organizations!.first));
     }
 
@@ -49,10 +49,10 @@ class SelectedOrganizationCubit extends HydratedCubit<SelectedOrganizationState>
     } catch (e) {}
     _organizationSubscription = _organizationCubit.stream.listen((company) {
       if (company.status == ECompanyStatus.succeed) {
-        if (state.status != ESelectedCompanyStatus.succeed || state.organization != company.organizations!.first)
+        if (state.status != ESelectedOrganizationStatus.succeed || state.organization != company.organizations!.first)
           emit(SelectedOrganizationState.succeed(company: company.organizations!.first));
       } else {
-        if (state.status != ESelectedCompanyStatus.unknown) emit(SelectedOrganizationState.unknown());
+        if (state.status != ESelectedOrganizationStatus.unknown) emit(SelectedOrganizationState.unknown());
       }
     });
   }

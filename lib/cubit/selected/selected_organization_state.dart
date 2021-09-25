@@ -1,23 +1,23 @@
 part of 'selected_organization_cubit.dart';
 
-enum ESelectedCompanyStatus { unknown, loading, succeed, empty }
+enum ESelectedOrganizationStatus { unknown, loading, succeed, empty }
 
 class SelectedOrganizationState extends Equatable {
   final Organization? organization;
-  final ESelectedCompanyStatus status;
+  final ESelectedOrganizationStatus status;
 
   SelectedOrganizationState({this.organization, required this.status});
 
   factory SelectedOrganizationState.unknown() {
-    return SelectedOrganizationState(status: ESelectedCompanyStatus.unknown);
+    return SelectedOrganizationState(status: ESelectedOrganizationStatus.unknown);
   }
 
   factory SelectedOrganizationState.loading() {
-    return SelectedOrganizationState(status: ESelectedCompanyStatus.loading);
+    return SelectedOrganizationState(status: ESelectedOrganizationStatus.loading);
   }
 
   factory SelectedOrganizationState.succeed({required Organization company}) {
-    return SelectedOrganizationState(status: ESelectedCompanyStatus.succeed, organization: company);
+    return SelectedOrganizationState(status: ESelectedOrganizationStatus.succeed, organization: company);
   }
 
   @override
@@ -33,7 +33,7 @@ class SelectedOrganizationState extends Equatable {
   factory SelectedOrganizationState.fromMap(Map<String, dynamic> map) {
     return SelectedOrganizationState(
       organization: map['organization'] != null ? Organization.fromMap(map['organization']) : null,
-      status: Enums.toEnum(map['status'] ?? 'unknown', ESelectedCompanyStatus.values),
+      status: Enums.toEnum(map['status'] ?? 'unknown', ESelectedOrganizationStatus.values),
     );
   }
 }

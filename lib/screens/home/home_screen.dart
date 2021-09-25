@@ -2,6 +2,7 @@ import 'package:deskable/cubit/organization/organization_cubit.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/repositories/repositories.dart';
 import 'package:deskable/screens/home/widgets/booking_in_room.dart';
+import 'package:deskable/screens/home/widgets/incoming_booking.dart';
 import 'package:deskable/screens/home/widgets/room_display.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/enums.dart';
@@ -106,19 +107,29 @@ class HomeScreen extends StatelessWidget {
                           desktop: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BookingInRoom(),
+                              Column(
+                                children: [
+                                  BookingInRoom(),
+                                  IncomingBooking(),
+                                ],
+                              ),
                               SizedBox(width: 8),
                               RoomDisplay(),
                             ],
                           ),
-                          mobile: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              RoomDisplay(),
-                              SizedBox(height: 4),
-                              BookingInRoom(),
-                            ],
+                          mobile: Container(
+                            width: double.infinity,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                RoomDisplay(),
+                                SizedBox(height: 4),
+                                BookingInRoom(),
+                                SizedBox(height: 4),
+                                IncomingBooking(),
+                              ],
+                            ),
                           ),
                         ),
                       ),

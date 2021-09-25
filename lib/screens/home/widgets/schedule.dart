@@ -96,6 +96,7 @@ class Schedule extends StatelessWidget {
                                     itemCount: accounts.length,
                                     itemBuilder: (BuildContext _, int index) {
                                       String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
+
                                       Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
 
                                       return Row(

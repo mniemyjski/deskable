@@ -18,7 +18,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedCompanyStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
 
         return Card(
           child: Container(
@@ -43,7 +43,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
           builder: (context, state) {
-            if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
+            if (state.status == ESelectedOrganizationStatus.loading || state.status == ESelectedOrganizationStatus.unknown) return Container();
 
             return ListView.separated(
                 separatorBuilder: (context, index) => Divider(),
@@ -76,7 +76,7 @@ class _BoxAdminsState extends State<BoxAdmins> {
       areYouSure = await areYouSureDialog(context);
       if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.organization!.admins[index].uid);
     } else {
-      customFlashBar( Languages.you_can_not_do_it());
+      customFlashBar(Languages.you_can_not_do_it());
     }
   }
 

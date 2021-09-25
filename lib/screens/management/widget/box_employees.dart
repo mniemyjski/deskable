@@ -19,7 +19,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedCompanyStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
 
         return Card(
           child: Container(
@@ -41,7 +41,7 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   Expanded _buildListView() {
     return Expanded(child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status == ESelectedCompanyStatus.loading || state.status == ESelectedCompanyStatus.unknown) return Container();
+        if (state.status == ESelectedOrganizationStatus.loading || state.status == ESelectedOrganizationStatus.unknown) return Container();
 
         return ListView.separated(
             separatorBuilder: (context, index) => Padding(

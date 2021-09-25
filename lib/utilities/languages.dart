@@ -103,4 +103,7 @@ class Languages {
 
   static String add() => "add".tr();
   static String before_remove_furnitures() => "before_remove_furnitures".tr();
+
+  static String room() => "room".tr();
+  static String date() => "date".tr();
 }

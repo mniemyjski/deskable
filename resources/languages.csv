@@ -78,3 +78,5 @@ add_many_email,Wprowadź adresy email oddzielone '';'',add_many_email
 add_many_email_sample,np. taco@deskable.pl; chorizo@deskable.pl; pete@deskable.pl,np. taco@deskable.pl; chorizo@deskable.pl; pete@deskable.pl
 add,Dodaj,Add
 before_remove_furnitures,Najpierw usuń wszystkie elementy,before_remove_furnitures
+room,Pokój,Room
+date,Data,Date

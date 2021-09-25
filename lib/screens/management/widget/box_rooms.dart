@@ -13,7 +13,7 @@ class BoxRooms extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedCompanyStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
 
         return Card(
           child: Container(

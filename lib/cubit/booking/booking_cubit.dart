@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/models.dart';
 import 'package:deskable/repositories/repositories.dart';
@@ -8,7 +7,6 @@ import 'package:deskable/utilities/enums.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:logger/logger.dart';
 
 part 'booking_state.dart';
 
@@ -200,7 +198,7 @@ class BookingCubit extends HydratedCubit<BookingState> {
 
   String? getDeskIdInTime({required int time, required Account account}) {
     for (var e in state.bookings!) {
-      if (e.hoursBook.contains(time) && e.account!.uid == account.uid) return e.deskId!;
+      if (e.hoursBook.contains(time) && e.account!.uid == account.uid && e.roomId == _selectedRoomCubit.state.room!.id) return e.deskId!;
     }
   }
 

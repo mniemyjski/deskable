@@ -14,8 +14,8 @@ abstract class _BaseBookingRepository {
   Future<void> create(Booking booking);
   Future<void> delete(Booking booking);
   Future<void> update(Booking booking);
-  // Future<Booking?> alreadyCreated(Booking booking);
   Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook});
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime});
 }
 
 class BookingRepository extends _BaseBookingRepository {
@@ -60,20 +60,6 @@ class BookingRepository extends _BaseBookingRepository {
 
   @override
   Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook}) {
-    // String path = "${Path.companies()}/$companyId/${Path.rooms()}/$roomId/${Path.bookings()}";
-    //
-    // final ref = FirebaseFirestore.instance.collection(path).withConverter<Booking>(
-    //       fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
-    //       toFirestore: (room, _) => room.toMap(),
-    //     );
-
-    // return ref
-    //     .where('organizationId', isEqualTo: companyId)
-    //     .where('roomId', isEqualTo: roomId)
-    //     .where('dateBook', isEqualTo: dateBook)
-    //     .snapshots()
-    //     .map((snap) => snap.docs.map((e) => e.data()).toList());
-
     final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -82,6 +68,22 @@ class BookingRepository extends _BaseBookingRepository {
     return ref
         .where('organizationId', isEqualTo: companyId)
         .where('dateBook', isEqualTo: dateBook)
+        .snapshots()
+        .map((snap) => snap.docs.map((e) => e.data()).toList());
+  }
+
+  @override
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime}) {
+    final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
+          fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
+          toFirestore: (room, _) => room.toMap(),
+        );
+
+    return ref
+        .where('organizationId', isEqualTo: organizationId)
+        .where('dateBook', isGreaterThan: dateTime)
+        .orderBy('dateBook')
+        .limit(10)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
   }

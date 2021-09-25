@@ -28,7 +28,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
   }
 
   void _init() {
-    if (_selectedOrganizationCubit.state.status == ESelectedCompanyStatus.succeed) {
+    if (_selectedOrganizationCubit.state.status == ESelectedOrganizationStatus.succeed) {
       sub(_selectedOrganizationCubit.state);
     }
 
@@ -36,7 +36,7 @@ class RoomCubit extends HydratedCubit<RoomState> {
       _selectedOrganizationSubscription.cancel();
     } catch (e) {}
     _selectedOrganizationSubscription = _selectedOrganizationCubit.stream.listen((event) {
-      if (event.status == ESelectedCompanyStatus.succeed) {
+      if (event.status == ESelectedOrganizationStatus.succeed) {
         sub(event);
       } else {
         try {
@@ -66,6 +66,20 @@ class RoomCubit extends HydratedCubit<RoomState> {
   Future<void> delete(Room room) async {
     if (_accountCubit.state.status == EAccountStatus.created) {
       return await _roomRepository.delete(room);
+    }
+  }
+
+  Furniture? getFurniture(String idFurniture) {
+    for (var room in state.rooms!) {
+      for (var furniture in room.furniture) {
+        if (furniture.id == idFurniture) return furniture;
+      }
+    }
+  }
+
+  Room? getRoom(String idRoom) {
+    for (var room in state.rooms!) {
+      if (room.id == idRoom) return room;
     }
   }
 
