@@ -29,23 +29,23 @@ class CreatorBookingCubit extends Cubit<CreatorBookingState> {
       userId: booking?.userId,
       organizationId: _selectedRoomCubit.state.room!.organizationId,
       roomId: _selectedRoomCubit.state.room!.id,
-      deskId: deskId,
-      dateBook: _selectedDateCubit.state.dateTime,
-      hoursBook: List.from(_bookingCubit.getMyBooking(deskId: deskId)?.hoursBook ?? []),
+      furnitureId: deskId,
+      dateBooked: _selectedDateCubit.state.dateTime,
+      hoursBooked: List.from(_bookingCubit.getMyBooking(deskId: deskId)?.hoursBooked ?? []),
     );
 
     emit(CreatorBookingState.succeed(booking));
   }
 
   void add(int hour) {
-    if (!state.booking.hoursBook.contains(hour)) {
-      state.booking.hoursBook.add(hour);
+    if (!state.booking.hoursBooked.contains(hour)) {
+      state.booking.hoursBooked.add(hour);
       emit(state);
     }
   }
 
   void remove(int hour) {
-    state.booking.hoursBook.remove(hour);
+    state.booking.hoursBooked.remove(hour);
     emit(state);
   }
 }

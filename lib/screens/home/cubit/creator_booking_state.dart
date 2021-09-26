@@ -9,11 +9,11 @@ class CreatorBookingState extends Equatable {
   CreatorBookingState({required this.booking, required this.status});
 
   factory CreatorBookingState.unknown() {
-    return CreatorBookingState(booking: Booking(hoursBook: []), status: ECreatorBookingStatus.unknown);
+    return CreatorBookingState(booking: Booking(hoursBooked: []), status: ECreatorBookingStatus.unknown);
   }
 
   factory CreatorBookingState.loading() {
-    return CreatorBookingState(booking: Booking(hoursBook: []), status: ECreatorBookingStatus.loading);
+    return CreatorBookingState(booking: Booking(hoursBooked: []), status: ECreatorBookingStatus.loading);
   }
 
   factory CreatorBookingState.succeed(Booking booking) {

@@ -145,16 +145,16 @@ class BookingCubit extends HydratedCubit<BookingState> {
   Booking? getBooking({required String deskId, required int hour}) {
     return state.bookings!.firstWhereOrNull((element) =>
         element.roomId == _selectedRoomCubit.state.room!.id &&
-        element.deskId == deskId &&
-        element.hoursBook.contains(hour) &&
-        element.dateBook == state.dateTime);
+        element.furnitureId == deskId &&
+        element.hoursBooked.contains(hour) &&
+        element.dateBooked == state.dateTime);
   }
 
   bool alreadyBookedOtherUser(Booking booking) {
     bool available = true;
 
-    booking.hoursBook.forEach((hour) {
-      Booking? already = getBooking(deskId: booking.deskId!, hour: hour);
+    booking.hoursBooked.forEach((hour) {
+      Booking? already = getBooking(deskId: booking.furnitureId!, hour: hour);
       if (already != null) {
         if (booking.id != already.id) available = false;
       }
@@ -170,13 +170,13 @@ class BookingCubit extends HydratedCubit<BookingState> {
     bookings = state.bookings!
         .where((element) =>
             element.userId == _accountCubit.state.account!.uid &&
-            element.dateBook == _selectedDateCubit.state.dateTime &&
-            element.deskId != booking.deskId)
+            element.dateBooked == _selectedDateCubit.state.dateTime &&
+            element.furnitureId != booking.furnitureId)
         .toList();
 
-    booking.hoursBook.forEach((hour) {
+    booking.hoursBooked.forEach((hour) {
       bookings.forEach((element) {
-        if (element.hoursBook.contains(hour)) available = false;
+        if (element.hoursBooked.contains(hour)) available = false;
       });
     });
 
@@ -185,20 +185,22 @@ class BookingCubit extends HydratedCubit<BookingState> {
 
   Booking? getMyBooking({required String deskId}) {
     return state.bookings!.firstWhereOrNull((element) =>
-        element.userId == _accountCubit.state.account!.uid && element.dateBook == _selectedDateCubit.state.dateTime && element.deskId == deskId);
+        element.userId == _accountCubit.state.account!.uid &&
+        element.dateBooked == _selectedDateCubit.state.dateTime &&
+        element.furnitureId == deskId);
   }
 
   List<Account> getListUserRoomBookingInTime(int time) {
     List<Account> list = [];
     for (var e in state.bookings!) {
-      if (e.hoursBook.contains(time) && e.roomId == _selectedRoomCubit.state.room!.id) list.add(e.account!);
+      if (e.hoursBooked.contains(time) && e.roomId == _selectedRoomCubit.state.room!.id) list.add(e.account!);
     }
     return list;
   }
 
   String? getDeskIdInTime({required int time, required Account account}) {
     for (var e in state.bookings!) {
-      if (e.hoursBook.contains(time) && e.account!.uid == account.uid && e.roomId == _selectedRoomCubit.state.room!.id) return e.deskId!;
+      if (e.hoursBooked.contains(time) && e.account!.uid == account.uid && e.roomId == _selectedRoomCubit.state.room!.id) return e.furnitureId!;
     }
   }
 

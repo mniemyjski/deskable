@@ -76,7 +76,7 @@ class BookingsInDesk extends StatelessWidget {
       return;
     }
 
-    if (state.booking.hoursBook.isNotEmpty) {
+    if (state.booking.hoursBooked.isNotEmpty) {
       context.read<BookingCubit>().create(state.booking);
     } else {
       context.read<BookingCubit>().delete(state.booking);

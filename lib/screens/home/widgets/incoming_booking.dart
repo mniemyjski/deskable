@@ -48,14 +48,14 @@ class IncomingBooking extends StatelessWidget {
                       itemCount: state.bookings.length,
                       itemBuilder: (BuildContext _, int index) {
                         Room? room = context.read<RoomCubit>().getRoom(state.bookings[index].roomId!);
-                        Furniture? furniture = context.read<RoomCubit>().getFurniture(state.bookings[index].deskId!);
+                        Furniture? furniture = context.read<RoomCubit>().getFurniture(state.bookings[index].furnitureId!);
 
                         return Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: AutoSizeText(
-                                DateFormat('dd-MM-yyyy').format(state.bookings[index].dateBook!),
+                                DateFormat('dd-MM-yyyy').format(state.bookings[index].dateBooked!),
                                 maxLines: 1,
                                 minFontSize: 6,
                                 maxFontSize: 12,
@@ -80,7 +80,7 @@ class IncomingBooking extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: AutoSizeText(
-                                state.bookings[index].hoursBook.toString().replaceAll('[', '').replaceAll(']', ''),
+                                state.bookings[index].hoursBooked.toString().replaceAll('[', '').replaceAll(']', ''),
                                 maxLines: 1,
                                 minFontSize: 6,
                                 maxFontSize: 12,
@@ -107,7 +107,7 @@ class IncomingBooking extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
           maxLines: 1,
           minFontSize: 6,
-          maxFontSize: 16,
+          maxFontSize: 12,
         ),
       );
 }

@@ -32,7 +32,7 @@ class BookingRepository extends _BaseBookingRepository {
     return await doc.set(booking.copyWith(
       id: doc.id,
       dateCre: DateTime.now(),
-      dateBook: DateTime(booking.dateBook!.year, booking.dateBook!.month, booking.dateBook!.day),
+      dateBooked: DateTime(booking.dateBooked!.year, booking.dateBooked!.month, booking.dateBooked!.day),
     ));
   }
 
@@ -67,7 +67,7 @@ class BookingRepository extends _BaseBookingRepository {
 
     return ref
         .where('organizationId', isEqualTo: companyId)
-        .where('dateBook', isEqualTo: dateBook)
+        .where('dateBooked', isEqualTo: dateBook)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
   }
@@ -82,8 +82,8 @@ class BookingRepository extends _BaseBookingRepository {
     return ref
         .where('organizationId', isEqualTo: organizationId)
         .where('userId', isEqualTo: userId)
-        .where('dateBook', isGreaterThan: dateTime)
-        .orderBy('dateBook')
+        .where('dateBooked', isGreaterThan: dateTime)
+        .orderBy('dateBooked')
         .limit(10)
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
