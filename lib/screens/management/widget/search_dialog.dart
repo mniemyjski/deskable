@@ -140,7 +140,10 @@ class _SearchDialogState extends State<SearchDialog> {
           child: Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () => setState(() => search = !search),
+              onPressed: () => setState(() {
+                _controller.clear();
+                search = !search;
+              }),
               child: Text(Languages.add_many()),
             ),
           ),
