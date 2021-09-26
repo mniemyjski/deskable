@@ -28,14 +28,18 @@ class SettingsScreen extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomDropDownButton(
-                name: Languages.locale_app(),
-                value: context.locale.toString(),
-                list: <String>['pl', 'en'],
-                onChanged: (String? state) {
-                  context.setLocale(Locale(state!));
-                },
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 300),
+                child: CustomDropDownButton(
+                  name: Languages.locale_app(),
+                  value: context.locale.toString(),
+                  list: <String>['pl', 'en'],
+                  onChanged: (String? state) {
+                    context.setLocale(Locale(state!));
+                  },
+                ),
               ),
               Container(
                 child: Row(
@@ -50,7 +54,10 @@ class SettingsScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    Text(Languages.dark_mode()),
+                    Text(
+                      Languages.dark_mode(),
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
                 ),
               ),

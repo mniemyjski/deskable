@@ -47,9 +47,9 @@ class _EmailFormState extends State<EmailForm> {
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        hintText: Languages.email(),
-                        hintStyle: TextStyle(color: Colors.white38),
-                        isCollapsed: true,
+                        labelText: Languages.email(),
+                        labelStyle: TextStyle(color: Colors.white38),
+                        // isCollapsed: true,
                         contentPadding: EdgeInsets.all(12),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
@@ -85,9 +85,8 @@ class _EmailFormState extends State<EmailForm> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          hintText: Languages.password(),
-                          hintStyle: TextStyle(color: Colors.white38),
-                          isCollapsed: true,
+                          labelText: Languages.password(),
+                          labelStyle: TextStyle(color: Colors.white38),
                           contentPadding: EdgeInsets.all(12),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),

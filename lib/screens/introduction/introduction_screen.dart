@@ -44,6 +44,7 @@ class IntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: pages(),
+      globalBackgroundColor: Colors.grey[200],
       showSkipButton: true,
       skip: Text(Languages.skip(), style: TextStyle(fontWeight: FontWeight.w600)),
       next: Text(Languages.next(), style: TextStyle(fontWeight: FontWeight.w600)),

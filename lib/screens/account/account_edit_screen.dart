@@ -83,7 +83,21 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
                     child: Form(
                       key: _formKeyName,
                       child: TextFormField(
-                        decoration: InputDecoration(labelText: Languages.name()),
+                        decoration: InputDecoration(
+                          labelText: Languages.name(),
+                          labelStyle: TextStyle(color: Colors.white),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white38,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        style: TextStyle(color: Colors.white),
                         textInputAction: TextInputAction.done,
                         controller: _controllerName,
                         inputFormatters: [

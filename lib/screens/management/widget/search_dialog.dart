@@ -116,7 +116,7 @@ class _SearchDialogState extends State<SearchDialog> {
             key: _formKey,
             child: TextFormField(
               decoration: InputDecoration(
-                isCollapsed: true,
+                // isCollapsed: true,
                 contentPadding: EdgeInsets.all(8),
                 hintText: Languages.search(),
                 icon: FaIcon(
@@ -150,7 +150,7 @@ class _SearchDialogState extends State<SearchDialog> {
         ),
         SingleChildScrollView(
           child: Container(
-            height: 420,
+            height: 400,
             padding: const EdgeInsets.all(8.9),
             child: ListView.separated(
                 separatorBuilder: (context, index) => Divider(),
