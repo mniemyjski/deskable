@@ -135,7 +135,9 @@ class BookingCubit extends HydratedCubit<BookingState> {
   }
 
   Future<void> create(Booking booking) async {
-    return await _bookingRepository.create(booking.copyWith(userId: _accountCubit.state.account!.uid));
+    List<int> hours = List.from(booking.hoursBooked);
+    hours.sort();
+    return await _bookingRepository.create(booking.copyWith(userId: _accountCubit.state.account!.uid, hoursBooked: hours));
   }
 
   Future<void> delete(Booking booking) async {
