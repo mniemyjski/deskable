@@ -54,7 +54,8 @@ class Languages {
   static String rooms() => "rooms".tr();
   static String management() => "management".tr();
   static String already_booked_other_user() => "already_booked_other_user".tr();
-  static String already_booked_in_other_desk() => "already_booked_in_other_desk".tr();
+  static String already_booked_in_other_desk() =>
+      "already_booked_in_other_desk".tr();
   static String dismiss() => "dismiss".tr();
   static String create() => "create".tr();
   static String create_room() => "create_room".tr();
@@ -63,7 +64,8 @@ class Languages {
 
   static String users() => "users".tr();
 
-  static String are_you_sure_you_want_to_do_this() => "are_you_sure_you_want_to_do_this".tr();
+  static String are_you_sure_you_want_to_do_this() =>
+      "are_you_sure_you_want_to_do_this".tr();
 
   static String yes() => "yes".tr();
   static String no() => "no".tr();
@@ -73,9 +75,11 @@ class Languages {
   static String close() => "close".tr();
   static String search() => "search".tr();
   static String position() => "position".tr();
-  static String there_is_no_such_email_address() => "there_is_no_such_email_address".tr();
+  static String there_is_no_such_email_address() =>
+      "there_is_no_such_email_address".tr();
 
-  static String wait_for_the_invitation_or_create_your_own_organization() => "wait_for_the_invitation_or_create_your_own_organization".tr();
+  static String wait_for_the_invitation_or_create_your_own_organization() =>
+      "wait_for_the_invitation_or_create_your_own_organization".tr();
 
   static String today() => "today".tr();
   static String tomorrow() => "today".tr();
@@ -106,4 +110,6 @@ class Languages {
 
   static String room() => "room".tr();
   static String date() => "date".tr();
+
+  static String user() => "user".tr();
 }
