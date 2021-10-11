@@ -10,10 +10,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class DialogEditFurniture extends StatefulWidget {
   final Furniture furniture;
 
-  const DialogEditFurniture({Key? key, required this.furniture}) : super(key: key);
+  const DialogEditFurniture({Key? key, required this.furniture})
+      : super(key: key);
 
   @override
-  _DialogEditFurnitureState createState() => _DialogEditFurnitureState(furniture);
+  _DialogEditFurnitureState createState() =>
+      _DialogEditFurnitureState(furniture);
 }
 
 class _DialogEditFurnitureState extends State<DialogEditFurniture> {
@@ -61,7 +63,7 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
 
                 Navigator.pop(context);
               },
-              child: Text(Languages.save())),
+              child: Text(Strings.save())),
         ),
         SizedBox(height: 40),
         Padding(
@@ -83,7 +85,9 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
               child: InkWell(
                 child: FaIcon(FontAwesomeIcons.arrowLeft),
                 onTap: () {
-                  context.read<CreateRoomCubit>().changeRotation(furniture, 270);
+                  context
+                      .read<CreateRoomCubit>()
+                      .changeRotation(furniture, 270);
                   Navigator.pop(context);
                 },
               ),
@@ -132,7 +136,7 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
           key: _formKeyDescription,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.description(),
+              labelText: Strings.description(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(240),
@@ -155,7 +159,7 @@ class _DialogEditFurnitureState extends State<DialogEditFurniture> {
           key: _formKeyName,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.name(),
+              labelText: Strings.name(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(3),

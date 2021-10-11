@@ -18,21 +18,24 @@ class IntroScreen extends StatelessWidget {
     return [
       PageViewModel(
         title: "Title page",
-        body: "Here you can write the description of the page, to explain someting...",
+        body:
+            "Here you can write the description of the page, to explain someting...",
         image: Center(
           child: Image.asset(Constants.work_in_progress()),
         ),
       ),
       PageViewModel(
         title: "Title page",
-        body: "Here you can write the description of the page, to explain someting...",
+        body:
+            "Here you can write the description of the page, to explain someting...",
         image: Center(
           child: Image.asset(Constants.work_in_progress()),
         ),
       ),
       PageViewModel(
         title: "Title page",
-        body: "Here you can write the description of the page, to explain someting...",
+        body:
+            "Here you can write the description of the page, to explain someting...",
         image: Center(
           child: Image.asset(Constants.work_in_progress()),
         ),
@@ -46,11 +49,12 @@ class IntroScreen extends StatelessWidget {
       pages: pages(),
       globalBackgroundColor: Colors.grey[200],
       showSkipButton: true,
-      skip: Text(Languages.skip(), style: TextStyle(fontWeight: FontWeight.w600)),
-      next: Text(Languages.next(), style: TextStyle(fontWeight: FontWeight.w600)),
-      done: Text(Languages.done(), style: TextStyle(fontWeight: FontWeight.w600)),
+      skip: Text(Strings.skip(), style: TextStyle(fontWeight: FontWeight.w600)),
+      next: Text(Strings.next(), style: TextStyle(fontWeight: FontWeight.w600)),
+      done: Text(Strings.done(), style: TextStyle(fontWeight: FontWeight.w600)),
       onDone: () {
-        Navigator.pushNamedAndRemoveUntil(context, SplashScreen.routeName, (_) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, SplashScreen.routeName, (_) => false);
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       },
     );

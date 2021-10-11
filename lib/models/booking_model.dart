@@ -12,6 +12,9 @@ class Booking extends Equatable {
   final String? organizationId;
   final String? roomId;
   final String? furnitureId;
+  final Organization? organization;
+  final Room? room;
+  final Furniture? furniture;
   final DateTime? dateBooked;
   final List<int> hoursBooked;
 
@@ -23,6 +26,9 @@ class Booking extends Equatable {
     this.organizationId,
     this.roomId,
     this.furnitureId,
+    this.organization,
+    this.room,
+    this.furniture,
     this.dateBooked,
     required this.hoursBooked,
   });

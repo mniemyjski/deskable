@@ -69,7 +69,8 @@ class _SearchDialogState extends State<SearchDialog> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(Languages.add_many_email(), style: TextStyle(fontWeight: FontWeight.bold)),
+              child: Text(Strings.add_many_email(),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -82,7 +83,7 @@ class _SearchDialogState extends State<SearchDialog> {
               maxLines: 15,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(8),
-                hintText: Languages.add_many_email_sample(),
+                hintText: Strings.add_many_email_sample(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
@@ -99,10 +100,12 @@ class _SearchDialogState extends State<SearchDialog> {
                   String txt = _controller.text.replaceAll(RegExp(r' '), '');
                   List<String> result = txt.split(';');
 
-                  List<Account> accounts = await context.read<SearchAccountCubit>().searchManyEmail(result);
+                  List<Account> accounts = await context
+                      .read<SearchAccountCubit>()
+                      .searchManyEmail(result);
                   widget.onTapMany(accounts);
                 },
-                child: Text(Languages.add())))
+                child: Text(Strings.add())))
       ],
     );
   }
@@ -118,7 +121,7 @@ class _SearchDialogState extends State<SearchDialog> {
               decoration: InputDecoration(
                 // isCollapsed: true,
                 contentPadding: EdgeInsets.all(8),
-                hintText: Languages.search(),
+                hintText: Strings.search(),
                 icon: FaIcon(
                   Icons.search,
                   color: Colors.black87,
@@ -130,7 +133,8 @@ class _SearchDialogState extends State<SearchDialog> {
               textInputAction: TextInputAction.done,
               controller: _controller,
               onChanged: (String search) {
-                if (search.length > 2) context.read<SearchAccountCubit>().search(search);
+                if (search.length > 2)
+                  context.read<SearchAccountCubit>().search(search);
               },
             ),
           ),
@@ -144,7 +148,7 @@ class _SearchDialogState extends State<SearchDialog> {
                 _controller.clear();
                 search = !search;
               }),
-              child: Text(Languages.add_many()),
+              child: Text(Strings.add_many()),
             ),
           ),
         ),
@@ -162,25 +166,31 @@ class _SearchDialogState extends State<SearchDialog> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(state.accounts[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(state.accounts[index].email, style: TextStyle(fontStyle: FontStyle.italic)),
+                          Text(state.accounts[index].name,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(state.accounts[index].email,
+                              style: TextStyle(fontStyle: FontStyle.italic)),
                         ],
                       ),
                       Row(
                         children: [
-                          if (!widget.alreadyAccountAdded.contains(state.accounts[index]))
+                          if (!widget.alreadyAccountAdded
+                              .contains(state.accounts[index]))
                             Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: InkWell(
-                                onTap: () => widget.onTapAdd(state.accounts[index]),
+                                onTap: () =>
+                                    widget.onTapAdd(state.accounts[index]),
                                 child: Icon(Icons.add_circle),
                               ),
                             ),
-                          if (widget.alreadyAccountAdded.contains(state.accounts[index]))
+                          if (widget.alreadyAccountAdded
+                              .contains(state.accounts[index]))
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
-                                onTap: () => widget.onTapRemove(state.accounts[index]),
+                                onTap: () =>
+                                    widget.onTapRemove(state.accounts[index]),
                                 child: Icon(Icons.remove_circle),
                               ),
                             ),

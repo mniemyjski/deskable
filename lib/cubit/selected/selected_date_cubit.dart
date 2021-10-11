@@ -13,37 +13,40 @@ class SelectedDateCubit extends Cubit<SelectedDateState> {
   }
 
   increase() {
-    emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: 1)), _getDateName(state.dateTime.add(Duration(days: 1)))));
+    emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: 1)),
+        _getDateName(state.dateTime.add(Duration(days: 1)))));
   }
 
   decrease() {
-    emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: -1)), _getDateName(state.dateTime.add(Duration(days: -1)))));
+    emit(SelectedDateState.succeed(state.dateTime.add(Duration(days: -1)),
+        _getDateName(state.dateTime.add(Duration(days: -1)))));
   }
 
   String _getDateName(DateTime dat) {
     DateTime date = DateTime(dat.year, dat.month, dat.day);
-    DateTime dateTimeNow = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    DateTime dateTimeNow =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
     if (date == dateTimeNow) {
-      return Languages.today();
+      return Strings.today();
       // } else if (date == dateTimeNow.add(Duration(days: 1))) {
       //   return Languages.tomorrow();
       // } else if (date == dateTimeNow.add(Duration(days: -1))) {
       //   return Languages.yesterday();
     } else if (date.weekday == 1) {
-      return Languages.monday();
+      return Strings.monday();
     } else if (date.weekday == 2) {
-      return Languages.tuesday();
+      return Strings.tuesday();
     } else if (date.weekday == 3) {
-      return Languages.wednesday();
+      return Strings.wednesday();
     } else if (date.weekday == 4) {
-      return Languages.thursday();
+      return Strings.thursday();
     } else if (date.weekday == 5) {
-      return Languages.friday();
+      return Strings.friday();
     } else if (date.weekday == 6) {
-      return Languages.saturday();
+      return Strings.saturday();
     } else if (date.weekday == 7) {
-      return Languages.sunday();
+      return Strings.sunday();
     } else {
       return '';
     }

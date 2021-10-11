@@ -19,10 +19,19 @@ class Schedule extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(flex: 2, child: Text('${Languages.time()}:', style: TextStyle(fontWeight: FontWeight.bold))),
-            Expanded(flex: 2, child: Text('${Languages.count()}:', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 2,
+                child: Text('${Strings.time()}:',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 2,
+                child: Text('${Strings.count()}:',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
             // Expanded(flex: 5, child: Text('${Languages.free()}:', style: TextStyle(fontWeight: FontWeight.bold))),
-            Expanded(flex: 5, child: Text('${Languages.bookings()}:', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 5,
+                child: Text('${Strings.bookings()}:',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
         Divider(),
@@ -35,7 +44,7 @@ class Schedule extends StatelessWidget {
               return Center(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(Languages.need_create_first_room()),
+                child: Text(Strings.need_create_first_room()),
               ));
 
             if (stateB.status == EBookingStatus.succeed)
@@ -46,7 +55,10 @@ class Schedule extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: stateA.room!.close - stateA.room!.open,
                     itemBuilder: (BuildContext context, int index) {
-                      List<Account> accounts = context.read<BookingCubit>().getListUserRoomBookingInTime(stateA.room!.open + index);
+                      List<Account> accounts = context
+                          .read<BookingCubit>()
+                          .getListUserRoomBookingInTime(
+                              stateA.room!.open + index);
 
                       return buildBookingInTime(
                         context: context,
@@ -63,7 +75,10 @@ class Schedule extends StatelessWidget {
     );
   }
 
-  Container buildBookingInTime({required BuildContext context, required int time, required List<Account> accounts}) {
+  Container buildBookingInTime(
+      {required BuildContext context,
+      required int time,
+      required List<Account> accounts}) {
     return Container(
       height: 28,
       child: Row(
@@ -85,8 +100,16 @@ class Schedule extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Expanded(flex: 2, child: Text(Languages.name(), style: TextStyle(fontWeight: FontWeight.bold))),
-                                  Expanded(flex: 1, child: Text(Languages.position(), style: TextStyle(fontWeight: FontWeight.bold))),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(Strings.name(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold))),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(Strings.position(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold))),
                                 ],
                               ),
                               Divider(),
@@ -95,9 +118,15 @@ class Schedule extends StatelessWidget {
                                 child: ListView.builder(
                                     itemCount: accounts.length,
                                     itemBuilder: (BuildContext _, int index) {
-                                      String? deskId = context.read<BookingCubit>().getDeskIdInTime(time: time, account: accounts[index]);
+                                      String? deskId = context
+                                          .read<BookingCubit>()
+                                          .getDeskIdInTime(
+                                              time: time,
+                                              account: accounts[index]);
 
-                                      Furniture? furniture = context.read<SelectedRoomCubit>().getFurniture(deskId ?? "");
+                                      Furniture? furniture = context
+                                          .read<SelectedRoomCubit>()
+                                          .getFurniture(deskId ?? "");
 
                                       return Row(
                                         children: [
@@ -105,13 +134,18 @@ class Schedule extends StatelessWidget {
                                             flex: 2,
                                             child: Row(
                                               children: [
-                                                AvatarBooking(url: accounts[index].photoUrl),
+                                                AvatarBooking(
+                                                    url: accounts[index]
+                                                        .photoUrl),
                                                 SizedBox(width: 8),
                                                 Text(accounts[index].name),
                                               ],
                                             ),
                                           ),
-                                          Expanded(flex: 1, child: Text(furniture?.name ?? '?')),
+                                          Expanded(
+                                              flex: 1,
+                                              child:
+                                                  Text(furniture?.name ?? '?')),
                                         ],
                                       );
                                     }),

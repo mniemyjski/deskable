@@ -80,3 +80,4 @@ add,Dodaj,Add
 before_remove_furnitures,Najpierw usuń wszystkie elementy,before_remove_furnitures
 room,Pokój,Room
 date,Data,Date
+user,Użytkownik,User

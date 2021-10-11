@@ -17,7 +17,8 @@ class CreateRoomScreenArguments {
   final SelectedOrganizationCubit selectedOrganizationCubit;
   final Room? room;
 
-  CreateRoomScreenArguments({required this.selectedOrganizationCubit, this.room});
+  CreateRoomScreenArguments(
+      {required this.selectedOrganizationCubit, this.room});
 }
 
 class CreateRoomScreen extends StatelessWidget {
@@ -84,10 +85,12 @@ class CreateRoomScreen extends StatelessWidget {
                                 if (state.room.furniture.isEmpty) {
                                   context.read<CreateRoomCubit>().decreaseX();
                                 } else {
-                                  customFlashBar(Languages.before_remove_furnitures());
+                                  customFlashBar(
+                                      Strings.before_remove_furnitures());
                                 }
                               },
-                              onPressedNext: () => context.read<CreateRoomCubit>().increaseX(),
+                              onPressedNext: () =>
+                                  context.read<CreateRoomCubit>().increaseX(),
                             ),
                           ),
                           SizedBox(width: 16),
@@ -99,10 +102,12 @@ class CreateRoomScreen extends StatelessWidget {
                                 if (state.room.furniture.isEmpty) {
                                   context.read<CreateRoomCubit>().decreaseY();
                                 } else {
-                                  customFlashBar(Languages.before_remove_furnitures());
+                                  customFlashBar(
+                                      Strings.before_remove_furnitures());
                                 }
                               },
-                              onPressedNext: () => context.read<CreateRoomCubit>().increaseY(),
+                              onPressedNext: () =>
+                                  context.read<CreateRoomCubit>().increaseY(),
                             ),
                           ),
                         ],
@@ -114,7 +119,10 @@ class CreateRoomScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: -1, type: EFurnitureType.computer),
+                            data: Furniture(
+                                id: '',
+                                position: -1,
+                                type: EFurnitureType.computer),
                             child: Image.asset(Constants.computer(),
                                 fit: BoxFit.fill,
                                 filterQuality: FilterQuality.high,
@@ -128,7 +136,10 @@ class CreateRoomScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: -1, type: EFurnitureType.laptop),
+                            data: Furniture(
+                                id: '',
+                                position: -1,
+                                type: EFurnitureType.laptop),
                             child: Image.asset(
                               Constants.laptop(),
                               fit: BoxFit.fill,
@@ -144,21 +155,26 @@ class CreateRoomScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Draggable<Furniture>(
-                            data: Furniture(id: '', position: -1, type: EFurnitureType.empty),
+                            data: Furniture(
+                                id: '',
+                                position: -1,
+                                type: EFurnitureType.empty),
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
                                 border: Border.all(
                                   color: Colors.grey.withOpacity(0.5),
                                 ),
                               ),
                               width: 50,
                               height: 50,
-                              child: Center(child: Text(Languages.empty())),
+                              child: Center(child: Text(Strings.empty())),
                             ),
                             feedback: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
                                 border: Border.all(
                                   color: Colors.grey.withOpacity(0.5),
                                 ),
@@ -190,24 +206,30 @@ class CreateRoomScreen extends StatelessWidget {
                           mainAxisSpacing: 2,
                           crossAxisSpacing: 2,
                           crossAxisCount: state.room.x,
-                          children: List.generate(state.room.x * state.room.y, (index) {
+                          children: List.generate(state.room.x * state.room.y,
+                              (index) {
                             return DragTarget<Furniture>(
                               builder: (
                                 BuildContext _,
                                 List<dynamic> a,
                                 List<dynamic> r,
                               ) {
-                                final Furniture? furniture = state.room.furniture.firstWhereOrNull((element) => element.position == index);
+                                final Furniture? furniture =
+                                    state.room.furniture.firstWhereOrNull(
+                                        (element) => element.position == index);
 
-                                if (furniture != null && furniture.type != EFurnitureType.empty)
+                                if (furniture != null &&
+                                    furniture.type != EFurnitureType.empty)
                                   return Draggable<Furniture>(
                                     data: furniture,
                                     feedback: RotationTransition(
-                                      turns: AlwaysStoppedAnimation(furniture.rotation / 360),
+                                      turns: AlwaysStoppedAnimation(
+                                          furniture.rotation / 360),
                                       child: Image.asset(furniture.path(),
                                           fit: BoxFit.fill,
                                           filterQuality: FilterQuality.high,
-                                          color: Color.fromRGBO(255, 255, 255, 0.8),
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.8),
                                           colorBlendMode: BlendMode.modulate),
                                     ),
                                     child: FieldInRoom(
@@ -217,7 +239,8 @@ class CreateRoomScreen extends StatelessWidget {
                                         customDialog(
                                           context,
                                           BlocProvider.value(
-                                              value: BlocProvider.of<CreateRoomCubit>(context),
+                                              value: BlocProvider.of<
+                                                  CreateRoomCubit>(context),
                                               child: DialogEditFurniture(
                                                 furniture: furniture,
                                               )),
@@ -226,11 +249,14 @@ class CreateRoomScreen extends StatelessWidget {
                                     ),
                                   );
 
-                                if (furniture != null && furniture.type == EFurnitureType.empty)
+                                if (furniture != null &&
+                                    furniture.type == EFurnitureType.empty)
                                   return FieldInRoom(
                                     edit: true,
                                     furniture: furniture,
-                                    onTap: () => context.read<CreateRoomCubit>().removeFurniture(furniture),
+                                    onTap: () => context
+                                        .read<CreateRoomCubit>()
+                                        .removeFurniture(furniture),
                                   );
 
                                 return FieldInRoom(
@@ -239,14 +265,24 @@ class CreateRoomScreen extends StatelessWidget {
                                 );
                               },
                               onAccept: (Furniture furniture) {
-                                if (context.read<CreateRoomCubit>().isFree(index)) {
+                                if (context
+                                    .read<CreateRoomCubit>()
+                                    .isFree(index)) {
                                   if (furniture.position == -1) {
                                     var uuid = Uuid();
-                                    context.read<CreateRoomCubit>().addFurniture(furniture.copyWith(id: uuid.v1(), position: index));
+                                    context
+                                        .read<CreateRoomCubit>()
+                                        .addFurniture(furniture.copyWith(
+                                            id: uuid.v1(), position: index));
                                   } else {
                                     Furniture oldFurniture = furniture;
-                                    context.read<CreateRoomCubit>().removeFurniture(oldFurniture);
-                                    context.read<CreateRoomCubit>().addFurniture(furniture.copyWith(position: index));
+                                    context
+                                        .read<CreateRoomCubit>()
+                                        .removeFurniture(oldFurniture);
+                                    context
+                                        .read<CreateRoomCubit>()
+                                        .addFurniture(furniture.copyWith(
+                                            position: index));
                                   }
                                 }
                               },

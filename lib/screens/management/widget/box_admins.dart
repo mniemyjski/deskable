@@ -18,7 +18,8 @@ class _BoxAdminsState extends State<BoxAdmins> {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed)
+          return Container();
 
         return Card(
           child: Container(
@@ -41,9 +42,12 @@ class _BoxAdminsState extends State<BoxAdmins> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
-        child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
+        child:
+            BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
           builder: (context, state) {
-            if (state.status == ESelectedOrganizationStatus.loading || state.status == ESelectedOrganizationStatus.unknown) return Container();
+            if (state.status == ESelectedOrganizationStatus.loading ||
+                state.status == ESelectedOrganizationStatus.unknown)
+              return Container();
 
             return ListView.separated(
                 separatorBuilder: (context, index) => Divider(),
@@ -53,7 +57,10 @@ class _BoxAdminsState extends State<BoxAdmins> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: InkWell(onTap: null, child: Text(state.organization!.admins[index].name)),
+                        child: InkWell(
+                            onTap: null,
+                            child:
+                                Text(state.organization!.admins[index].name)),
                       ),
                       InkWell(
                         onTap: () => _onTap(context, state, index),
@@ -68,15 +75,21 @@ class _BoxAdminsState extends State<BoxAdmins> {
     );
   }
 
-  Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
-    bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(state.organization!.admins[index].uid);
+  Future<void> _onTap(
+      BuildContext context, SelectedOrganizationState state, int index) async {
+    bool isPossible = await context
+        .read<SelectedOrganizationCubit>()
+        .isPossible(state.organization!.admins[index].uid);
 
     if (isPossible) {
       bool areYouSure = false;
       areYouSure = await areYouSureDialog(context);
-      if (areYouSure) context.read<SelectedOrganizationCubit>().removeOwnerById(state.organization!.admins[index].uid);
+      if (areYouSure)
+        context
+            .read<SelectedOrganizationCubit>()
+            .removeOwnerById(state.organization!.admins[index].uid);
     } else {
-      customFlashBar(Languages.you_can_not_do_it());
+      customFlashBar(Strings.you_can_not_do_it());
     }
   }
 
@@ -86,7 +99,8 @@ class _BoxAdminsState extends State<BoxAdmins> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('${Languages.admins()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('${Strings.admins()}:',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           Row(
             children: [
               IconButton(
@@ -96,26 +110,34 @@ class _BoxAdminsState extends State<BoxAdmins> {
                       SearchDialog(
                         alreadyAccountAdded: admins,
                         onTapAdd: (Account account) async {
-                          await context.read<SelectedOrganizationCubit>().addAdmin(account);
+                          await context
+                              .read<SelectedOrganizationCubit>()
+                              .addAdmin(account);
                           Navigator.pop(context);
                         },
                         onTapRemove: (Account account) async {
-                          bool isPossible = await context.read<SelectedOrganizationCubit>().isPossible(account.uid);
+                          bool isPossible = await context
+                              .read<SelectedOrganizationCubit>()
+                              .isPossible(account.uid);
 
                           if (isPossible) {
                             bool areYouSure = false;
                             areYouSure = await areYouSureDialog(context);
                             if (areYouSure) {
-                              context.read<SelectedOrganizationCubit>().removeOwnerById(account.uid);
+                              context
+                                  .read<SelectedOrganizationCubit>()
+                                  .removeOwnerById(account.uid);
                               Navigator.pop(context);
                             }
                           } else {
-                            customFlashBar(Languages.you_can_not_do_it());
+                            customFlashBar(Strings.you_can_not_do_it());
                           }
                         },
                         onTapMany: (List<Account> accounts) async {
                           for (final a in accounts) {
-                            await context.read<SelectedOrganizationCubit>().addAdmin(a);
+                            await context
+                                .read<SelectedOrganizationCubit>()
+                                .addAdmin(a);
                           }
                           Navigator.pop(context);
                         },

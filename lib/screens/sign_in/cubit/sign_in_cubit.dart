@@ -37,10 +37,12 @@ class SignInCubit extends Cubit<SignInState> {
     try {
       emit(state.copyWith(signInStatus: SignInStatus.loading));
       if (state.signInFormType == SignInFormType.signIn) {
-        await _authRepository.signInWithEmailAndPassword(state.email, state.password);
+        await _authRepository.signInWithEmailAndPassword(
+            state.email, state.password);
         await emitSignInStatusSucceed();
       } else if (state.signInFormType == SignInFormType.register) {
-        await _authRepository.createUserWithEmailAndPassword(state.email, state.password);
+        await _authRepository.createUserWithEmailAndPassword(
+            state.email, state.password);
         await emitSignInStatusSucceed();
       } else if (state.signInFormType == SignInFormType.reset) {
         await _authRepository.resetPassword(state.email);
@@ -53,15 +55,17 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   String buttonName() {
-    if (state.signInFormType == SignInFormType.signIn) return Languages.sign_in();
-    if (state.signInFormType == SignInFormType.register) return Languages.create_account();
-    return Languages.send();
+    if (state.signInFormType == SignInFormType.signIn) return Strings.sign_in();
+    if (state.signInFormType == SignInFormType.register)
+      return Strings.create_account();
+    return Strings.send();
   }
 
   String titleName() {
-    if (state.signInFormType == SignInFormType.signIn) return Languages.login();
-    if (state.signInFormType == SignInFormType.register) return Languages.register();
-    return Languages.reset_password();
+    if (state.signInFormType == SignInFormType.signIn) return Strings.login();
+    if (state.signInFormType == SignInFormType.register)
+      return Strings.register();
+    return Strings.reset_password();
   }
 
   emitSignInStatusSucceed() async {

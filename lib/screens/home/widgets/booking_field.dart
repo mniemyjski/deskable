@@ -27,8 +27,9 @@ class _BookingFieldState extends State<BookingField> {
 
   @override
   void initState() {
-    booking = context.read<BookingCubit>().getBooking(deskId: widget.field.id, hour: widget.room.open + widget.index);
-    name = booking?.account!.name ?? Languages.click_to_book();
+    booking = context.read<BookingCubit>().getBooking(
+        deskId: widget.field.id, hour: widget.room.open + widget.index);
+    name = booking?.account!.name ?? Strings.click_to_book();
     super.initState();
   }
 
@@ -39,16 +40,24 @@ class _BookingFieldState extends State<BookingField> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(flex: 1, child: Text('${widget.room.open + widget.index}:00')),
+          Expanded(
+              flex: 1, child: Text('${widget.room.open + widget.index}:00')),
           Expanded(
             flex: 3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (booking != null && booking?.userId != context.read<AccountCubit>().state.account!.uid)
-                  Container(width: double.infinity, margin: const EdgeInsets.all(4.0), child: Text(name)),
-                if (booking == null || booking?.userId == context.read<AccountCubit>().state.account!.uid)
+                if (booking != null &&
+                    booking?.userId !=
+                        context.read<AccountCubit>().state.account!.uid)
+                  Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(4.0),
+                      child: Text(name)),
+                if (booking == null ||
+                    booking?.userId ==
+                        context.read<AccountCubit>().state.account!.uid)
                   InkWell(
                     onTap: () => _onTap(context),
                     child: Container(
@@ -56,7 +65,8 @@ class _BookingFieldState extends State<BookingField> {
                         margin: const EdgeInsets.all(4.0),
                         child: Text(
                           name,
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic, color: Colors.grey),
                         )),
                   ),
               ],
@@ -69,12 +79,16 @@ class _BookingFieldState extends State<BookingField> {
 
   _onTap(BuildContext context) {
     setState(() {
-      if (name == Languages.click_to_book()) {
+      if (name == Strings.click_to_book()) {
         name = context.read<AccountCubit>().state.account!.name;
-        context.read<CreatorBookingCubit>().add(widget.room.open + widget.index);
-      } else if (name != Languages.click_to_book()) {
-        name = Languages.click_to_book();
-        context.read<CreatorBookingCubit>().remove(widget.room.open + widget.index);
+        context
+            .read<CreatorBookingCubit>()
+            .add(widget.room.open + widget.index);
+      } else if (name != Strings.click_to_book()) {
+        name = Strings.click_to_book();
+        context
+            .read<CreatorBookingCubit>()
+            .remove(widget.room.open + widget.index);
       }
     });
   }

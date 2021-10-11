@@ -13,7 +13,8 @@ class BoxRooms extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed)
+          return Container();
 
         return Card(
           child: Container(
@@ -38,12 +39,14 @@ class BoxRooms extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('${Languages.rooms()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('${Strings.rooms()}:',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           IconButton(
             onPressed: () => Navigator.of(context).pushNamed(
               CreateRoomScreen.routeName,
               arguments: CreateRoomScreenArguments(
-                selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+                selectedOrganizationCubit:
+                    context.read<SelectedOrganizationCubit>(),
               ),
             ),
             icon: Icon(Icons.add_circle),
@@ -77,7 +80,8 @@ class BoxRooms extends StatelessWidget {
                           Navigator.of(context).pushNamed(
                             CreateRoomScreen.routeName,
                             arguments: CreateRoomScreenArguments(
-                              selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+                              selectedOrganizationCubit:
+                                  context.read<SelectedOrganizationCubit>(),
                               room: stateA.rooms![index],
                             ),
                           );

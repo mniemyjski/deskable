@@ -1,6 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:deskable/cubit/cubit.dart';
-import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/strings.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: customAppBar(title: Languages.settings()),
+        appBar: customAppBar(title: Strings.settings()),
         drawer: CustomDrawer(),
         body: Center(
           child: Column(
@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 300),
                 child: CustomDropDownButton(
-                  name: Languages.locale_app(),
+                  name: Strings.locale_app(),
                   value: context.locale.toString(),
                   list: <String>['pl', 'en'],
                   onChanged: (String? state) {
@@ -55,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                       },
                     ),
                     Text(
-                      Languages.dark_mode(),
+                      Strings.dark_mode(),
                       style: TextStyle(color: Colors.white),
                     ),
                   ],

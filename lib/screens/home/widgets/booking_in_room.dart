@@ -48,7 +48,11 @@ class BookingInRoom extends StatelessWidget {
       onPressedBack: () => context.read<SelectedDateCubit>().decrease(),
       onPressedNext: () => context.read<SelectedDateCubit>().increase(),
       onPressed: () {
-        showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(DateTime.now().year + 5))
+        showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(DateTime.now().year + 5))
             .then((date) {
           if (date != null) {
             context.read<SelectedDateCubit>().change(date);
@@ -87,7 +91,8 @@ class BookingInRoom extends StatelessWidget {
         final stateA = context.watch<SelectedRoomCubit>().state;
         final stateB = context.watch<RoomCubit>().state;
 
-        if (stateB.status == ERoomStatus.empty || stateA.status != ESelectedRoomStatus.succeed) return Container();
+        if (stateB.status == ERoomStatus.empty ||
+            stateA.status != ESelectedRoomStatus.succeed) return Container();
 
         return CustomSelectorData(
           onPressed: () => customDialog(
@@ -106,10 +111,12 @@ class BookingInRoom extends StatelessWidget {
                   ),
                   width: double.infinity,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 16, bottom: 16),
                     child: Text(
-                      '${Languages.rooms()}:',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      '${Strings.rooms()}:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -126,19 +133,23 @@ class BookingInRoom extends StatelessWidget {
                             context.read<SelectedRoomCubit>().change(index);
                             Navigator.pop(context);
                           },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                stateB.rooms![index].name,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              if (stateB.rooms![index].description.isNotEmpty)
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
-                                  stateB.rooms![index].description,
-                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                  stateB.rooms![index].name,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                            ],
+                                if (stateB.rooms![index].description.isNotEmpty)
+                                  Text(
+                                    stateB.rooms![index].description,
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                  ),
+                              ],
+                            ),
                           ),
                         );
                       }),
@@ -181,10 +192,12 @@ class BookingInRoom extends StatelessWidget {
                   ),
                   width: double.infinity,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 16, bottom: 16),
                     child: Text(
-                      '${Languages.organizations()}:',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      '${Strings.organizations()}:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -199,21 +212,28 @@ class BookingInRoom extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8, right: 8),
                           child: InkWell(
                             onTap: () {
-                              context.read<SelectedOrganizationCubit>().change(index);
+                              context
+                                  .read<SelectedOrganizationCubit>()
+                                  .change(index);
                               Navigator.pop(context);
                             },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  stateA.organizations![index].name,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  stateA.organizations![index].description,
-                                  style: TextStyle(fontStyle: FontStyle.italic),
-                                ),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    stateA.organizations![index].name,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    stateA.organizations![index].description,
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

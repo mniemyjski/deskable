@@ -6,7 +6,7 @@ import 'package:deskable/screens/home/widgets/incoming_booking.dart';
 import 'package:deskable/screens/home/widgets/room_display.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/enums.dart';
-import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/strings.dart';
 import 'package:deskable/utilities/responsive.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
 import 'package:deskable/widgets/widgets.dart';
@@ -55,7 +55,8 @@ class HomeScreen extends StatelessWidget {
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),
             roomRepository: context.read<RoomRepository>(),
-            selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+            selectedOrganizationCubit:
+                context.read<SelectedOrganizationCubit>(),
           ),
         ),
         BlocProvider<SelectedRoomCubit>(
@@ -79,7 +80,7 @@ class HomeScreen extends StatelessWidget {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: customAppBar(title: Languages.home()),
+          appBar: customAppBar(title: Strings.home()),
           drawer: CustomDrawer(),
           body: Builder(
             builder: (context) {
@@ -89,11 +90,13 @@ class HomeScreen extends StatelessWidget {
                     return Scaffold(
                         body: Center(
                       child: ElevatedButton(
-                          onPressed: () => Navigator.of(context).pushNamed(ManagementScreen.routeName),
+                          onPressed: () => Navigator.of(context)
+                              .pushNamed(ManagementScreen.routeName),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              Languages.wait_for_the_invitation_or_create_your_own_organization(),
+                              Strings
+                                  .wait_for_the_invitation_or_create_your_own_organization(),
                               style: TextStyle(fontSize: 14),
                             ),
                           )),

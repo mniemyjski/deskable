@@ -47,7 +47,7 @@ class _EmailFormState extends State<EmailForm> {
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: Languages.email(),
+                        labelText: Strings.email(),
                         labelStyle: TextStyle(color: Colors.white38),
                         // isCollapsed: true,
                         contentPadding: EdgeInsets.all(12),
@@ -85,7 +85,7 @@ class _EmailFormState extends State<EmailForm> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          labelText: Languages.password(),
+                          labelText: Strings.password(),
                           labelStyle: TextStyle(color: Colors.white38),
                           contentPadding: EdgeInsets.all(12),
                           border: OutlineInputBorder(
@@ -135,16 +135,21 @@ class _EmailFormState extends State<EmailForm> {
                 if (state.signInFormType != SignInFormType.reset)
                   TextButton(
                       onPressed: () {
-                        context.read<SignInCubit>().changeForm(SignInFormType.reset);
+                        context
+                            .read<SignInCubit>()
+                            .changeForm(SignInFormType.reset);
                       },
                       child: Text(
-                        Languages.forgot_your_password(),
+                        Strings.forgot_your_password(),
                         style: TextStyle(color: Colors.white),
                       )),
                 if (state.signInFormType != SignInFormType.reset)
                   TextButton(
                       onPressed: () => onPressedChangeTypeForm(state),
-                      child: Text(state.signInFormType == SignInFormType.signIn ? Languages.need_register() : Languages.have_account_sign_in(),
+                      child: Text(
+                          state.signInFormType == SignInFormType.signIn
+                              ? Strings.need_register()
+                              : Strings.have_account_sign_in(),
                           style: TextStyle(color: Colors.white))),
               ],
             ),
@@ -164,14 +169,18 @@ class _EmailFormState extends State<EmailForm> {
 
   void onPressedSignInOrRegister(SignInState state) async {
     Failure? failure;
-    if (state.signInFormType == SignInFormType.reset && _formKeyEmail.currentState!.validate()) {
+    if (state.signInFormType == SignInFormType.reset &&
+        _formKeyEmail.currentState!.validate()) {
       context.read<SignInCubit>().valueForm(email: _controllerEmail.text);
       failure = await context.read<SignInCubit>().signInWithEmail();
-      if (failure == null) customFlashBar(Languages.reset_mail());
+      if (failure == null) customFlashBar(Strings.reset_mail());
     }
 
-    if (state.signInFormType != SignInFormType.reset && _formKeyEmail.currentState!.validate() && _formKeyPassword.currentState!.validate()) {
-      context.read<SignInCubit>().valueForm(email: _controllerEmail.text, password: _controllerPassword.text);
+    if (state.signInFormType != SignInFormType.reset &&
+        _formKeyEmail.currentState!.validate() &&
+        _formKeyPassword.currentState!.validate()) {
+      context.read<SignInCubit>().valueForm(
+          email: _controllerEmail.text, password: _controllerPassword.text);
       failure = await context.read<SignInCubit>().signInWithEmail();
     }
     if (failure != null) customFlashBar(failure.message);

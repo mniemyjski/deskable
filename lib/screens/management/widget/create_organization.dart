@@ -55,7 +55,9 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.organization == null ? Languages.create() : Languages.save()),
+                  Text(widget.organization == null
+                      ? Strings.create()
+                      : Strings.save()),
                 ],
               ),
               onPressed: () => _onTap(context, widget.organization)),
@@ -73,7 +75,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
           key: _formKeyDescription,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.description(),
+              labelText: Strings.description(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(300),
@@ -95,7 +97,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
           key: _formKeyName,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.organization_name(),
+              labelText: Strings.organization_name(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(20),
@@ -112,9 +114,13 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
   void _onTap(BuildContext context, Organization? organization) {
     if (_formKeyName.currentState!.validate()) {
       if (organization != null) {
-        context.read<OrganizationCubit>().update(organization.copyWith(name: _controllerName.text, description: _controllerDescription.text));
+        context.read<OrganizationCubit>().update(organization.copyWith(
+            name: _controllerName.text,
+            description: _controllerDescription.text));
       } else {
-        Organization _company = Organization.create(name: _controllerName.text, description: _controllerDescription.text);
+        Organization _company = Organization.create(
+            name: _controllerName.text,
+            description: _controllerDescription.text);
         context.read<OrganizationCubit>().create(_company);
       }
       Navigator.pop(context);

@@ -21,7 +21,7 @@ class ButtonSignInWithEmail extends StatelessWidget {
               size: 40,
               color: Colors.white,
             ),
-            Text(Languages.sign_in_with_email()),
+            Text(Strings.sign_in_with_email()),
             Container(),
           ],
         ),

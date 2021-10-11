@@ -7,22 +7,26 @@ class SelectedDateState extends Equatable {
   final String name;
   final ESelectedDateStatus status;
 
-  SelectedDateState({required this.dateTime, required this.status, required this.name});
+  SelectedDateState(
+      {required this.dateTime, required this.status, required this.name});
 
   factory SelectedDateState.init() {
     return SelectedDateState(
-      dateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-      name: Languages.today(),
+      dateTime: DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      name: Strings.today(),
       status: ESelectedDateStatus.succeed,
     );
   }
 
   factory SelectedDateState.loading(DateTime dateTime, String name) {
-    return SelectedDateState(dateTime: dateTime, name: name, status: ESelectedDateStatus.loading);
+    return SelectedDateState(
+        dateTime: dateTime, name: name, status: ESelectedDateStatus.loading);
   }
 
   factory SelectedDateState.succeed(DateTime dateTime, String name) {
-    return SelectedDateState(dateTime: dateTime, name: name, status: ESelectedDateStatus.succeed);
+    return SelectedDateState(
+        dateTime: dateTime, name: name, status: ESelectedDateStatus.succeed);
   }
 
   @override

@@ -32,7 +32,8 @@ class BoxOrganizations extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('${Languages.organizations()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('${Strings.organizations()}:',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           IconButton(
             onPressed: () {
               customDialog(
@@ -71,10 +72,16 @@ class BoxOrganizations extends StatelessWidget {
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: () => context.read<SelectedOrganizationCubit>().change(index),
+                          onTap: () => context
+                              .read<SelectedOrganizationCubit>()
+                              .change(index),
                           child: Text(
                             stateA.organizations![index].name,
-                            style: TextStyle(color: stateB.organization!.id == stateA.organizations![index].id ? Colors.blue : null),
+                            style: TextStyle(
+                                color: stateB.organization!.id ==
+                                        stateA.organizations![index].id
+                                    ? Colors.blue
+                                    : null),
                           ),
                         ),
                       ),
@@ -83,8 +90,10 @@ class BoxOrganizations extends StatelessWidget {
                           customDialog(
                             context,
                             BlocProvider.value(
-                              value: BlocProvider.of<OrganizationCubit>(context),
-                              child: CreateOrganizations(organization: stateA.organizations![index]),
+                              value:
+                                  BlocProvider.of<OrganizationCubit>(context),
+                              child: CreateOrganizations(
+                                  organization: stateA.organizations![index]),
                             ),
                           );
                         },
@@ -106,10 +115,12 @@ class BoxOrganizations extends StatelessWidget {
     );
   }
 
-  Future<void> _onTap(BuildContext context, OrganizationState stateA, int index) async {
+  Future<void> _onTap(
+      BuildContext context, OrganizationState stateA, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
 
-    if (areYouSure) context.read<OrganizationCubit>().delete(stateA.organizations![index]);
+    if (areYouSure)
+      context.read<OrganizationCubit>().delete(stateA.organizations![index]);
   }
 }

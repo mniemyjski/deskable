@@ -32,7 +32,8 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
   @override
   void initState() {
     _controllerName.text = context.read<CreateRoomCubit>().state.room.name;
-    _controllerDesc.text = context.read<CreateRoomCubit>().state.room.description;
+    _controllerDesc.text =
+        context.read<CreateRoomCubit>().state.room.description;
     super.initState();
   }
 
@@ -57,15 +58,19 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                 onPressed: () {
                   if (_formKeyName.currentState!.validate()) {
                     if (state.edit) {
-                      context.read<CreateRoomCubit>().update(name: _controllerName.text, description: _controllerDesc.text);
+                      context.read<CreateRoomCubit>().update(
+                          name: _controllerName.text,
+                          description: _controllerDesc.text);
                     } else {
-                      context.read<CreateRoomCubit>().create(name: _controllerName.text, description: _controllerDesc.text);
+                      context.read<CreateRoomCubit>().create(
+                          name: _controllerName.text,
+                          description: _controllerDesc.text);
                     }
                     Navigator.pop(context);
                     Navigator.pop(context);
                   }
                 },
-                child: Text(state.edit ? Languages.save() : Languages.create()),
+                child: Text(state.edit ? Strings.save() : Strings.create()),
               );
             },
           ),
@@ -90,14 +95,16 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text(Languages.open()),
+                      child: Text(Strings.open()),
                     ),
                     Expanded(
                       child: CustomSelectorData(
                         onPressed: null,
                         widget: Text(state.room.open.toString()),
-                        onPressedBack: () => context.read<CreateRoomCubit>().decreaseOpen(),
-                        onPressedNext: () => context.read<CreateRoomCubit>().increaseOpen(),
+                        onPressedBack: () =>
+                            context.read<CreateRoomCubit>().decreaseOpen(),
+                        onPressedNext: () =>
+                            context.read<CreateRoomCubit>().increaseOpen(),
                       ),
                     ),
                   ],
@@ -110,14 +117,16 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text(Languages.close()),
+                      child: Text(Strings.close()),
                     ),
                     Expanded(
                       child: CustomSelectorData(
                         onPressed: null,
                         widget: Text(state.room.close.toString()),
-                        onPressedBack: () => context.read<CreateRoomCubit>().decreaseClose(),
-                        onPressedNext: () => context.read<CreateRoomCubit>().increaseClose(),
+                        onPressedBack: () =>
+                            context.read<CreateRoomCubit>().decreaseClose(),
+                        onPressedNext: () =>
+                            context.read<CreateRoomCubit>().increaseClose(),
                       ),
                     ),
                   ],
@@ -139,7 +148,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
           key: _formKeyDesc,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.description(),
+              labelText: Strings.description(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(300),
@@ -161,7 +170,7 @@ class _CreateRoomSetDetailsState extends State<CreateRoomSetDetails> {
           key: _formKeyName,
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: Languages.room_name(),
+              labelText: Strings.room_name(),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(20),

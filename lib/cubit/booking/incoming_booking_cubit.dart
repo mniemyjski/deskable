@@ -65,12 +65,9 @@ class IncomingBookingCubit extends Cubit<IncomingBookingState> {
   }
 
   _sub() async {
-    DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(Duration(days: -1));
-
     if (state.selectedOrganization != null && state.account != null)
-      _bookingSubscription = _bookingRepository
-          .streamIncomingBooking(organizationId: state.selectedOrganization!.id!, dateTime: dateTime, userId: state.account!.uid)
-          .listen((event) {
+      _bookingSubscription =
+          _bookingRepository.streamIncomingBooking(organizationId: state.selectedOrganization!.id!, userId: state.account!.uid).listen((event) {
         if (event.isNotEmpty) emit(state.copyWith(bookings: event, status: EIncomingStatus.succeed));
         if (event.isEmpty) emit(state.copyWith(bookings: event, status: EIncomingStatus.empty));
       });
@@ -80,6 +77,9 @@ class IncomingBookingCubit extends Cubit<IncomingBookingState> {
   Future<void> close() {
     try {
       _bookingSubscription.cancel();
+    } catch (e) {}
+    try {
+      _accountSubscription.cancel();
     } catch (e) {}
     try {
       _selectedOrganizationSubscription.cancel();

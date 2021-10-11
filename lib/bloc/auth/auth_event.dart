@@ -10,7 +10,7 @@ abstract class AuthEvent extends Equatable {
 class AuthUserChanged extends AuthEvent {
   final User? user;
 
-  AuthUserChanged({@required this.user});
+  AuthUserChanged({required this.user});
 
   @override
   List<Object?> get props => [user];

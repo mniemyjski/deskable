@@ -22,7 +22,7 @@ class ButtonSignInWithGoogle extends StatelessWidget {
               child: Image.asset(Constants.resources_google()),
             ),
             Text(
-              Languages.sign_in_with_google(),
+              Strings.sign_in_with_google(),
               style: TextStyle(color: Colors.black87),
             ),
             Container(),

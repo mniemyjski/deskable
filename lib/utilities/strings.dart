@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-class Languages {
+class Strings {
   static String sign_in_with_google() => 'sign_in_with_google'.tr();
   static String sign_in_with_email() => 'sign_in_with_email'.tr();
 

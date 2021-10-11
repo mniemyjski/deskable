@@ -4,7 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
 import 'package:deskable/screens/screens.dart';
-import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/strings.dart';
 import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +49,11 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(Languages.edit_profile()),
+          title: Text(Strings.edit_profile()),
           actions: [
             IconButton(
-              onPressed: () => _save(context: context, name: _controllerName.text),
+              onPressed: () =>
+                  _save(context: context, name: _controllerName.text),
               icon: Icon(Icons.save),
             ),
           ],
@@ -69,7 +70,8 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
                       padding: const EdgeInsets.only(top: 16),
                       child: BlocBuilder<AccountCubit, AccountState>(
                         builder: (context, state) {
-                          if (state.status == EAccountStatus.created) return CustomAvatar(url: state.account!.photoUrl);
+                          if (state.status == EAccountStatus.created)
+                            return CustomAvatar(url: state.account!.photoUrl);
                           return CustomAvatar();
                         },
                       ),
@@ -84,7 +86,7 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
                       key: _formKeyName,
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: Languages.name(),
+                          labelText: Strings.name(),
                           labelStyle: TextStyle(color: Colors.white),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -152,7 +154,7 @@ class _AccountEditScreenState extends State<AccountEditScreen> {
       if (updated) {
         Navigator.pop(context);
       } else {
-        customFlashBar(Languages.name_not_available());
+        customFlashBar(Strings.name_not_available());
         _controllerName.text = context.read<AccountCubit>().state.account!.name;
       }
     }

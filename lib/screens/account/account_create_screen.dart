@@ -2,7 +2,7 @@ import 'package:deskable/bloc/auth/auth_bloc.dart';
 import 'package:deskable/cubit/cubit.dart';
 import 'package:deskable/models/account.dart';
 import 'package:deskable/repositories/repositories.dart';
-import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/strings.dart';
 import 'package:deskable/utilities/validators.dart';
 import 'package:deskable/widgets/custom_drawer/custom_drawer.dart';
 import 'package:deskable/widgets/widgets.dart';
@@ -44,7 +44,7 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(Languages.create_account()),
+          title: Text(Strings.create_account()),
         ),
         body: Center(
           child: Column(
@@ -55,7 +55,7 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
                 child: Form(
                   key: _formKeyName,
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: Languages.name()),
+                    decoration: InputDecoration(labelText: Strings.name()),
                     textInputAction: TextInputAction.done,
                     controller: _controllerName,
                     inputFormatters: [
@@ -69,16 +69,18 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(Languages.create_account()),
+                      Text(Strings.create_account()),
                     ],
                   ),
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
                     if (_formKeyName.currentState!.validate()) {
-                      bool done = await context.read<AccountCubit>().createAccount(_controllerName.text);
+                      bool done = await context
+                          .read<AccountCubit>()
+                          .createAccount(_controllerName.text);
                       await context.read<PreferenceCubit>().createPreference();
 
-                      if (!done) customFlashBar(Languages.name_not_available());
+                      if (!done) customFlashBar(Strings.name_not_available());
                     }
                   }),
             ],

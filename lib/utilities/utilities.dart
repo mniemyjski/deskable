@@ -1,5 +1,5 @@
 export 'constants.dart';
-export 'languages.dart';
+export 'strings.dart';
 export 'paths.dart';
 export 'routes.dart';
 export 'enums.dart';

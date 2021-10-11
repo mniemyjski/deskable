@@ -6,8 +6,9 @@ import 'package:deskable/screens/management/widget/box_organizations.dart';
 import 'package:deskable/screens/management/widget/box_employees.dart';
 import 'package:deskable/screens/management/widget/box_admins.dart';
 import 'package:deskable/screens/management/widget/box_rooms.dart';
+import 'package:deskable/screens/management/widget/monthly_booking.dart';
 
-import 'package:deskable/utilities/languages.dart';
+import 'package:deskable/utilities/strings.dart';
 import 'package:deskable/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +53,8 @@ class _ManagementScreenState extends State<ManagementScreen> {
           create: (context) => RoomCubit(
             accountCubit: context.read<AccountCubit>(),
             roomRepository: context.read<RoomRepository>(),
-            selectedOrganizationCubit: context.read<SelectedOrganizationCubit>(),
+            selectedOrganizationCubit:
+                context.read<SelectedOrganizationCubit>(),
           ),
         ),
         BlocProvider<SelectedRoomCubit>(
@@ -64,7 +66,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          appBar: customAppBar(title: Languages.management()),
+          appBar: customAppBar(title: Strings.management()),
           drawer: CustomDrawer(),
           body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -80,8 +82,9 @@ class _ManagementScreenState extends State<ManagementScreen> {
                   SizedBox(width: 8),
                   BoxEmployees(),
                   SizedBox(width: 8),
-                  SizedBox(width: 8),
                   BoxRooms(),
+                  // SizedBox(width: 8),
+                  // MonthlyBooking()
                 ],
               ),
             ),

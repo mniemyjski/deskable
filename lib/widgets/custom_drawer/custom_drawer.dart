@@ -20,21 +20,22 @@ class CustomDrawer extends StatelessWidget {
           Header(),
           Item(
             icon: Icons.home,
-            text: Languages.home(),
+            text: Strings.home(),
             onTap: () {
-              Navigator.of(context).pushNamed(HomeScreen.routeName, arguments: false);
+              Navigator.of(context)
+                  .pushNamed(HomeScreen.routeName, arguments: false);
             },
           ),
           Item(
             icon: FontAwesomeIcons.building,
-            text: Languages.management(),
+            text: Strings.management(),
             onTap: () {
               Navigator.of(context).pushNamed(ManagementScreen.routeName);
             },
           ),
           Item(
             icon: Icons.settings,
-            text: Languages.settings(),
+            text: Strings.settings(),
             onTap: () {
               Navigator.of(context).pushNamed(SettingsScreen.routeName);
             },
@@ -42,14 +43,14 @@ class CustomDrawer extends StatelessWidget {
           Divider(),
           Item(
             icon: FontAwesomeIcons.question,
-            text: Languages.help(),
+            text: Strings.help(),
             onTap: () {
               Navigator.of(context).pushNamed(IntroScreen.routeName);
             },
           ),
           Item(
             icon: Icons.exit_to_app,
-            text: Languages.sign_out(),
+            text: Strings.sign_out(),
             onTap: () {
               context.read<AuthBloc>().add(AuthLogoutRequested());
             },

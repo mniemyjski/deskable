@@ -33,10 +33,10 @@ class IncomingBooking extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      _textHeader(Languages.date(), 1),
-                      _textHeader(Languages.room(), 2),
-                      _textHeader(Languages.position(), 1),
-                      _textHeader(Languages.time(), 2),
+                      _textHeader(Strings.date(), 1),
+                      _textHeader(Strings.room(), 2),
+                      _textHeader(Strings.position(), 1),
+                      _textHeader(Strings.time(), 2),
                     ],
                   ),
                   SizedBox(height: 4),
@@ -47,15 +47,20 @@ class IncomingBooking extends StatelessWidget {
                       separatorBuilder: (context, index) => Divider(),
                       itemCount: state.bookings.length,
                       itemBuilder: (BuildContext _, int index) {
-                        Room? room = context.read<RoomCubit>().getRoom(state.bookings[index].roomId!);
-                        Furniture? furniture = context.read<RoomCubit>().getFurniture(state.bookings[index].furnitureId!);
+                        Room? room = context
+                            .read<RoomCubit>()
+                            .getRoom(state.bookings[index].roomId!);
+                        Furniture? furniture = context
+                            .read<RoomCubit>()
+                            .getFurniture(state.bookings[index].furnitureId!);
 
                         return Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: AutoSizeText(
-                                DateFormat('dd-MM-yyyy').format(state.bookings[index].dateBooked!),
+                                DateFormat('dd-MM-yyyy')
+                                    .format(state.bookings[index].dateBooked!),
                                 maxLines: 1,
                                 minFontSize: 6,
                                 maxFontSize: 12,
@@ -80,7 +85,10 @@ class IncomingBooking extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: AutoSizeText(
-                                state.bookings[index].hoursBooked.toString().replaceAll('[', '').replaceAll(']', ''),
+                                state.bookings[index].hoursBooked
+                                    .toString()
+                                    .replaceAll('[', '')
+                                    .replaceAll(']', ''),
                                 maxLines: 1,
                                 minFontSize: 6,
                                 maxFontSize: 12,

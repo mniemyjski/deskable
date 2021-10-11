@@ -19,7 +19,8 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   Widget build(BuildContext context) {
     return BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status != ESelectedOrganizationStatus.succeed) return Container();
+        if (state.status != ESelectedOrganizationStatus.succeed)
+          return Container();
 
         return Card(
           child: Container(
@@ -39,9 +40,12 @@ class _BoxEmployeesState extends State<BoxEmployees> {
   }
 
   Expanded _buildListView() {
-    return Expanded(child: BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
+    return Expanded(child:
+        BlocBuilder<SelectedOrganizationCubit, SelectedOrganizationState>(
       builder: (context, state) {
-        if (state.status == ESelectedOrganizationStatus.loading || state.status == ESelectedOrganizationStatus.unknown) return Container();
+        if (state.status == ESelectedOrganizationStatus.loading ||
+            state.status == ESelectedOrganizationStatus.unknown)
+          return Container();
 
         return ListView.separated(
             separatorBuilder: (context, index) => Padding(
@@ -56,7 +60,9 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: InkWell(onTap: null, child: Text(state.organization!.users[index].name)),
+                      child: InkWell(
+                          onTap: null,
+                          child: Text(state.organization!.users[index].name)),
                     ),
                     InkWell(
                       onTap: () => _onTap(context, state, index),
@@ -70,10 +76,14 @@ class _BoxEmployeesState extends State<BoxEmployees> {
     ));
   }
 
-  Future<void> _onTap(BuildContext context, SelectedOrganizationState state, int index) async {
+  Future<void> _onTap(
+      BuildContext context, SelectedOrganizationState state, int index) async {
     bool areYouSure = false;
     areYouSure = await areYouSureDialog(context);
-    if (areYouSure) context.read<SelectedOrganizationCubit>().removeEmployeeById(state.organization!.users[index].uid);
+    if (areYouSure)
+      context
+          .read<SelectedOrganizationCubit>()
+          .removeEmployeeById(state.organization!.users[index].uid);
   }
 
   _buildHeader(List<Account> emp) {
@@ -82,7 +92,8 @@ class _BoxEmployeesState extends State<BoxEmployees> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('${Languages.users()}:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('${Strings.users()}:',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           Row(
             children: [
               IconButton(
@@ -92,21 +103,27 @@ class _BoxEmployeesState extends State<BoxEmployees> {
                     SearchDialog(
                       alreadyAccountAdded: emp,
                       onTapAdd: (Account account) async {
-                        await context.read<SelectedOrganizationCubit>().addEmployee(account);
+                        await context
+                            .read<SelectedOrganizationCubit>()
+                            .addEmployee(account);
                         Navigator.pop(context);
                       },
                       onTapRemove: (Account account) async {
                         bool areYouSure = false;
                         areYouSure = await areYouSureDialog(context);
                         if (areYouSure) {
-                          await context.read<SelectedOrganizationCubit>().removeEmployeeById(account.uid);
+                          await context
+                              .read<SelectedOrganizationCubit>()
+                              .removeEmployeeById(account.uid);
                           Navigator.pop(context);
                         }
                       },
                       onTapMany: (List<Account> accounts) async {
                         Logger().wtf(accounts);
                         for (final a in accounts) {
-                          await context.read<SelectedOrganizationCubit>().addEmployee(a);
+                          await context
+                              .read<SelectedOrganizationCubit>()
+                              .addEmployee(a);
                         }
                         Navigator.pop(context);
                       },

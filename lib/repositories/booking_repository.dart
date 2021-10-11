@@ -3,19 +3,13 @@ import 'package:deskable/utilities/paths.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
-// extension WhereNotInExt<T> on Iterable<T> {
-//   Iterable<T> whereNotIn(Iterable<T> reject) {
-//     final rejectSet = reject.toSet();
-//     return where((el) => !rejectSet.contains(el));
-//   }
-// }
-
 abstract class _BaseBookingRepository {
   Future<void> create(Booking booking);
   Future<void> delete(Booking booking);
   Future<void> update(Booking booking);
-  Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook});
-  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime, required String userId});
+  Stream<List<Booking>?> streamTodayBooking({required String companyId, required String roomId, required DateTime dateBook});
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required String userId});
+  Stream<List<Booking>> streamMonthBooking({required String organizationId, required String userId, required DateTime startDate});
 }
 
 class BookingRepository extends _BaseBookingRepository {
@@ -59,7 +53,7 @@ class BookingRepository extends _BaseBookingRepository {
   }
 
   @override
-  Stream<List<Booking>?> stream({required String companyId, required String roomId, required DateTime dateBook}) {
+  Stream<List<Booking>?> streamTodayBooking({required String companyId, required String roomId, required DateTime dateBook}) {
     final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -73,7 +67,9 @@ class BookingRepository extends _BaseBookingRepository {
   }
 
   @override
-  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required DateTime dateTime, required String userId}) {
+  Stream<List<Booking>> streamIncomingBooking({required String organizationId, required String userId}) {
+    DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(Duration(days: -1));
+
     final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
           fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
           toFirestore: (room, _) => room.toMap(),
@@ -85,6 +81,25 @@ class BookingRepository extends _BaseBookingRepository {
         .where('dateBooked', isGreaterThan: dateTime)
         .orderBy('dateBooked')
         .limit(10)
+        .snapshots()
+        .map((snap) => snap.docs.map((e) => e.data()).toList());
+  }
+
+  @override
+  Stream<List<Booking>> streamMonthBooking({required String organizationId, required String userId, required DateTime startDate}) {
+    DateTime start = DateTime(startDate.year, startDate.month, 1);
+    DateTime end = DateTime(startDate.year, startDate.month, DateTime(startDate.year, startDate.month + 1, 0).day).add(Duration(days: 1));
+
+    final ref = FirebaseFirestore.instance.collectionGroup(Path.bookings()).withConverter<Booking>(
+          fromFirestore: (snapshot, _) => Booking.fromMap(snapshot.data()!),
+          toFirestore: (room, _) => room.toMap(),
+        );
+
+    return ref
+        .where('organizationId', isEqualTo: organizationId)
+        .where('dateBooked', isGreaterThan: start)
+        .where('dateBooked', isLessThan: end)
+        .orderBy('dateBooked')
         .snapshots()
         .map((snap) => snap.docs.map((e) => e.data()).toList());
   }
