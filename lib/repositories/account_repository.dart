@@ -48,18 +48,31 @@ class AccountRepository extends _BaseAccountRepository {
   Stream<Account?> streamMyAccount(String uid) => _ref.doc(uid).snapshots().map((account) => account.data());
 
   @override
-  Stream<List<Account>?> streamCompanyAccounts(String companyId) =>
-      _ref.where('companies', arrayContains: companyId).snapshots().map((snap) => snap.docs.map((account) => account.data()).toList());
+  Stream<List<Account>?> streamCompanyAccounts(String companyId) => _ref
+      .where('companies', arrayContains: companyId)
+      .snapshots()
+      .map((snap) => snap.docs.map((account) => account.data()).toList());
 
   @override
-  Future<bool> nameAvailable(String name) => _ref.where('name', isEqualTo: name).get().then((value) => value.docs.length > 0 ? false : true);
+  Future<bool> nameAvailable(String name) =>
+      _ref.where('name', isEqualTo: name).get().then((value) => value.docs.isNotEmpty ? false : true);
 
   @override
   Future<List<Account>> searchAccount(String search) async {
     List<Account> email;
     List<Account> name;
-    email = await _ref.orderBy('email').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
-    name = await _ref.orderBy('name').startAt([search]).endAt([search + '\uf8ff']).get().then((value) => value.docs.map((e) => e.data()).toList());
+    email = await _ref
+        .orderBy('email')
+        .startAt([search])
+        .endAt([search + '\uf8ff'])
+        .get()
+        .then((value) => value.docs.map((e) => e.data()).toList());
+    name = await _ref
+        .orderBy('name')
+        .startAt([search])
+        .endAt([search + '\uf8ff'])
+        .get()
+        .then((value) => value.docs.map((e) => e.data()).toList());
 
     // email = await _ref
     //     .where('email', isGreaterThanOrEqualTo: search)

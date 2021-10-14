@@ -52,41 +52,37 @@ class _AccountCreateScreenState extends State<AccountCreateScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Form(
-                  key: _formKeyName,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: Strings.name()),
-                    textInputAction: TextInputAction.done,
-                    controller: _controllerName,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(20),
-                    ],
-                    validator: (v) => Validators.name(v),
-                  ),
+                child: CustomTextField(
+                  formKey: _formKeyName,
+                  controller: _controllerName,
+                  labelText: Strings.name(),
                 ),
               ),
               CustomButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(Strings.create_account()),
-                    ],
-                  ),
-                  onPressed: () async {
-                    FocusScope.of(context).unfocus();
-                    if (_formKeyName.currentState!.validate()) {
-                      bool done = await context
-                          .read<AccountCubit>()
-                          .createAccount(_controllerName.text);
-                      await context.read<PreferenceCubit>().createPreference();
-
-                      if (!done) customFlashBar(Strings.name_not_available());
-                    }
-                  }),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(Strings.create_account()),
+                  ],
+                ),
+                onPressed: _press,
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _press() async {
+    FocusScope.of(context).unfocus();
+    if (_formKeyName.currentState!.validate()) {
+      bool done = await context.read<AccountCubit>().createAccount(_controllerName.text);
+      if (done) {
+        await context.read<PreferenceCubit>().createPreference();
+      } else {
+        customFlashBar(Strings.name_not_available());
+      }
+    }
   }
 }

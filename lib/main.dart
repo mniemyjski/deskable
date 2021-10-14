@@ -1,10 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:deskable/cubit/selected/selected_organization_cubit.dart';
-import 'package:deskable/cubit/selected/selected_date_cubit.dart';
-import 'package:deskable/cubit/selected/selected_room_cubit.dart';
 import 'package:deskable/cubit/upload_to_storage/update_avatar_cubit.dart';
 import 'package:deskable/repositories/preference_repository.dart';
-import 'package:deskable/screens/home/cubit/creator_booking_cubit.dart';
 import 'package:deskable/screens/screens.dart';
 import 'package:deskable/utilities/utilities.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,7 +27,9 @@ void main() async {
   setPathUrlStrategy();
   Bloc.observer = SimpleBlocObserver();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory(),
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
   );
   runApp(EasyLocalization(
       supportedLocales: [
@@ -121,7 +119,8 @@ class MyApp extends StatelessWidget {
                 scaffoldBackgroundColor: Color.fromRGBO(0, 121, 191, 1),
                 elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(0, 103, 163, 1)),
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromRGBO(0, 103, 163, 1)),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                   ),
                 ),
@@ -132,7 +131,8 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(48, 48, 48, 1.0)),
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromRGBO(48, 48, 48, 1.0)),
                   ),
                 ),
               ),
