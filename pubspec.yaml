@@ -21,8 +21,10 @@ dependencies:
   get_it: ^7.2.0
   injectable: ^1.5.0
   rxdart: ^0.27.2
+  dartz: ^0.10.0
 
   equatable: ^2.0.3
+  freezed: ^0.15.0+1
   shared_preferences: ^2.0.8
 
   firebase_core: ^1.7.0
@@ -30,12 +32,7 @@ dependencies:
   cloud_firestore: ^2.5.3
   firebase_storage: ^10.0.4
   firebase_analytics: ^8.3.3
-#  firebase_performance: ^0.7.1
-#  firebase_messaging: ^10.0.7
   google_sign_in: ^5.1.1
-
-#  facebook_audience_network: ^1.0.0-nullsafety.0
-#  google_mobile_ads: ^0.13.4
 
   connectivity_plus: ^1.2.0
   bot_toast: ^4.0.1
